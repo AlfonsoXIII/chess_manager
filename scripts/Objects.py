@@ -542,6 +542,8 @@ class Button(pygame.sprite.Sprite):
         self.im = 1 if self.im == 0 else 0
         self.image = self.status[self.im]
 
+#class
+
 class Position():
     def __init__(self, pos, text, capture, pos_or, board, check, check_mate, check_pos, castling):
         self.pos = pos

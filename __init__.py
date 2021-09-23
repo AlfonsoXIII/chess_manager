@@ -59,7 +59,7 @@ Funció que gestiona el comportament dels botons a pantalla.
 def Buttons_Behaviour(event, Data, text, taulell, menu):
     if event.type == pygame.MOUSEBUTTONDOWN:
         for a in taulell.buttons:
-            if a.rect.collidepoint(event.pos[0], event.pos[1]):
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                 if a.id == 1 and Data.jugada < len(text.board_list)-1:
                     Data.jugada += 1
                     Data.white_t = False if Data.white_t == True else True
@@ -95,13 +95,13 @@ def Buttons_Behaviour(event, Data, text, taulell, menu):
                     a.Update()
 
         for a in menu.buttons:
-            if a.rect.collidepoint(event.pos[0], event.pos[1]):
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                 if a.id == 2:
                     a.Update()
 
     elif event.type == pygame.MOUSEBUTTONUP:
         for a in taulell.buttons:
-            if a.rect.collidepoint(event.pos[0], event.pos[1]):
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                 if a.id == 3:
                     Data.reverse = (True if Data.reverse == False else False)
                     text.Reverse()
@@ -112,7 +112,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu):
                     a.Update()
         
         for a in menu.buttons:
-            if a.rect.collidepoint(event.pos[0], event.pos[1]):
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                 if a.id == 2:
                     a.Update()
 
@@ -126,7 +126,7 @@ Funció que implementa els canvis en pantalla per a les peces en accionar
 una d'elles.
 '''
 def Move(x, event, Data, size, peces, text, taulell):
-    target = ([a for a in range(1, 9) if size*a+120 > event.pos[1]][0]-1, [a for a in range(1, 9) if size*a+(30) > event.pos[0]][0]-1)
+    target = ([a for a in range(1, 9) if size*a+120+Data.board_pos_y > event.pos[1]][0]-1, [a for a in range(1, 9) if size*a+(30) > event.pos[0]][0]-1)
     if x.rect.collidepoint(event.pos[0], event.pos[1]):
         peces.mp = []
         taulell.selected = ()
@@ -212,7 +212,7 @@ en escacs o semblant.
 '''
 def If_Board_Pressed(event, Data, peces, text, taulell):
     for x in peces.c_g:                               
-        if x.rect.collidepoint(event.pos[0], event.pos[1]) and peces.position[x.pos[0]][x.pos[1]].isupper() == Data.white_t:
+        if x.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y) and peces.position[x.pos[0]][x.pos[1]].isupper() == Data.white_t:
             if x.id == "K":
                 Data.castling = [] 
                 movimientos = x.Movement(peces.position)
@@ -265,8 +265,8 @@ def Main(): #Funció principal del programa
     BoardDisplay = pygame.Surface((700, 525))
     BoardDisplay.fill(((243,239,239)))
 
-    MenuDisplay = pygame.Surface((700, 110))
-    MenuDisplay.fill(((243,239,239)))
+    MenuDisplay = pygame.Surface((700, 110)).convert_alpha()
+    MenuDisplay.fill((0,0,0,0))
 
     #Informació per a la construcció del taulell & finestra
     size = 40
@@ -338,7 +338,7 @@ def Main(): #Funció principal del programa
         
         window.fill((243,239,239))
         BoardDisplay.fill((243,239,239))
-        MenuDisplay.fill((243,239,239))
+        MenuDisplay.fill((0,0,0,0))
 
         #Redibuixat del contingut de la finestra
         taulell.draw(Data.white_t, Data.reverse)
