@@ -17,7 +17,7 @@ class Text(): #Classe de l'historial de jugades
 
         #Dibuixat del fons del bloc historial en finestra
         pygame.draw.rect(self.screen, (220, 220, 220),[380,115,295, (math.trunc(len(self.mov_list)/6)+1)*30])
-        pygame.draw.rect(self.screen,((189,189,189)),[377,112,301,6+((math.trunc(len(self.mov_list)/6)+1)*30)],3, border_radius=10)
+        pygame.draw.rect(self.screen,((189,189,189)),[377, 112,301,6+((math.trunc(len(self.mov_list)/6)+1)*30)],3, border_radius=10)
 
         #Renderitzat de text (moviments) & Indicador de jugada
         for x in self.mov_list:

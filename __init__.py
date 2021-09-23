@@ -14,11 +14,30 @@ import scripts.Menu as Menu
 import scripts.Board as Board
 import scripts.Pieces as Pieces
 
+def Animation(Data):
+
+    def rot_center(image, rect, angle):
+
+        rot_image = pygame.transform.rotate(image, angle)
+        rot_rect = rot_image.get_rect(center = rect.center)
+        return rot_image,rot_rect
+
+    if Data.menu_open == True:
+        if Data.menu_pos_y != 0: 
+            Data.menu_pos_y += 2
+            #rot_center([x for x in menu.buttons if x.id == 5], [x for x in menu.buttons if x.id == 5].get_rect(), Data.arrow_ang+2)
+
+        if Data.board_pos_y != 0: Data.board_pos_y += 2
+
+    else:
+        if Data.menu_pos_y != -36: Data.menu_pos_y -= 2
+        if Data.board_pos_y != -20: Data.board_pos_y -= 2
+
 '''
 Funció que gestiona les accions i els events del teclat quan la
 finestra no perd el focus.
 '''
-def Keys_Behaviour(event, Data, text):
+def Keys_Behaviour(event, Data, text, menu):
     if event.type == KEYDOWN:
         if event.key == pygame.K_LEFT:
             if Data.jugada > 0: 
@@ -29,6 +48,10 @@ def Keys_Behaviour(event, Data, text):
             if Data.jugada < len(text.board_list)-1: 
                 Data.jugada += 1
                 Data.white_t = False if Data.white_t == True else True
+        
+        if event.key == pygame.K_SPACE:
+            #menu.Animation()
+            Data.menu_open = (True if Data.menu_open == False else False)
 
 '''
 Funció que gestiona el comportament dels botons a pantalla.
@@ -37,19 +60,19 @@ def Buttons_Behaviour(event, Data, text, taulell, menu):
     if event.type == pygame.MOUSEBUTTONDOWN:
         for a in taulell.buttons:
             if a.rect.collidepoint(event.pos[0], event.pos[1]):
-                if a.k == 1 and Data.jugada < len(text.board_list)-1:
+                if a.id == 1 and Data.jugada < len(text.board_list)-1:
                     Data.jugada += 1
                     Data.white_t = False if Data.white_t == True else True
 
                     a.Update()
                 
-                elif a.k == -1 and Data.jugada > 0:
+                elif a.id == -1 and Data.jugada > 0:
                     Data.jugada -= 1
                     Data.white_t = False if Data.white_t == True else True
 
                     a.Update()
                 
-                elif a.k == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
+                elif a.id == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
                     text.board_list.remove(text.board_list[-1])
 
                     if (text.mov_list[-1]).castling[0] == True or (text.mov_list[-1]).castling[1] == True:
@@ -68,18 +91,18 @@ def Buttons_Behaviour(event, Data, text, taulell, menu):
 
                     a.Update()
                 
-                elif a.k == 3:
+                elif a.id == 3:
                     a.Update()
 
         for a in menu.buttons:
             if a.rect.collidepoint(event.pos[0], event.pos[1]):
-                if a.k == 2:
+                if a.id == 2:
                     a.Update()
 
     elif event.type == pygame.MOUSEBUTTONUP:
         for a in taulell.buttons:
             if a.rect.collidepoint(event.pos[0], event.pos[1]):
-                if a.k == 3:
+                if a.id == 3:
                     Data.reverse = (True if Data.reverse == False else False)
                     text.Reverse()
 
@@ -90,7 +113,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu):
         
         for a in menu.buttons:
             if a.rect.collidepoint(event.pos[0], event.pos[1]):
-                if a.k == 2:
+                if a.id == 2:
                     a.Update()
 
                     Data.end = True
@@ -234,10 +257,16 @@ def Main(): #Funció principal del programa
     icon = pygame.image.fromstring(images.tobytes(), images.size, images.mode) #Creació de la variable icona
 
     #Inicialització de la finestra
-    BoardDisplay = pygame.display.set_mode((700, 525))
+    window = pygame.display.set_mode((700, 525))
     pygame.display.set_caption("Chess Manager")
     pygame.display.set_icon(icon)
-    BoardDisplay.fill((243,239,239))
+    window.fill((243,239,239))
+
+    BoardDisplay = pygame.Surface((700, 525))
+    BoardDisplay.fill(((243,239,239)))
+
+    MenuDisplay = pygame.Surface((700, 110))
+    MenuDisplay.fill(((243,239,239)))
 
     #Informació per a la construcció del taulell & finestra
     size = 40
@@ -250,7 +279,8 @@ def Main(): #Funció principal del programa
     text.draw(Data.jugada)
 
     #Creació de l'objecte Menu per a la finestra i primer dibuixat
-    menu = Menu.Menu(BoardDisplay)
+    menu = Menu.Menu(MenuDisplay)
+    menu.Generate_Buttons()
     menu.draw()
 
     #Creació de l'objecte Taulell per a la finestra i primer dibuixat
@@ -294,7 +324,7 @@ def Main(): #Funció principal del programa
                         Data.castling = ()
                     
                 Buttons_Behaviour(event, Data, text, taulell, menu)
-                Keys_Behaviour(event, Data, text)
+                Keys_Behaviour(event, Data, text, menu)
 
                 #elif event.type == VIDEORESIZE:
                     #width, height = event.size
@@ -306,12 +336,19 @@ def Main(): #Funció principal del programa
         peces.position = text.board_list[Data.jugada]
         taulell.check_pos = () if Data.jugada == 0 else (text.mov_list[Data.jugada-1]).check_pos
         
+        window.fill((243,239,239))
+        BoardDisplay.fill((243,239,239))
+        MenuDisplay.fill((243,239,239))
+
         #Redibuixat del contingut de la finestra
         taulell.draw(Data.white_t, Data.reverse)
         peces.draw(Data.reverse)
         text.draw(Data.jugada)
         menu.draw()
+        Animation(Data)
 
+        window.blit(BoardDisplay, (0, Data.board_pos_y))
+        window.blit(MenuDisplay, (0, Data.menu_pos_y))
         pygame.display.update() #Actualització de la finestra
 
         #print(clock.get_fps())
