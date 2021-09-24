@@ -20,9 +20,10 @@ class Menu():
         menu.rect.x = 20
         menu.rect.y = -4
 
-        arrow = pieces.Button("images/menu_flecha.png", (0, 0, 105, 96), (0, 0, 105, 96), (20, 20), 5)
+        arrow = pieces.Arrow_Button("images/menu_flecha.png", (0, 0, 105, 96), (20, 20), (25, 85), 5)
         arrow.rect.x = 25
         arrow.rect.y = 82
+        #arrow.rect.center = (35, 92)
 
         self.buttons.add(menu)
         self.buttons.add(arrow)

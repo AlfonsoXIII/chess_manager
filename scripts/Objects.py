@@ -542,7 +542,35 @@ class Button(pygame.sprite.Sprite):
         self.im = 1 if self.im == 0 else 0
         self.image = self.status[self.im]
 
-#class
+class Arrow_Button(pygame.sprite.Sprite):
+    def __init__(self, image_path, image1_crop, image_size, pos, k):
+        super().__init__() #Herència dels atributs de la classe Sprite de pygame
+        #Atributs de classe
+        self.status = {} #Llista per a recollir les dues imatges del botó (encés/apagat)
+        self.im = 0 #Posició (encés/apagat) del botó
+
+        image = Image.open(image_path) #Obrim l'imatge amb el mòdul PIL
+
+        temp_list = []
+        for a in range(0, 19):
+            #Selecció i escalatge de l'imatge 1
+            self.image1 = image.crop(image1_crop)
+            self.image1 = self.image1.resize(image_size, resample=1, box=None)
+            self.image1 = self.image1.rotate(a*10, expand=False)
+            self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
+            temp_list.append(self.image1)
+        
+        self.status["0"] = temp_list
+
+        self.image = (self.status["0"])[self.im] #Determinem la imatge en funció del seu estatus o posició
+        self.id = k #ID del botó
+        self.rect = self.image.get_rect() #Posició del collider del botó
+        #self.rect.center = (pos[0]+(image_size[0]/2), pos[1]+(image_size[1]/2))
+
+    def Update(self, direction): #Funció per a actualitzar la posició de la imatge (encés/apagat)
+        if 0 <= self.im <= 18:
+            self.im += direction
+            self.image = self.status["0"][self.im]
 
 class Position():
     def __init__(self, pos, text, capture, pos_or, board, check, check_mate, check_pos, castling):

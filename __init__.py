@@ -14,23 +14,23 @@ import scripts.Menu as Menu
 import scripts.Board as Board
 import scripts.Pieces as Pieces
 
-def Animation(Data):
-
-    def rot_center(image, rect, angle):
-
-        rot_image = pygame.transform.rotate(image, angle)
-        rot_rect = rot_image.get_rect(center = rect.center)
-        return rot_image,rot_rect
-
+def Animation(Data, menu):
     if Data.menu_open == True:
         if Data.menu_pos_y != 0: 
             Data.menu_pos_y += 2
-            #rot_center([x for x in menu.buttons if x.id == 5], [x for x in menu.buttons if x.id == 5].get_rect(), Data.arrow_ang+2)
+            for a in menu.buttons:
+                if a.id == 5:
+                    a.Update(1)
 
         if Data.board_pos_y != 0: Data.board_pos_y += 2
 
     else:
-        if Data.menu_pos_y != -36: Data.menu_pos_y -= 2
+        if Data.menu_pos_y != -36: 
+            Data.menu_pos_y -= 2
+            for a in menu.buttons:
+                if a.id == 5:
+                    a.Update(-1)
+
         if Data.board_pos_y != -20: Data.board_pos_y -= 2
 
 '''
@@ -345,7 +345,7 @@ def Main(): #Funció principal del programa
         peces.draw(Data.reverse)
         text.draw(Data.jugada)
         menu.draw()
-        Animation(Data)
+        Animation(Data, menu)
 
         window.blit(BoardDisplay, (0, Data.board_pos_y))
         window.blit(MenuDisplay, (0, Data.menu_pos_y))
