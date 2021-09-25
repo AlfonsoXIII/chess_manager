@@ -6,16 +6,15 @@ import numpy as np
 
 #Classe per a la construcció de la peça Peó
 class Pawn(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, fliped):
+    def __init__(self, colour, pos, fliped, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        images = Image.open("images/chess_pieces.png")
-        self.image = images.crop((200, 40-self.colour*40, 240, 80-self.colour*40))
+        self.image = Image.open("images/2DBoardPieces/{}/p.bmp".format(colour))
+        self.image = self.image.resize(size, resample=Image.BILINEAR , box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
-        self.image = pygame.transform.scale(self.image, (40, 40))
         self.fliped = fliped
 
         self.pos = pos #Posició de la peça
@@ -25,10 +24,13 @@ class Pawn(pygame.sprite.Sprite):
     
     def Movement(self, board): #Funció que retorna una llista amb les caselles jugables per a la peça en concret
         mv = []
-        k = 1 if self.colour == 1 else -1
-        k = k if self.fliped == False else k*-1
+        k = (-1 if self.colour == 0 else 1)
+        #if self.fliped == False: k = k*(-1)
 
         if self.pos[0]+k <= 7:
+            print(self.colour)
+            print(k)
+            print(board[self.pos[0]+k][self.pos[1]])
             if board[self.pos[0]+k][self.pos[1]] == "":
                 mv.append((self.pos[0]+k, self.pos[1]))
             
@@ -45,16 +47,15 @@ class Pawn(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Dama
 class Queen(pygame.sprite.Sprite):
-    def __init__(self, colour, pos):
+    def __init__(self, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        images = Image.open("images/chess_pieces.png")
-        self.image = images.crop((0, 40-self.colour*40, 40, 80-self.colour*40))
+        self.image = Image.open("images/2DBoardPieces/{}/Q.bmp".format(colour))
+        self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
-        self.image = pygame.transform.scale(self.image, (40, 40))
 
         self.pos = pos #Posició de la peça
         self.id = "Q" #ID de la peça
@@ -140,16 +141,15 @@ class Queen(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Cavall
 class Knight(pygame.sprite.Sprite):
-    def __init__(self, colour, pos):
+    def __init__(self, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        images = Image.open("images/chess_pieces.png")
-        self.image = images.crop((120, 40-self.colour*40, 160, 80-self.colour*40))
+        self.image = Image.open("images/2DBoardPieces/{}/N.bmp".format(colour))
+        self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
-        self.image = pygame.transform.scale(self.image, (40, 40))
         
         self.pos = pos #Posició de la peça
         self.id = "N" #ID de la peça
@@ -187,16 +187,15 @@ class Knight(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Àlfil
 class Bishop(pygame.sprite.Sprite):
-    def __init__(self, colour, pos):
+    def __init__(self, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        images = Image.open("images/chess_pieces.png")
-        self.image = images.crop((160, 40-self.colour*40, 200, 80-self.colour*40))
+        self.image = Image.open("images/2DBoardPieces/{}/B.bmp".format(colour))
+        self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
-        self.image = pygame.transform.scale(self.image, (40, 40))
         
         self.pos = pos #Posició de la peça
         self.id = "B" #ID de la peça
@@ -246,16 +245,15 @@ class Bishop(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Torre
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, colour, pos):
+    def __init__(self, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        images = Image.open("images/chess_pieces.png")
-        self.image = images.crop((80, 40-self.colour*40, 120, 80-self.colour*40))
+        self.image = Image.open("images/2DBoardPieces/{}/R.bmp".format(colour))
+        self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
-        self.image = pygame.transform.scale(self.image, (40, 40))
         
         self.pos = pos #Posició de la peça
         self.id = "R" #ID de la peça
@@ -306,16 +304,15 @@ class Rock(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Rei
 class King(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, fliped):
+    def __init__(self, colour, pos, fliped, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        images = Image.open("images/chess_pieces.png")
-        self.image = images.crop((40, 40-self.colour*40, 80, 80-self.colour*40))
+        self.image = Image.open("images/2DBoardPieces/{}/K.bmp".format(colour))
+        self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
-        self.image = pygame.transform.scale(self.image, (40, 40))
         
         self.pos = pos #Posició de la peça
         self.id = "K" #ID de la peça
@@ -493,12 +490,12 @@ class Menu(pygame.sprite.Sprite):
 
         images = Image.open("images/manu_pressed.png")
         self.image1 = images.crop((0, 146.5, 150, 293))
-        self.image1 = self.image1.resize((70, 70), resample=1, box=None)
+        self.image1 = self.image1.resize((70, 70), resample=Image.BILINEAR, box=None)
         self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
         self.status.append(self.image1)
 
         self.image2 = images.crop((0, 0, 150, 144))
-        self.image2 = self.image2.resize((70, 70), resample=1, box=None)
+        self.image2 = self.image2.resize((70, 70), resample=Image.BILINEAR, box=None)
         self.image2 = pygame.image.fromstring(self.image2.tobytes(), self.image2.size, self.image2.mode)
         self.status.append(self.image2)
 
@@ -524,13 +521,13 @@ class Button(pygame.sprite.Sprite):
 
         #Selecció i escalatge de l'imatge 1
         self.image1 = image.crop(image1_crop)
-        self.image1 = self.image1.resize(image_size, resample=1, box=None)
+        self.image1 = self.image1.resize(image_size, resample=Image.BILINEAR, box=None)
         self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
         self.status.append(self.image1)
 
         #Selecció i escalatge de l'imatge 1
         self.image2 = image.crop(image2_crop)
-        self.image2 = self.image2.resize(image_size, resample=1, box=None)
+        self.image2 = self.image2.resize(image_size, resample=Image.BILINEAR, box=None)
         self.image2 = pygame.image.fromstring(self.image2.tobytes(), self.image2.size, self.image2.mode)
         self.status.append(self.image2)
 
@@ -543,7 +540,7 @@ class Button(pygame.sprite.Sprite):
         self.image = self.status[self.im]
 
 class Arrow_Button(pygame.sprite.Sprite):
-    def __init__(self, image_path, image1_crop, image_size, pos, k):
+    def __init__(self, image_path, image1_crop, image_size, k):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.status = {} #Llista per a recollir les dues imatges del botó (encés/apagat)
@@ -555,7 +552,7 @@ class Arrow_Button(pygame.sprite.Sprite):
         for a in range(0, 19):
             #Selecció i escalatge de l'imatge 1
             self.image1 = image.crop(image1_crop)
-            self.image1 = self.image1.resize(image_size, resample=1, box=None)
+            self.image1 = self.image1.resize(image_size, resample=Image.BILINEAR, box=None)
             self.image1 = self.image1.rotate(a*10, expand=False)
             self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
             temp_list.append(self.image1)

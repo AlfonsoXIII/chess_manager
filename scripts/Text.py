@@ -1,4 +1,5 @@
 #Llibreries importades
+from window_behaviour import Proportion
 import pygame
 import math
 
@@ -6,18 +7,21 @@ import math
 import chess_notations
 
 class Text(): #Classe de l'historial de jugades
-    def __init__(self, screen):
+    def __init__(self, screen, proportion, center_x):
         #Atributs de classe
         self.screen = screen #Objecte pygame de finestra
         self.mov_list = [] #Llistat de jugades per a visualitzar
         self.board_list = [] #Llistat amb totes les posicions
-    
+
+        self.proportion = proportion
+        self.center = center_x
+
     def draw(self, jugada):
         arial = pygame.font.SysFont('Arial', 15) #Font per a renderitzar text
 
         #Dibuixat del fons del bloc historial en finestra
-        pygame.draw.rect(self.screen, (220, 220, 220),[380,115,295, (math.trunc(len(self.mov_list)/6)+1)*30])
-        pygame.draw.rect(self.screen,((189,189,189)),[377, 112,301,6+((math.trunc(len(self.mov_list)/6)+1)*30)],3, border_radius=10)
+        pygame.draw.rect(self.screen, (220, 220, 220),[int(380*self.proportion)+self.center,int(115*self.proportion),int(295*self.proportion), (math.trunc(len(self.mov_list)/6)+1)*int(30*self.proportion)])
+        pygame.draw.rect(self.screen,((189,189,189)),[int(377*self.proportion)+self.center, int(112*self.proportion),int(301*self.proportion),6+((math.trunc(len(self.mov_list)/6)+1)*int(30*self.proportion))],int(3*self.proportion), border_radius=int(10*self.proportion))
 
         #Renderitzat de text (moviments) & Indicador de jugada
         for x in self.mov_list:
