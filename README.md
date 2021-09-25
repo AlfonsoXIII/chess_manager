@@ -11,6 +11,6 @@
 <h2><b>Software d'anàlisis</b></h2>
 <p style="text-align: justify"> Una de les principals característiques que forma aquest projecte es l'entorn d'anàlisis basat en Chess Base desenvolupat. Amb una interfície simple i efectiva, la visualització de partides així com el seu anàlisis son els principals objectius d'aquest entorn.</p>
 
-![Chess Manager Overview](https://github.com/AlfonsoXIII/chess_manager/tree/master/images/README_images/screeshot_1.png "Chess Manager")
+![Chess Manager Overview](https://raw.githubusercontent.com/AlfonsoXIII/chess_manager/master/images/README_images/screenshot_1.PNG "Chess Manager")
 
 <h2 style="text-align: right"><em><br>~26/09/2021</em></h2>
