@@ -22,13 +22,17 @@ class Menu():
         menu.rect.x = int(20*self.proportion)
         menu.rect.y = int(-6*self.proportion)
 
-        arrow = pieces.Arrow_Button("images/menu_flecha.png", (0, 0, 105, 96), (int(20*self.proportion), int(20*self.proportion)), 5)
+        arrow = pieces.Arrow_Button("images/menu_flecha.png", (0, 0, 105, 96), (int(20*self.proportion), int(20*self.proportion)), 5, self.proportion)
         arrow.rect.x = int(25*self.proportion)
         arrow.rect.y = int(82*self.proportion)
-        #arrow.rect.center = (35, 92)
+
+        config = pieces.Button("images/menu_pressed.bmp", (0, 146.5, 150, 293), (0, 0, 150, 146.5), (int(65*self.proportion), int(65*self.proportion)), 6)
+        config.rect.x = int(70*self.proportion)
+        config.rect.y = int(10*self.proportion)
 
         self.buttons.add(menu)
         self.buttons.add(arrow)
+        self.buttons.add(config)
     
     def draw(self): #Funció per a dibuixar en pantalla el Menú
         width, height = self.screen.get_size()
@@ -43,3 +47,6 @@ class Menu():
         self.pos = (1 if self.pos == 0 else 0)
 
         return self.pos
+    
+    def Config_Window(self):
+        pass

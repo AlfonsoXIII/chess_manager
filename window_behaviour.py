@@ -26,22 +26,23 @@ activar el menú o desactivar-lo.
 '''
 def Animation(Data, menu):
     if Data.menu_open == True:
-        if Data.menu_pos_y != 0: 
-            Data.menu_pos_y += 2
+        print(Data.menu_open)
+        if Data.menu_counter != 0: 
+            Data.menu_pos_y += (3.75*Data.proportion)
             for a in menu.buttons:
                 if a.id == 5:
                     a.Update(1)
 
-        if Data.board_pos_y != 0: Data.board_pos_y += 2
+        if Data.board_pos_y != 0: Data.board_pos_y += (3.75*Data.proportion)
 
     else:
-        if Data.menu_pos_y != -36: 
-            Data.menu_pos_y -= 2
+        if Data.menu_pos_y != int(-75*Data.proportion):
+            Data.menu_pos_y -= 3.75
             for a in menu.buttons:
                 if a.id == 5:
                     a.Update(-1)
 
-        if Data.board_pos_y != -20: Data.board_pos_y -= 2
+        if Data.board_pos_y != int(-49*Data.proportion): Data.board_pos_y -= 3.75
 
 '''
 Funció que gestiona les accions i els events del teclat quan la
@@ -74,12 +75,14 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
                     Data.white_t = False if Data.white_t == True else True
 
                     a.Update()
+                    Data.catch_button = a
                 
                 elif a.id == -1 and Data.jugada > 0:
                     Data.jugada -= 1
                     Data.white_t = False if Data.white_t == True else True
 
                     a.Update()
+                    Data.catch_button = a
                 
                 elif a.id == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
                     text.board_list.remove(text.board_list[-1])
@@ -96,43 +99,33 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
                     text.mov_list.remove(text.mov_list[-1])
 
                     Data.jugada -= 1
-                    Data.white_t = False if Data.white_t == True else True
+                    Data.white_t = (False if Data.white_t == True else True)
 
                     a.Update()
+                    Data.catch_button = a
 
                     peces.position = text.board_list[Data.jugada]
                     peces.draw(Data.reverse)
                 
                 elif a.id == 3:
                     a.Update()
+                    Data.catch_button = a
 
         for a in menu.buttons:
-            if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
-                if a.id == 2:
-                    a.Update()
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+                if a.id == 4 or a.id == 5:
+
+                    Data.menu_open = (True if Data.menu_open == False else False)
 
     elif event.type == pygame.MOUSEBUTTONUP:
-        for a in taulell.buttons:
-            if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
-                if a.id == 3:
-                    Data.reverse = (True if Data.reverse == False else False)
-                    text.Reverse()
+        if Data.catch_button != None:
+            Data.catch_button.Update()
 
-                    a.Update()
-                    peces.draw(Data.reverse)
+            if Data.catch_button.id == 3:
+                Data.reverse = (True if Data.reverse == False else False)
+                text.Reverse()
 
-                elif a.im == 1:
-                    a.Update()
-        
-        for a in menu.buttons:
-            if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
-                if a.id == 2:
-                    a.Update()
-
-                    Data.end = True
-                    pygame.display.quit()
-                    pygame.quit()
-                    #Main()
+            Data.catch_button = None
 
 '''
 Funció que implementa els canvis en pantalla per a les peces en accionar 
@@ -141,12 +134,6 @@ una d'elles.
 def Move(x, event, Data, size, peces, text, taulell):
     target = ([a for a in range(1, 9) if (size*a)+int(120*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
             [a for a in range(1, 9) if (size*a)+int(30*Data.proportion)+Data.relative_center > event.pos[0]][0]-1)
-    
-    print(target)
-    print(event)
-    print(int(120*Data.proportion))
-    print(Data.relative_center, Data.board_pos_y)
-    print(size)
 
     if x.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
         peces.mp = []

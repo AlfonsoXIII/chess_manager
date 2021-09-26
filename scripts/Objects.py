@@ -25,7 +25,9 @@ class Pawn(pygame.sprite.Sprite):
     def Movement(self, board): #Funció que retorna una llista amb les caselles jugables per a la peça en concret
         mv = []
         k = (-1 if self.colour == 0 else 1)
-        #if self.fliped == False: k = k*(-1)
+        if self.fliped == False:
+            print("ñaa")
+            k = k*(-1)
 
         if self.pos[0]+k <= 7:
             print(self.colour)
@@ -540,7 +542,7 @@ class Button(pygame.sprite.Sprite):
         self.image = self.status[self.im]
 
 class Arrow_Button(pygame.sprite.Sprite):
-    def __init__(self, image_path, image1_crop, image_size, k):
+    def __init__(self, image_path, image1_crop, image_size, k, proportion):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.status = {} #Llista per a recollir les dues imatges del botó (encés/apagat)
@@ -549,13 +551,14 @@ class Arrow_Button(pygame.sprite.Sprite):
         image = Image.open(image_path) #Obrim l'imatge amb el mòdul PIL
 
         temp_list = []
-        for a in range(0, 19):
+        for a in range(0, 20):
             #Selecció i escalatge de l'imatge 1
             self.image1 = image.crop(image1_crop)
             self.image1 = self.image1.resize(image_size, resample=Image.BILINEAR, box=None)
-            self.image1 = self.image1.rotate(a*10, expand=False)
+            self.image1 = self.image1.rotate(a*9, expand=False)
             self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
             temp_list.append(self.image1)
+            print(a)
         
         self.status["0"] = temp_list
 

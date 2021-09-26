@@ -5,14 +5,15 @@ principals del taulell d'escacs en els seus diferents mòdes.
 
 class Data(): #Funció on s'emmagatzemen diferents variables
     def __init__(self):
-        self.proportion = 1
+        self.proportion = 1 #Variable que controla la proporció dels objectes en relació a la nativa original de desenvolupament pel seu escalat
 
         self.end = False #Variable per a controlar la fi del programa
         self.menu_open = False #Variable que controla si el menú s'ha activat o no
-        self.menu_pos_y = -36*self.proportion
-        self.board_pos_y = -20*self.proportion
-        #self.center_x = 0
-        self.relative_center = 0
+        self.menu_pos_y = 0 #Variable que determina la posició en l'eix y del menú
+        self.board_pos_y = 0 #Variable que determina la posició en l'eix y del taulell i altres objectes
+        self.relative_center = 0 #Variable que determina el centre relatiu per a centrar els objectes aliens al menú en pantalla
+        self.catch_button = None #Variable que captura el botó que s'ha pres
+        self.menu_counter = 0
 
         self.pressed = False #Variable encarregada d'emmagatzemar si s'ha pressionat, seleccionat, una peça
         self.white_t = True #Variable per a controlar quin torn es en funció de les peces blanques

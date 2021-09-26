@@ -44,6 +44,8 @@ def Main(): #Funció principal del programa
     Data = variables.Data() #Classe externa amb totes les variables principals
     Data.proportion = window_behaviour.Proportion((window_width,window_height), (700, 525))
     Data.center_x = ((window_width)-(700*Data.proportion))/2
+    Data.menu_pos_y = int(-75*Data.proportion)
+    Data.board_pos_y = int(-49*Data.proportion)
     Data.relative_center = Data.center_x/2
     size = int(40*Data.proportion)
     boardLength = 8

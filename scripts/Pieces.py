@@ -18,6 +18,9 @@ class Pieces():
 
         self.proportion = proportion
     
+    def Promotion(self):
+        pass
+    
     def Update(self):
         #Dibuixat en pantalla de les posibilitats de joc per a la peça seleccionada
         for i in range(0, 8):
