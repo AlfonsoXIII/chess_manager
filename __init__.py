@@ -17,7 +17,7 @@ def Main(): #Funció principal del programa
     pygame.init()
 
     #Declaración de la paleta de colors per a la interfície
-    yellow, green, white, charcoal = (231,231,216),(131, 175, 155),(255,255,255), (54,69,79)
+    yellow, green, white, charcoal = (231,231,216), (131, 175, 155), (255,255,255), (54,69,79)
 
     image = Image.open("images/chess_pieces.png") #Obertura del spritemap amb la llibreria PIL
     images = image.crop((120, 0, 160, 40)) #Selecció de l'icona per a la finestra
@@ -54,11 +54,12 @@ def Main(): #Funció principal del programa
     text = Text.Text(BoardDisplay, 
                     Data.proportion,
                     Data.center_x)
-    text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/P7/RNBQKBNR"))
-    text.draw(Data.jugada)
+    text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
+    text.draw(Data.jugada, Data.text_data)
 
     #Creació de l'objecte Menu per a la finestra i primer dibuixat
-    menu = Menu.Menu(MenuDisplay, Data.proportion)
+    menu = Menu.Menu(MenuDisplay, 
+                    Data.proportion)
     menu.Generate_Buttons()
     menu.draw()
 
@@ -73,10 +74,15 @@ def Main(): #Funció principal del programa
                         boardLength, 
                         Data.proportion)
     taulell.Generate_Buttons()
-    taulell.draw(Data.white_t, Data.reverse)
+    taulell.draw(Data.white_t, 
+                Data.reverse)
 
     #Creació de l'objecte Peces per a la finestra i primer dibuixat
-    peces = Pieces.Pieces(BoardDisplay, size, boardLength, text.board_list, Data.proportion)
+    peces = Pieces.Pieces(BoardDisplay, 
+                        size, 
+                        boardLength, 
+                        text.board_list, 
+                        Data.proportion)
     peces.draw(pygame.display.get_surface().get_size())
 
     clock = pygame.time.Clock()
@@ -102,9 +108,8 @@ def Main(): #Funció principal del programa
 
                     elif Data.pressed == True: #S'executa en el cas de que prèviament s'hagi seleccionat una peça
                         #Es revisa si l'usuari ha seleccionat alguna casella del taulell
-                        if (30*Data.proportion) <= event.pos[0]-Data.relative_center <= (350*Data.proportion) and (120*Data.proportion) <= event.pos[1]+Data.board_pos_y <= (440*Data.proportion): 
-                            print(x)
-                            window_behaviour.Move(x, event, Data, size, peces, text, taulell)
+                        if (30*Data.proportion) <= event.pos[0]-Data.relative_center <= (350*Data.proportion) and (120*Data.proportion) <= event.pos[1]-Data.board_pos_y <= (440*Data.proportion): 
+                            window_behaviour.Move(x, event, Data, size, peces, text, taulell, chess_notations)
 
                         peces.mp = []
                         taulell.selected = ()
@@ -114,15 +119,9 @@ def Main(): #Funció principal del programa
                 window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces)
                 window_behaviour.Keys_Behaviour(event, Data, text, menu)
 
-                #elif event.type == VIDEORESIZE:
-                    #width, height = event.size
-                    #if width < 700:     width = 700 #Límites mínimos de altura
-                    #if height < 400:    height = 400 #Límites mínimos de anchura
-
-                    #BoardDisplay = pygame.display.set_mode((width, height)) #Actualización de ventana con los parámetros ajustados.
-
         peces.position = text.board_list[Data.jugada]
-        taulell.check_pos = () if Data.jugada == 0 else (text.mov_list[Data.jugada-1]).check_pos
+        taulell.check_pos = (() if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
+        print(taulell.check_pos)
         
         window.fill((243,239,239))
         BoardDisplay.fill((243,239,239))
@@ -131,15 +130,13 @@ def Main(): #Funció principal del programa
         #Redibuixat del contingut de la finestra
         taulell.draw(Data.white_t, Data.reverse)
         peces.Update()
-        text.draw(Data.jugada)
+        text.draw(Data.jugada, Data.text_data)
         menu.draw()
         window_behaviour.Animation(Data, menu)
 
         window.blit(BoardDisplay, (Data.relative_center, Data.board_pos_y))
         window.blit(MenuDisplay, (0, Data.menu_pos_y))
         pygame.display.update() #Actualització de la finestra
-
-        #print(clock.get_fps())
 
 if __name__ == '__main__': #Inici d'execució del programa
     Main() #Trucada a la funció principal

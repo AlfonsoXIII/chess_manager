@@ -13,7 +13,7 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.board_pos_y = 0 #Variable que determina la posició en l'eix y del taulell i altres objectes
         self.relative_center = 0 #Variable que determina el centre relatiu per a centrar els objectes aliens al menú en pantalla
         self.catch_button = None #Variable que captura el botó que s'ha pres
-        self.menu_counter = 0
+        self.menu_counter = [0, 4]
 
         self.pressed = False #Variable encarregada d'emmagatzemar si s'ha pressionat, seleccionat, una peça
         self.white_t = True #Variable per a controlar quin torn es en funció de les peces blanques
@@ -24,3 +24,5 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.wk_moved = False #Variable per a emmagatzemar si el rei blanc s'ha desplaçat prèviament
         self.bk_moved = False #Variable per a emmagatzemar si el rei negre s'ha desplaçat prèviament
         self.castling = [] #Variable per a emmagatzemar localment les coordenades d'enroc
+
+        self.text_data = [] #Informació sobre les jugades a visualitzar en format text

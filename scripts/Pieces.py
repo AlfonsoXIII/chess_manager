@@ -9,14 +9,15 @@ class Pieces():
     def __init__(self, screen, b_size, b_len, position, proportion):
         #Atributs de classe
         self.screen = screen #Objecte pygame de finestra
-        self.b_size = b_size #
-        self.b_len = b_len #
+        self.proportion = proportion #Proporció dels elements en finestra per a escalar-los
+        self.b_size = b_size #Longitud dels segments que formen els quadrats del taulell
+        self.b_len = b_len #Número de caselles al taulell
         self.position = position[-1] #Array amb la posició a visualitzar del taulell
 
         self.c_g = pygame.sprite.Group() #Grup pygame per a emmagatzemar un conjunt de sprites
         self.mp = [] #Llistat amb les caselles a les que pot anar la peça seleccionada
-
-        self.proportion = proportion
+        
+        self.Promotion_Window = False
     
     def Promotion(self):
         pass

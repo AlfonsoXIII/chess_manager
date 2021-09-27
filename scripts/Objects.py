@@ -25,14 +25,9 @@ class Pawn(pygame.sprite.Sprite):
     def Movement(self, board): #Funció que retorna una llista amb les caselles jugables per a la peça en concret
         mv = []
         k = (-1 if self.colour == 0 else 1)
-        if self.fliped == False:
-            print("ñaa")
-            k = k*(-1)
+        if self.fliped == True: k = k*(-1)
 
         if self.pos[0]+k <= 7:
-            print(self.colour)
-            print(k)
-            print(board[self.pos[0]+k][self.pos[1]])
             if board[self.pos[0]+k][self.pos[1]] == "":
                 mv.append((self.pos[0]+k, self.pos[1]))
             
@@ -339,7 +334,7 @@ class King(pygame.sprite.Sprite):
                 if 0 <= temp_vect[0] <= 7 and 0 <= temp_vect[1] <= 7 and (board[temp_vect[0]][temp_vect[1]].isupper() != board[pos[0]][pos[1]].isupper() or board[temp_vect[0]][temp_vect[1]] == ""):
                     if board[temp_vect[0]][temp_vect[1]] == ("p" if local_id.isupper() else "P"):
                         if x == 1 and (modificadores_diagonales[y] == ((-1, -1) if local_id.islower() else (-1, 1)) or modificadores_diagonales[y] == ((1, 1) if local_id.islower() else (1, -1))):
-                            print("Gate: 1 (DIAGONAL_1)")
+                            #print("Gate: 1 (DIAGONAL_1)")
                             return False
 
                         else:
@@ -352,12 +347,11 @@ class King(pygame.sprite.Sprite):
                         break
                     
                     if x == 1 and board[temp_vect[0]][temp_vect[1]] == ("k" if local_id.isupper() else "K"):
-                        print(temp_vect, " - ", board[temp_vect[0]][temp_vect[1]])
-                        print("Gate: 1 (DIAGONAL_2)")
+                        #print("Gate: 1 (DIAGONAL_2)")
                         return False
 
                     if board[temp_vect[0]][temp_vect[1]] == ("q" if local_id.isupper() else "Q") or board[temp_vect[0]][temp_vect[1]] == ("b" if local_id.isupper() else "B"):
-                        print("Gate: 1 (DIAGONAL)")
+                        #print("Gate: 1 (DIAGONAL)")
                         return False
                 
                 else:
@@ -386,11 +380,11 @@ class King(pygame.sprite.Sprite):
                         break
 
                     if x == 1 and board[temp_vect[0]][temp_vect[1]] == ("k" if local_id.isupper() else "K"):
-                        print("Gate: 2 (LINEAL_1)")
+                        #print("Gate: 2 (LINEAL_1)")
                         return False
 
                     if board[temp_vect[0]][temp_vect[1]] == ("q" if local_id.isupper() else "Q") or board[temp_vect[0]][temp_vect[1]] == ("r" if local_id.isupper() else "R"):
-                        print("Gate: 2 (LINEAL)")
+                        #print("Gate: 2 (LINEAL)")
                         return False
                 
                 else:
@@ -405,10 +399,10 @@ class King(pygame.sprite.Sprite):
                     local_knights += 1
 
         if local_knights != agressiveKnight:
-            print("Gate: 2 (HORSE)")
+            #print("Gate: 2 (HORSE)")
             return False                
 
-        print("Gate: 3 (No check)")
+        #print("Gate: 3 (No check)")
         return True
 
     
@@ -551,14 +545,13 @@ class Arrow_Button(pygame.sprite.Sprite):
         image = Image.open(image_path) #Obrim l'imatge amb el mòdul PIL
 
         temp_list = []
-        for a in range(0, 20):
+        for a in range(0, 21):
             #Selecció i escalatge de l'imatge 1
             self.image1 = image.crop(image1_crop)
             self.image1 = self.image1.resize(image_size, resample=Image.BILINEAR, box=None)
             self.image1 = self.image1.rotate(a*9, expand=False)
             self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
             temp_list.append(self.image1)
-            print(a)
         
         self.status["0"] = temp_list
 
@@ -568,19 +561,6 @@ class Arrow_Button(pygame.sprite.Sprite):
         #self.rect.center = (pos[0]+(image_size[0]/2), pos[1]+(image_size[1]/2))
 
     def Update(self, direction): #Funció per a actualitzar la posició de la imatge (encés/apagat)
-        if 0 <= self.im <= 18:
-            self.im += direction
+        if 0 <= self.im <= 20:
+            self.im += (direction)
             self.image = self.status["0"][self.im]
-
-class Position():
-    def __init__(self, pos, text, capture, pos_or, board, check, check_mate, check_pos, castling):
-        self.pos = pos
-        self.pos_or = pos_or
-        self.text = text
-        self.capture = capture
-        self.check = check
-        self.check_pos = check_pos
-        self.check_mate = check_mate
-        self.castling = castling
-
-        self.board = board

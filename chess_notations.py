@@ -1,9 +1,10 @@
 def algebraic_de(piece, pos, capture, pos_or, number, check, check_mate, castling):  
-    #unicode = {"P": u'\u2659', "p": u'\u265F', "K": u'\u2654', "k": u'\u265A', "Q": u'\u2655', "q":u'\u265B', "N":u'\u2658', "n":u'\u265E', "B":u'\u2657', "b":u'\u265D', "R":u'\u2656', "r":u'\u265C'}
+    unicode = {"P": u'\u2659', "p": u'\u265F', "K": u'\u2654', "k": u'\u265A', "Q": u'\u2655', "q":u'\u265B', "N":u'\u2658', "n":u'\u265E', "B":u'\u2657', "b":u'\u265D', "R":u'\u2656', "r":u'\u265C'}
     ab = "abcdefgh"
 
     #return unicode[piece]+"e4" if piece.upper() != "P" else "e4"
-    return str(number+"0-0" if castling[0] == True else number+"0-0-0" if castling[1] == True else number+(piece.upper() if piece.upper() != "P" else ab[pos_or[1]] if capture == True else "")+("x" if capture == True else "")+ab[pos[1]]+str(8-pos[0])+("+" if check == True else "")+("#" if check_mate == True else ""))
+    return str(number+"0-0" if castling[0] == True else number+"0-0-0" if castling[1] == True else number+(unicode[piece.upper()] if piece.upper() != "P" else ab[pos_or[1]] if capture == True else "")+("x" if capture == True else "")+ab[pos[1]]+str(8-pos[0])+("+" if check == True else "")+("#" if check_mate == True else ""))
+    #return str(number+"0-0" if castling[0] == True else number+"0-0-0" if castling[1] == True else number+(piece.upper() if piece.upper() != "P" else ab[pos_or[1]] if capture == True else "")+("x" if capture == True else "")+ab[pos[1]]+str(8-pos[0])+("+" if check == True else "")+("#" if check_mate == True else ""))
 
 def FEN_decode(FEN):
     FEN = FEN.split("/")

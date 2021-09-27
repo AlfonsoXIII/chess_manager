@@ -26,7 +26,7 @@ class Menu():
         arrow.rect.x = int(25*self.proportion)
         arrow.rect.y = int(82*self.proportion)
 
-        config = pieces.Button("images/menu_pressed.bmp", (0, 146.5, 150, 293), (0, 0, 150, 146.5), (int(65*self.proportion), int(65*self.proportion)), 6)
+        config = pieces.Button("images/menu_pressed.bmp", (0, 146.5, 150, 293), (0, 0, 150, 143), (int(65*self.proportion), int(65*self.proportion)), 6)
         config.rect.x = int(70*self.proportion)
         config.rect.y = int(10*self.proportion)
 

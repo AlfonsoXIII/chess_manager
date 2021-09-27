@@ -2,6 +2,8 @@
 import pygame
 from copy import deepcopy
 
+from pygame.constants import JOYBUTTONDOWN
+
 #Scripts importats
 import scripts.Objects as pieces
 
@@ -12,8 +14,6 @@ l'aspect ratio original i en funció de la resolució del monitor
 de l'usuari.
 '''
 def Proportion(display_dimensions, original_dimensions):
-    print((display_dimensions[0]-original_dimensions[0]), (display_dimensions[1]-original_dimensions[1]))
-
     if (display_dimensions[0]-original_dimensions[0]) <= (display_dimensions[1]-original_dimensions[1]):
         return display_dimensions[0]/original_dimensions[0]
     
@@ -26,23 +26,30 @@ activar el menú o desactivar-lo.
 '''
 def Animation(Data, menu):
     if Data.menu_open == True:
-        print(Data.menu_open)
-        if Data.menu_counter != 0: 
-            Data.menu_pos_y += (3.75*Data.proportion)
+        if Data.menu_counter[0] != 20: 
+            Data.menu_pos_y += int(3.75*Data.proportion)
+            Data.menu_counter[0] += 1
+
             for a in menu.buttons:
                 if a.id == 5:
                     a.Update(1)
 
-        if Data.board_pos_y != 0: Data.board_pos_y += (3.75*Data.proportion)
+        if Data.menu_counter[1] != 18: 
+            Data.board_pos_y += int(3.75*Data.proportion)
+            Data.menu_counter[1] += 1
 
     else:
-        if Data.menu_pos_y != int(-75*Data.proportion):
-            Data.menu_pos_y -= 3.75
+        if Data.menu_counter[0] != 0:
+            Data.menu_pos_y -= int(3.75*Data.proportion)
+            Data.menu_counter[0] -= 1
+
             for a in menu.buttons:
                 if a.id == 5:
                     a.Update(-1)
 
-        if Data.board_pos_y != int(-49*Data.proportion): Data.board_pos_y -= 3.75
+        if Data.menu_counter[1] != 4: 
+            Data.board_pos_y -= int(3.75*Data.proportion)
+            Data.menu_counter[1] -= 1
 
 '''
 Funció que gestiona les accions i els events del teclat quan la
@@ -59,9 +66,6 @@ def Keys_Behaviour(event, Data, text, menu):
             if Data.jugada < len(text.board_list)-1: 
                 Data.jugada += 1
                 Data.white_t = False if Data.white_t == True else True
-        
-        if event.key == pygame.K_SPACE:
-            Data.menu_open = (True if Data.menu_open == False else False)
 
 '''
 Funció que gestiona el comportament dels botons a pantalla.
@@ -75,6 +79,10 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
                     Data.white_t = False if Data.white_t == True else True
 
                     a.Update()
+
+                    peces.position = text.board_list[Data.jugada]
+                    peces.draw(Data.reverse)
+                    
                     Data.catch_button = a
                 
                 elif a.id == -1 and Data.jugada > 0:
@@ -82,6 +90,10 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
                     Data.white_t = False if Data.white_t == True else True
 
                     a.Update()
+
+                    peces.position = text.board_list[Data.jugada]
+                    peces.draw(Data.reverse)
+
                     Data.catch_button = a
                 
                 elif a.id == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
@@ -113,9 +125,12 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
 
         for a in menu.buttons:
             if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
-                if a.id == 4 or a.id == 5:
-
+                if a.id == 4:
                     Data.menu_open = (True if Data.menu_open == False else False)
+                
+                elif a.id == 6:
+                    a.Update()
+                    Data.catch_button = a
 
     elif event.type == pygame.MOUSEBUTTONUP:
         if Data.catch_button != None:
@@ -124,6 +139,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
             if Data.catch_button.id == 3:
                 Data.reverse = (True if Data.reverse == False else False)
                 text.Reverse()
+                peces.draw(Data.reverse)
 
             Data.catch_button = None
 
@@ -131,10 +147,10 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
 Funció que implementa els canvis en pantalla per a les peces en accionar 
 una d'elles.
 '''
-def Move(x, event, Data, size, peces, text, taulell):
+def Move(x, event, Data, size, peces, text, taulell, chess_notations):
     target = ([a for a in range(1, 9) if (size*a)+int(120*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
             [a for a in range(1, 9) if (size*a)+int(30*Data.proportion)+Data.relative_center > event.pos[0]][0]-1)
-
+    #print(target)
     if x.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
         peces.mp = []
         taulell.selected = ()
@@ -204,10 +220,18 @@ def Move(x, event, Data, size, peces, text, taulell):
                         Data.check_mate = True
 
                     else:
-                        temp = (a.pos[1], a.pos[0])
+                        #temp = (a.pos[1], a.pos[0])
                         check = True   
                                                             
-        text.mov_list.append(pieces.Position((target if Data.reverse == False else (7-target[0], 7-target[1])), peces.position[target[0]][target[1]], compr, (x.pos if Data.reverse == False else (7-x.pos[0], 7-x.pos[1])), (text.board_list[-1]), check, Data.check_mate, ((7-temp[0], 7-temp[1]) if Data.reverse == True else temp) if check == True else (), local_castling))
+        Data.text_data.append((chess_notations.algebraic_de(peces.position[target[0]][target[1]], 
+                                                            (target if Data.reverse == False else (7-target[0], 7-target[1])),
+                                                            compr,
+                                                            (x.pos if Data.reverse == False else (7-x.pos[0], 7-x.pos[1])),
+                                                            (str("{} ").format((str(int(Data.jugada/2)+1)+".") if Data.jugada%2 == 0 else "")),
+                                                            check,
+                                                            Data.check_mate,
+                                                            local_castling), check))
+
         Data.jugada += 1                          
         
         peces.mp = []
@@ -249,7 +273,5 @@ def If_Board_Pressed(event, Data, peces, text, taulell):
                         if (other_king[0]).Check(temp_board, (b if x.id == "K" else (other_king[0]).pos)) and (a.Check(text.board_list[-1], a.pos) or (a.Check(text.board_list[-1], a.pos) == False and a.Check(temp_board, b))):
                             taulell.selected = (x.pos[1], x.pos[0])
                             peces.mp.append(b)
-                            Data.pressed = True
-                            
-                    break            
-            return x
+                            Data.pressed = True          
+                    return x
