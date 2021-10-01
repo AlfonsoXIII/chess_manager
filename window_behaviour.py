@@ -197,6 +197,7 @@ def Move(x, event, Data, size, peces, text, taulell, chess_notations):
         peces.draw(Data.reverse)
 
         check = False
+        temp = []
 
         for a in peces.c_g:
             if a.id == "K" and a.colour == (0 if Data.white_t == True else 1):
@@ -220,7 +221,7 @@ def Move(x, event, Data, size, peces, text, taulell, chess_notations):
                         Data.check_mate = True
 
                     else:
-                        #temp = (a.pos[1], a.pos[0])
+                        temp = (a.pos[1], a.pos[0])
                         check = True   
                                                             
         Data.text_data.append((chess_notations.algebraic_de(peces.position[target[0]][target[1]], 
@@ -230,10 +231,9 @@ def Move(x, event, Data, size, peces, text, taulell, chess_notations):
                                                             (str("{} ").format((str(int(Data.jugada/2)+1)+".") if Data.jugada%2 == 0 else "")),
                                                             check,
                                                             Data.check_mate,
-                                                            local_castling), check))
+                                                            local_castling), temp))
 
         Data.jugada += 1                          
-        
         peces.mp = []
 
 '''

@@ -55,7 +55,7 @@ def Main(): #Funció principal del programa
                     Data.proportion,
                     Data.center_x)
     text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
-    text.draw(Data.jugada, Data.text_data)
+    text.draw(Data.jugada, Data.text_data, 1)
 
     #Creació de l'objecte Menu per a la finestra i primer dibuixat
     menu = Menu.Menu(MenuDisplay, 
@@ -120,8 +120,8 @@ def Main(): #Funció principal del programa
                 window_behaviour.Keys_Behaviour(event, Data, text, menu)
 
         peces.position = text.board_list[Data.jugada]
-        taulell.check_pos = (() if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
-        print(taulell.check_pos)
+        taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
+        #print(taulell.check_pos)
         
         window.fill((243,239,239))
         BoardDisplay.fill((243,239,239))
@@ -130,7 +130,7 @@ def Main(): #Funció principal del programa
         #Redibuixat del contingut de la finestra
         taulell.draw(Data.white_t, Data.reverse)
         peces.Update()
-        text.draw(Data.jugada, Data.text_data)
+        text.draw(Data.jugada, Data.text_data, clock.get_fps())
         menu.draw()
         window_behaviour.Animation(Data, menu)
 
