@@ -2,11 +2,15 @@
 import pygame
 from copy import deepcopy
 
-from pygame.constants import JOYBUTTONDOWN
-
 #Scripts importats
-import scripts.Objects as pieces
+import scripts.side_Menu
 
+def side_MenuWindow(Data, enabled):
+    if enabled == True:
+        Data.relative_center = Data.static_relative_center[1]
+
+    else:
+        Data.relative_center = Data.static_relative_center[0]
 '''
 Funció encarregada de calcular la proporció a la que tots
 els elements de la finestra s'hauran d'escalar mantenint 
@@ -70,7 +74,7 @@ def Keys_Behaviour(event, Data, text, menu):
 '''
 Funció que gestiona el comportament dels botons a pantalla.
 '''
-def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
+def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
     if event.type == pygame.MOUSEBUTTONDOWN:
         for a in taulell.buttons:
             if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
@@ -132,6 +136,23 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
                     a.Update()
                     Data.catch_button = a
 
+                    if sideMenu.menus_active[0] == False:
+                        sideMenu.content.append(scripts.side_Menu.config_menu(sideMenu.screen, Data.proportion))
+                        sideMenu.menus_active[0] = True
+                    
+                    if Data.side_menu_on == False:
+                        Data.side_menu_on = True
+                        side_MenuWindow(Data, Data.side_menu_on)
+        
+        for a in sideMenu.buttons:
+            if a.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+                sideMenu.Switch(sideMenu.buttons.index(a))
+
+        for a in sideMenu.buttons_1:
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+                a.Update()
+                Data.catch_button = a
+
     elif event.type == pygame.MOUSEBUTTONUP:
         if Data.catch_button != None:
             Data.catch_button.Update()
@@ -140,6 +161,14 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces):
                 Data.reverse = (True if Data.reverse == False else False)
                 text.Reverse()
                 peces.draw(Data.reverse)
+
+            if Data.catch_button.id == 7:
+                    sideMenu.content.remove(sideMenu.content[sideMenu.content_shown])
+                    sideMenu.menus_active[sideMenu.content_shown] = False
+
+                    if len(sideMenu.content) == 0:
+                        Data.side_menu_on = False
+                        side_MenuWindow(Data, Data.side_menu_on)
 
             Data.catch_button = None
 

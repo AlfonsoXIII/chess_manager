@@ -11,6 +11,7 @@ import scripts.Text as Text
 import scripts.Menu as Menu
 import scripts.Board as Board
 import scripts.Pieces as Pieces
+import scripts.side_Menu as side_Menu
 import window_behaviour
 
 def Main(): #Funció principal del programa
@@ -33,9 +34,13 @@ def Main(): #Funció principal del programa
     pygame.display.set_caption("Chess Manager")
     pygame.display.set_icon(icon)
     window.fill((243,239,239))
+    
+    #Creació de les diverses superfícies de treball
+    BoardDisplay = pygame.Surface((window_width, window_height)).convert_alpha()
+    BoardDisplay.fill((0,0,0,0))
 
-    BoardDisplay = pygame.Surface((window_width, window_height))
-    BoardDisplay.fill(((243,239,239)))
+    sideMenuDisplay = pygame.Surface((window_width, window_height+100)).convert_alpha()
+    sideMenuDisplay.fill((0,0,0,0))
 
     MenuDisplay = pygame.Surface((window_width, window_height)).convert_alpha()
     MenuDisplay.fill((0,0,0,0))
@@ -43,19 +48,21 @@ def Main(): #Funció principal del programa
     #Informació per a la construcció del taulell & finestra
     Data = variables.Data() #Classe externa amb totes les variables principals
     Data.proportion = window_behaviour.Proportion((window_width,window_height), (700, 525))
-    Data.center_x = ((window_width)-(700*Data.proportion))/2
+    Data.text_relative_center = [((window_width)-(700*Data.proportion))/2, (((window_width)-(700*Data.proportion))/2)/2]
     Data.menu_pos_y = int(-75*Data.proportion)
     Data.board_pos_y = int(-49*Data.proportion)
-    Data.relative_center = Data.center_x/2
+    Data.static_relative_center = [Data.text_relative_center[0]/2, Data.text_relative_center[0]]
+    Data.relative_center = Data.text_relative_center[0]/2
+
     size = int(40*Data.proportion)
     boardLength = 8
 
     #Creació de l'objecte Taulell per a la finestra i primer dibuixat
     text = Text.Text(BoardDisplay, 
                     Data.proportion,
-                    Data.center_x)
+                    Data.text_relative_center)
     text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
-    text.draw(Data.jugada, Data.text_data, 1)
+    text.draw(Data.jugada, Data.text_data, 1, Data.text_relative_center[0])
 
     #Creació de l'objecte Menu per a la finestra i primer dibuixat
     menu = Menu.Menu(MenuDisplay, 
@@ -84,6 +91,12 @@ def Main(): #Funció principal del programa
                         text.board_list, 
                         Data.proportion)
     peces.draw(pygame.display.get_surface().get_size())
+
+    menu_lateral= side_Menu.side_Menu(sideMenuDisplay)
+    #menu_lateral.Add(side_Menu.config_menu(sideMenuDisplay, Data.proportion))
+    #menu_lateral.Add(side_Menu.test_menu(sideMenuDisplay, Data.proportion))
+    menu_lateral.Build()
+    menu_lateral.Draw(Data.side_menu_on)
 
     clock = pygame.time.Clock()
     
@@ -115,26 +128,28 @@ def Main(): #Funció principal del programa
                         taulell.selected = ()
                         Data.pressed = False
                         Data.castling = ()
-                    
-                window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces)
+                
+                window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces, menu_lateral)
                 window_behaviour.Keys_Behaviour(event, Data, text, menu)
 
         peces.position = text.board_list[Data.jugada]
         taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
-        #print(taulell.check_pos)
         
         window.fill((243,239,239))
-        BoardDisplay.fill((243,239,239))
+        sideMenuDisplay.fill((0,0,0,0))
+        BoardDisplay.fill((243,239,239)) #(243,239,239)
         MenuDisplay.fill((0,0,0,0))
 
         #Redibuixat del contingut de la finestra
         taulell.draw(Data.white_t, Data.reverse)
         peces.Update()
-        text.draw(Data.jugada, Data.text_data, clock.get_fps())
+        text.draw(Data.jugada, Data.text_data, clock.get_fps(), (Data.text_relative_center[0] if Data.side_menu_on == False else Data.text_relative_center[1]))
         menu.draw()
         window_behaviour.Animation(Data, menu)
+        menu_lateral.Draw(Data.side_menu_on)
 
         window.blit(BoardDisplay, (Data.relative_center, Data.board_pos_y))
+        window.blit(sideMenuDisplay, (0, Data.board_pos_y))
         window.blit(MenuDisplay, (0, Data.menu_pos_y))
         pygame.display.update() #Actualització de la finestra
 

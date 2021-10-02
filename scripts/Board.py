@@ -1,5 +1,4 @@
 #Llibreries importades
-from scripts.variables import Data
 import pygame
 
 #Scripts importats
@@ -91,7 +90,6 @@ class Board():
             pygame.draw.rect(self.screen, (200, 200, 200), [int(30*self.proportion)+self.b_size*self.selected[0], int(120*self.proportion)+self.b_size*self.selected[1], self.b_size, self.b_size])
         
         #Coloració a la casella del rei que hagi rebut un escac, en cas de que hi hagi
-        #print(self.check_pos)
         if len(self.check_pos) != 0:
             local_checkpos = (self.check_pos if fliped == False else (7-self.check_pos[0], 7-self.check_pos[1]))
             pygame.draw.rect(self.screen, (240,128,128), [int(30*self.proportion)+self.b_size*local_checkpos[0], int(120*self.proportion)+self.b_size*local_checkpos[1], self.b_size, self.b_size])
