@@ -12,14 +12,46 @@ class config_menu():
         self.proportion = proportion
 
         self.ico = "images/icos/conig.png"
+        self.buttons = pygame.sprite.Group()
+    
+    def Build(self):
+        btn_1 = pieces.Button("images/select_button.bmp", 
+                            (0, 0, 307, 302), 
+                            (0, 302, 307, 604), 
+                            (25, 25), 
+                            8)
+        btn_1.rect.center = (150, 265)
+
+        btn_2 = pieces.Button("images/select_button.bmp", 
+                            (0, 0, 307, 302), 
+                            (0, 302, 307, 604), 
+                            (25, 25), 
+                            8)
+        btn_2.rect.center = (150, 295)
+
+        btn_3 = pieces.Button("images/select_button.bmp", 
+                            (0, 0, 307, 302), 
+                            (0, 302, 307, 604), 
+                            (25, 25), 
+                            8)
+        btn_3.rect.center = (150, 325)
+
+        self.buttons.add(btn_1)
+        self.buttons.add(btn_2)
+        self.buttons.add(btn_3)
     
     def draw(self):
-        arial_big = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(25*self.proportion))
+        arial_big = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(25*self.proportion))
         arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(15*self.proportion))
 
-        self.screen.blit(arial_big.render("Config", True, (255, 255, 255)),(10, 180))
+        self.screen.blit(arial_big.render("CONFIG.", True, (255, 255, 255)),(10, 180))
         self.screen.blit(arial.render("Animacions:", True, (255, 255, 255)),(10, 250))
-        self.screen.blit(arial.render("Animacions:", True, (255, 255, 255)),(10, 280))
+        self.screen.blit(arial.render("Notació:", True, (255, 255, 255)),(10, 280))
+        self.screen.blit(arial.render("Audio:", True, (255, 255, 255)),(10, 310))
+
+        self.screen.blit(arial.render("Idioma:", True, (255, 255, 255)),(10, 380))
+
+        self.buttons.draw(self.screen)
 
 class test_menu():
     def __init__(self, screen, proportion):

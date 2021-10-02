@@ -138,6 +138,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
 
                     if sideMenu.menus_active[0] == False:
                         sideMenu.content.append(scripts.side_Menu.config_menu(sideMenu.screen, Data.proportion))
+                        sideMenu.content[-1].Build()
                         sideMenu.menus_active[0] = True
                     
                     if Data.side_menu_on == False:
@@ -152,6 +153,11 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
             if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
                 a.Update()
                 Data.catch_button = a
+        
+        for a in sideMenu.content:
+            for b in a.buttons:
+                if b.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+                    b.Update()
 
     elif event.type == pygame.MOUSEBUTTONUP:
         if Data.catch_button != None:
