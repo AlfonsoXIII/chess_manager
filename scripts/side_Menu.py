@@ -12,6 +12,7 @@ class config_menu():
         self.proportion = proportion
 
         self.ico = "images/icos/conig.png"
+        self.id = "Config"
         self.buttons = pygame.sprite.Group()
     
     def Build(self):
@@ -53,6 +54,52 @@ class config_menu():
 
         self.buttons.draw(self.screen)
 
+class promotion_menu():
+    def __init__(self, screen, proportion):
+        self.screen = screen
+        self.proportion = proportion
+
+        self.ico = "images/icos/conig.png"
+        self.id = "Promotion"
+        self.buttons = pygame.sprite.Group()
+
+        self.catch_piece = None
+        self.pos = [0, 0]
+
+    def Build(self):
+        pawn = pieces.Render_Image("images/2DBoardPieces/0/p.bmp", (60, 60), "P")
+        pawn.rect.x = 30
+        pawn.rect.y = 200
+        self.buttons.add(pawn)
+
+        pawn = pieces.Render_Image("images/2DBoardPieces/0/p.bmp", (60, 60), "P")
+        pawn.rect.x = 90
+        pawn.rect.y = 200
+        self.buttons.add(pawn)
+
+        bishop = pieces.Render_Image("images/2DBoardPieces/0/B.bmp", (60, 60), "B")
+        bishop.rect.x = 30
+        bishop.rect.y = 260
+        self.buttons.add(bishop)
+
+        knight = pieces.Render_Image("images/2DBoardPieces/0/N.bmp", (60, 60), "N")
+        knight.rect.x = 90
+        knight.rect.y = 260
+        self.buttons.add(knight)
+
+        queen = pieces.Render_Image("images/2DBoardPieces/0/Q.bmp", (60, 60), "Q")
+        queen.rect.x = 30
+        queen.rect.y = 320
+        self.buttons.add(queen)
+
+        rock = pieces.Render_Image("images/2DBoardPieces/0/R.bmp", (60, 60), "R")
+        rock.rect.x = 90
+        rock.rect.y = 320
+        self.buttons.add(rock)
+    
+    def draw(self):
+        self.buttons.draw(self.screen)
+
 class test_menu():
     def __init__(self, screen, proportion):
         self.screen = screen
@@ -70,7 +117,7 @@ class side_Menu(): #Classe del menú lateral
         self.content = []
         self.content_shown = 0
 
-        self.menus_active = [False, False]
+        self.menus_active = {"Config":False, "Promotion":False}
         
         self.buttons = []
         self.buttons_1 = pygame.sprite.Group()
@@ -87,13 +134,14 @@ class side_Menu(): #Classe del menú lateral
                                 (0, 146, 149, 292), 
                                 (0, 0, 149, 146),
                                 (30, 30),
-                                7)
+                                8)
         close.rect.center = (170, 150)
 
-        #self.buttons_1.add(apply)
+        self.buttons_1.add(apply)
         self.buttons_1.add(close)
     
     def Draw(self, activate):
+        self.buttons = []
         if activate == True:
             pygame.draw.rect(self.screen, (38, 50, 56), (0, 0, 200, 1000))
             self.buttons_1.draw(self.screen)

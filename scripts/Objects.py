@@ -505,6 +505,27 @@ class Menu(pygame.sprite.Sprite):
         self.im = 1 if self.im == 0 else 0
         self.image = self.status[self.im]
 
+class Render_Image(pygame.sprite.Sprite):
+    def __init__(self, image_path, image_size, k):
+        super().__init__() #Herència dels atributs de la classe Sprite de pygame
+        #Atributs de classe
+        self.status = [] #Llista per a recollir les dues imatges del botó (encés/apagat)
+        self.im = 0 #Posició (encés/apagat) del botó
+
+        image = Image.open(image_path) #Obrim l'imatge amb el mòdul PIL
+
+        #Selecció i escalatge de l'imatge 1
+        self.image1 = image.resize(image_size, resample=Image.BILINEAR, box=None)
+        self.image1 = pygame.image.fromstring(self.image1.tobytes(), self.image1.size, self.image1.mode)
+        self.status.append(self.image1)
+
+        self.image = self.image1 #Determinem la imatge en funció del seu estatus o posició
+        self.id = k #ID del botó
+        self.rect = self.image.get_rect() #Posició del collider del botó
+    
+    def Update(self):
+        pass
+
 #Classe per a la construcció d'un botó
 class Button(pygame.sprite.Sprite):
     def __init__(self, image_path, image1_crop, image2_crop, image_size, k):

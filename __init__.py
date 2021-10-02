@@ -61,7 +61,7 @@ def Main(): #Funció principal del programa
     text = Text.Text(BoardDisplay, 
                     Data.proportion,
                     Data.text_relative_center)
-    text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
+    text.board_list.append(chess_notations.FEN_decode("5k2/7P/8/8/8/8/8/1K6"))
     text.draw(Data.jugada, Data.text_data, 1, Data.text_relative_center[0])
 
     #Creació de l'objecte Menu per a la finestra i primer dibuixat
@@ -93,12 +93,12 @@ def Main(): #Funció principal del programa
     peces.draw(pygame.display.get_surface().get_size())
 
     menu_lateral= side_Menu.side_Menu(sideMenuDisplay)
-    #menu_lateral.Add(side_Menu.config_menu(sideMenuDisplay, Data.proportion))
-    #menu_lateral.Add(side_Menu.test_menu(sideMenuDisplay, Data.proportion))
     menu_lateral.Build()
     menu_lateral.Draw(Data.side_menu_on)
 
     clock = pygame.time.Clock()
+    #menu_lateral.Add(side_Menu.promotion_menu(sideMenuDisplay, Data.proportion))
+    #menu_lateral.content[-1].Build()
     
     while Data.end != True: #Bucle principal de la finestra
         clock.tick(60) #Limitació dels FPS a 60
@@ -114,15 +114,14 @@ def Main(): #Funció principal del programa
                 
                 #Event principal que captura quan l'usuari prem el mouse
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-
-                    if Data.pressed == False and Data.jugada == len(text.board_list)-1 and Data.check_mate == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
+                    if Data.pressed == False and Data.jugada == len(text.board_list)-1 and Data.check_mate == False and Data.freeze == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
                         #Se revisa que la selección corresponda a una pieza y se muestra en pantalla las opciones de movimiento, actualizando las variables de control.
                         x = window_behaviour.If_Board_Pressed(event, Data, peces, text, taulell)
 
                     elif Data.pressed == True: #S'executa en el cas de que prèviament s'hagi seleccionat una peça
                         #Es revisa si l'usuari ha seleccionat alguna casella del taulell
                         if (30*Data.proportion) <= event.pos[0]-Data.relative_center <= (350*Data.proportion) and (120*Data.proportion) <= event.pos[1]-Data.board_pos_y <= (440*Data.proportion): 
-                            window_behaviour.Move(x, event, Data, size, peces, text, taulell, chess_notations)
+                            window_behaviour.Move(x, event, Data, size, peces, text, taulell, menu_lateral)
 
                         peces.mp = []
                         taulell.selected = ()
@@ -142,7 +141,7 @@ def Main(): #Funció principal del programa
 
         #Redibuixat del contingut de la finestra
         taulell.draw(Data.white_t, Data.reverse)
-        peces.Update()
+        peces.Update(Data)
         text.draw(Data.jugada, Data.text_data, clock.get_fps(), (Data.text_relative_center[0] if Data.side_menu_on == False else Data.text_relative_center[1]))
         menu.draw()
         window_behaviour.Animation(Data, menu)

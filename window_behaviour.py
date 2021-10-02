@@ -1,9 +1,11 @@
 #Llibreries importades
+import copy
 import pygame
 from copy import deepcopy
 
 #Scripts importats
 import scripts.side_Menu
+import chess_notations
 
 def side_MenuWindow(Data, enabled):
     if enabled == True:
@@ -71,6 +73,59 @@ def Keys_Behaviour(event, Data, text, menu):
                 Data.jugada += 1
                 Data.white_t = False if Data.white_t == True else True
 
+def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
+    Data.white_t = (True if Data.white_t == False else False)
+    taulell.selected = ()
+    Data.pressed = False
+    text.board_list.append(deepcopy(text.board_list[-1]))
+    
+    (text.board_list[-1])[pos[0]][pos[1]] = (piece if (text.board_list[-1])[pos_or[0]][pos_or[1]].isupper() else piece.lower())
+    (text.board_list[-1])[pos_or[0]][pos_or[1]] = ""
+
+    peces.position = text.board_list[-1]
+    peces.draw(Data.reverse)
+
+    check = False
+    temp = []
+
+    for a in peces.c_g:
+        if a.id == "K" and a.colour == (0 if Data.white_t == True else 1):
+            if a.Check(text.board_list[-1], a.pos) == False:
+                can_move = False
+                for b in peces.c_g:
+                    if b.colour == (0 if Data.white_t == True else 1):
+                        if b.id == "K": movimientos = b.Movement(peces.position)
+                        else:   movimientos = b.Movement(peces.position)
+                        
+                        for c in movimientos:
+                            temp_board = deepcopy(text.board_list[-1])
+                            temp_board[c[0]][c[1]] = temp_board[b.pos[0]][b.pos[1]]
+                            temp_board[b.pos[0]][b.pos[1]] = ""
+
+                            if a.Check(temp_board, (c if b.id == "K" else a.pos)):
+                                can_move = True
+                                break                                                
+                
+                if can_move == False:
+                    Data.check_mate = True
+
+                else:
+                    temp = (a.pos[1], a.pos[0])
+                    check = True   
+                                                        
+    Data.text_data.append((chess_notations.algebraic_de(peces.position[pos[0]][pos[1]], 
+                                                        (pos if Data.reverse == False else (7-pos[0], 7-pos[1])),
+                                                        False,
+                                                        (pos_or if Data.reverse == False else (7-pos_or[0], 7-pos_or[1])),
+                                                        (str("{} ").format((str(int(Data.jugada/2)+1)+".") if Data.jugada%2 == 0 else "")),
+                                                        check,
+                                                        Data.check_mate,
+                                                        (False, False)), temp))
+
+    Data.jugada += 1                          
+    peces.mp = []
+
+    Data.freeze = False
 '''
 Funció que gestiona el comportament dels botons a pantalla.
 '''
@@ -136,10 +191,10 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                     a.Update()
                     Data.catch_button = a
 
-                    if sideMenu.menus_active[0] == False:
+                    if sideMenu.menus_active["Config"] == False:
                         sideMenu.content.append(scripts.side_Menu.config_menu(sideMenu.screen, Data.proportion))
                         sideMenu.content[-1].Build()
-                        sideMenu.menus_active[0] = True
+                        sideMenu.menus_active["Config"] = True
                     
                     if Data.side_menu_on == False:
                         Data.side_menu_on = True
@@ -157,7 +212,9 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
         for a in sideMenu.content:
             for b in a.buttons:
                 if b.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
-                    b.Update()
+                    if a.id == "Promotion":
+                        a.catch_piece = b
+                        b.Update()
 
     elif event.type == pygame.MOUSEBUTTONUP:
         if Data.catch_button != None:
@@ -169,12 +226,37 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 peces.draw(Data.reverse)
 
             if Data.catch_button.id == 7:
+                    if (sideMenu.content[sideMenu.content_shown]).id == "Promotion":
+                        promotion_Move(Data, 
+                                        peces, 
+                                        text, 
+                                        taulell, 
+                                        sideMenu, 
+                                        ((sideMenu.content[sideMenu.content_shown]).catch_piece).id, 
+                                        (sideMenu.content[sideMenu.content_shown]).pos, 
+                                        (sideMenu.content[sideMenu.content_shown]).pos_or)
+                    
+                    sideMenu.menus_active[sideMenu.content[sideMenu.content_shown].id] = False
                     sideMenu.content.remove(sideMenu.content[sideMenu.content_shown])
-                    sideMenu.menus_active[sideMenu.content_shown] = False
 
                     if len(sideMenu.content) == 0:
                         Data.side_menu_on = False
                         side_MenuWindow(Data, Data.side_menu_on)
+                    
+                    else:
+                        sideMenu.content_shown -= 1
+            
+            if Data.catch_button.id == 8:
+                Data.freeze = False
+                sideMenu.menus_active[sideMenu.content[sideMenu.content_shown].id] = False
+                sideMenu.content.remove(sideMenu.content[sideMenu.content_shown])
+
+                if len(sideMenu.content) == 0:
+                    Data.side_menu_on = False
+                    side_MenuWindow(Data, Data.side_menu_on)
+                
+                else:
+                    sideMenu.content_shown -= 1
 
             Data.catch_button = None
 
@@ -182,17 +264,31 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
 Funció que implementa els canvis en pantalla per a les peces en accionar 
 una d'elles.
 '''
-def Move(x, event, Data, size, peces, text, taulell, chess_notations):
+def Move(x, event, Data, size, peces, text, taulell, sideMenu):
     target = ([a for a in range(1, 9) if (size*a)+int(120*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
             [a for a in range(1, 9) if (size*a)+int(30*Data.proportion)+Data.relative_center > event.pos[0]][0]-1)
-    #print(target)
+
     if x.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
         peces.mp = []
         taulell.selected = ()
         Data.pressed = False
+    
+    elif x.id == "P" and (target[0] == 7 or target[0] == 0):
+        sideMenu.Add(scripts.side_Menu.promotion_menu(sideMenu.screen, Data.proportion))
+        sideMenu.content[-1].Build()
+        sideMenu.content[-1].pos = target
+        sideMenu.content[-1].pos_or = x.pos
+        sideMenu.menus_active["Promotion"] = True
+        Data.freeze = True
+        
+        if Data.side_menu_on == False:
+            Data.side_menu_on = True
+            side_MenuWindow(Data, Data.side_menu_on)
+
 
     elif target in peces.mp:
-        compr = True if peces.position[target[0]][target[1]] != "" else False
+        #if x.id != "P" or (target[0] != 7 and target[0] != 0):
+        compr = (True if peces.position[target[0]][target[1]] != "" else False)
         Data.white_t = (True if Data.white_t == False else False)
         taulell.selected = ()
         Data.pressed = False
@@ -257,7 +353,7 @@ def Move(x, event, Data, size, peces, text, taulell, chess_notations):
 
                     else:
                         temp = (a.pos[1], a.pos[0])
-                        check = True   
+                        check = True 
                                                             
         Data.text_data.append((chess_notations.algebraic_de(peces.position[target[0]][target[1]], 
                                                             (target if Data.reverse == False else (7-target[0], 7-target[1])),
