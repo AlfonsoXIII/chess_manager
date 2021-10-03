@@ -411,7 +411,7 @@ class King(pygame.sprite.Sprite):
         local_castling = (False, False)
         k = (1 if self.fliped == False else -1)
 
-        if h_moved == False:
+        if h_moved == False and 0 <= self.pos[1]+(2*k) <= 7:
             f_board_1 = deepcopy(board)
             f_board_1[self.pos[0]][self.pos[1]+(1*k)] = "K" if self.colour == 0 else "k"
             f_board_1[self.pos[0]][self.pos[1]] = ""
@@ -421,16 +421,15 @@ class King(pygame.sprite.Sprite):
             f_board_2[self.pos[0]][self.pos[1]] = ""
 
             if (board[self.pos[0]][self.pos[1]+(1*k)] == "" and King.Check(self, f_board_1, (self.pos[0], self.pos[1]+(1*k)))) and (board[self.pos[0]][self.pos[1]+(2*k)] == "" and King.Check(self, f_board_2, (self.pos[0], self.pos[1]+(2*k)))) and board[self.pos[0]][self.pos[1]+(3*k)] == ("R" if board[self.pos[0]][self.pos[1]].isupper() else "r"):
-                print("ww")
                 local_castling = (True, local_castling[1])
         
-        if h_moved == False:
+        if h_moved == False and 0 <= self.pos[1]+(-3*k) <= 7:
             f_board = deepcopy(board)
             f_board[self.pos[0]][self.pos[1]-1*k] = "K" if self.colour == 0 else "k"
             f_board[self.pos[0]][self.pos[1]] = ""
 
             f_board_1 = deepcopy(board)
-            f_board_1[self.pos[0]][self.pos[1]-2*k] = "K" if self.colour == 0 else "k"
+            f_board_1[self.pos[0]][self.pos[1]-2*k] = ("K" if self.colour == 0 else "k")
             f_board_1[self.pos[0]][self.pos[1]] = ""
 
             f_board_2 = deepcopy(board)
@@ -440,7 +439,6 @@ class King(pygame.sprite.Sprite):
             if (board[self.pos[0]][self.pos[1]-1*k] == "" and King.Check(self, f_board, (self.pos[0], self.pos[1]-1*k))) and (board[self.pos[0]][self.pos[1]-2*k] == "" and King.Check(self, f_board_1, (self.pos[0], self.pos[1]-2*k))) and (board[self.pos[0]][self.pos[1]-3*k] == "" and King.Check(self, f_board_2, (self.pos[0], self.pos[1]-3*k))) and board[self.pos[0]][self.pos[1]-4*k] == ("R" if board[self.pos[0]][self.pos[1]].isupper() else "r"):
                 local_castling = (local_castling[0], True)
 
-        print(h_moved)
         return local_castling
 
     def Movement(self, board): #Función que retorna las casillas disponibles para el movimiento de la pieza

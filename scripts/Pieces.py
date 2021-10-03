@@ -4,7 +4,6 @@ from pygame import surface
 
 #Scripts importats
 import scripts.Objects as pieces
-from scripts.side_Menu import test_menu
 
 #Classe que compren i gestiona totes les peces del taulell
 class Pieces():
@@ -29,10 +28,10 @@ class Pieces():
             for z in range(0 ,8):
                 if (i, z) in self.mp:
                     if self.position[i][z] == "":
-                        pygame.draw.circle(self.screen, (97,97,97), (int(30*self.proportion)+self.b_size*(z)+(20*self.proportion), int(120*self.proportion)+self.b_size*(i)+(20*self.proportion)), 5)
+                        pygame.draw.circle(self.screen, (97,97,97), (int(40.457*self.proportion)+self.b_size*(z)+(26.97*self.proportion), int(161.83*self.proportion)+self.b_size*(i)+(26.97*self.proportion)), 5)
 
                     else:
-                        pygame.draw.rect(self.screen, (97,97,97),[int(30*self.proportion)+self.b_size*(z), int(120*self.proportion)+self.b_size*(i), (40*self.proportion), (40*self.proportion)], 2, border_radius = 10)
+                        pygame.draw.rect(self.screen, (97,97,97),[int(40.457*self.proportion)+self.b_size*(z), int(161.83*self.proportion)+self.b_size*(i), (53.94*self.proportion), (53.94*self.proportion)], 2, border_radius = 10)
 
             self.c_g.draw(self.screen) #Dibuixat en pantalla de totes les peces
 
@@ -46,14 +45,14 @@ class Pieces():
             for z in range(0 ,8):
                 #Determinació de l'atribut color de les peces
                 cl = 0 if self.position[z][i].isupper() else 1
-                size = (int(33*self.proportion), int(33*self.proportion))
+                size = (int(44.5*self.proportion), int(44.5*self.proportion))
 
                 #Creació de la peça Peó
                 if self.position[z][i].capitalize() == "P":
                     pawn = pieces.Pawn(cl, (z, i), reverse, size)
 
-                    pawn.rect.center = ((30*self.proportion)+self.b_size*(i)+(20*self.proportion),
-                                        (120*self.proportion)+self.b_size*(z)+(20*self.proportion))
+                    pawn.rect.center = ((40.457*self.proportion)+self.b_size*(i)+(26.97*self.proportion),
+                                        (161.83*self.proportion)+self.b_size*(z)+(26.97*self.proportion))
 
                     self.c_g.add(pawn)
                 
@@ -61,8 +60,8 @@ class Pieces():
                 elif self.position[z][i].capitalize() == "K":
                     king = pieces.King(cl, (z, i), reverse, size)
 
-                    king.rect.center = ((30*self.proportion)+self.b_size*(i)+(20*self.proportion),
-                                        (120*self.proportion)+self.b_size*(z)+(20*self.proportion))
+                    king.rect.center = ((40.457*self.proportion)+self.b_size*(i)+(26.97*self.proportion),
+                                        (161.83*self.proportion)+self.b_size*(z)+(26.97*self.proportion))
 
                     self.c_g.add(king)
                 
@@ -70,8 +69,8 @@ class Pieces():
                 elif self.position[z][i].capitalize() == "Q":
                     queen = pieces.Queen(cl, (z, i), size)
 
-                    queen.rect.center = ((30*self.proportion)+self.b_size*(i)+(20*self.proportion),
-                                        (120*self.proportion)+self.b_size*(z)+(20*self.proportion))
+                    queen.rect.center = ((40.457*self.proportion)+self.b_size*(i)+(26.97*self.proportion),
+                                        (161.83*self.proportion)+self.b_size*(z)+(26.97*self.proportion))
 
                     self.c_g.add(queen)
                 
@@ -79,8 +78,8 @@ class Pieces():
                 elif self.position[z][i].capitalize() == "B":
                     bishop = pieces.Bishop(cl, (z, i), size)
 
-                    bishop.rect.center = ((30*self.proportion)+self.b_size*(i)+(20*self.proportion),
-                                        (120*self.proportion)+self.b_size*(z)+(20*self.proportion))
+                    bishop.rect.center = ((40.457*self.proportion)+self.b_size*(i)+(26.97*self.proportion),
+                                        (161.83*self.proportion)+self.b_size*(z)+(26.97*self.proportion))
 
                     self.c_g.add(bishop)
                 
@@ -88,8 +87,8 @@ class Pieces():
                 elif self.position[z][i].capitalize() == "N":
                     knight = pieces.Knight(cl, (z, i), size)
 
-                    knight.rect.center = ((30*self.proportion)+self.b_size*(i)+(20*self.proportion),
-                                        (120*self.proportion)+self.b_size*(z)+(20*self.proportion))
+                    knight.rect.center = ((40.457*self.proportion)+self.b_size*(i)+(26.97*self.proportion),
+                                        (161.83*self.proportion)+self.b_size*(z)+(26.97*self.proportion))
 
                     self.c_g.add(knight)
                 
@@ -97,8 +96,8 @@ class Pieces():
                 elif self.position[z][i].capitalize() == "R":
                     rock = pieces.Rock(cl, (z, i), size)
 
-                    rock.rect.center = ((30*self.proportion)+self.b_size*(i)+(20*self.proportion),
-                                        (120*self.proportion)+self.b_size*(z)+(20*self.proportion))
+                    rock.rect.center = ((40.457*self.proportion)+self.b_size*(i)+(26.97*self.proportion),
+                                        (161.83*self.proportion)+self.b_size*(z)+(26.97*self.proportion))
 
                     self.c_g.add(rock)
 

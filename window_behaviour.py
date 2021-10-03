@@ -1,7 +1,9 @@
 #Llibreries importades
-import copy
 import pygame
 from copy import deepcopy
+import webbrowser
+import os
+import easygui
 
 #Scripts importats
 import scripts.side_Menu
@@ -33,7 +35,7 @@ activar el menú o desactivar-lo.
 def Animation(Data, menu):
     if Data.menu_open == True:
         if Data.menu_counter[0] != 20: 
-            Data.menu_pos_y += int(3.75*Data.proportion)
+            Data.menu_pos_y += int(5.057*Data.proportion)
             Data.menu_counter[0] += 1
 
             for a in menu.buttons:
@@ -41,12 +43,12 @@ def Animation(Data, menu):
                     a.Update(1)
 
         if Data.menu_counter[1] != 18: 
-            Data.board_pos_y += int(3.75*Data.proportion)
+            Data.board_pos_y += int(5.057*Data.proportion)
             Data.menu_counter[1] += 1
 
     else:
         if Data.menu_counter[0] != 0:
-            Data.menu_pos_y -= int(3.75*Data.proportion)
+            Data.menu_pos_y -= int(5.057*Data.proportion)
             Data.menu_counter[0] -= 1
 
             for a in menu.buttons:
@@ -54,7 +56,7 @@ def Animation(Data, menu):
                     a.Update(-1)
 
         if Data.menu_counter[1] != 4: 
-            Data.board_pos_y -= int(3.75*Data.proportion)
+            Data.board_pos_y -= int(5.057*Data.proportion)
             Data.menu_counter[1] -= 1
 
 '''
@@ -198,7 +200,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                     if Data.side_menu_on == False:
                         Data.side_menu_on = True
                         side_MenuWindow(Data, Data.side_menu_on)
-                
+
                 elif a.id == 9 or a.id == 10 or a.id == 11 or a.id == 12 or a.id == 13 or a.id == 14:
                     a.Update()
                     Data.catch_button = a
@@ -234,7 +236,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 text.Reverse()
                 peces.draw(Data.reverse)
 
-            if Data.catch_button.id == 7:
+            elif Data.catch_button.id == 7:
                     if (sideMenu.content[sideMenu.content_shown]).id == "Promotion" and (sideMenu.content[sideMenu.content_shown]).catch_piece != None:
                         promotion_Move(Data, 
                                         peces, 
@@ -257,7 +259,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                     else:
                         sideMenu.content_shown -= 1
             
-            if Data.catch_button.id == 8:
+            elif Data.catch_button.id == 8:
                 Data.freeze = False
                 sideMenu.menus_active[sideMenu.content[sideMenu.content_shown].id] = False
                 sideMenu.content.remove(sideMenu.content[sideMenu.content_shown])
@@ -268,6 +270,63 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 
                 else:
                     sideMenu.content_shown -= 1
+            
+            elif Data.catch_button.id == 9:
+                path = easygui.filesavebox(msg = "EMMAGATZEMAR POSICIÓ",
+                                            title = "Cercador",
+                                            default= "*.ccmm")
+                
+                if path != None:
+                    chess_notations.generate_file(Data, text.board_list, Data.text_data, path)
+            
+            elif Data.catch_button.id == 10:
+                path = easygui.fileopenbox(msg = "OBRIR POSICIÓ",
+                                            title = "Cercador",
+                                            default= "*.ccmm",
+                                            filetypes = ["*.ccmm"],
+                                            multiple = False)
+
+                if path != None:
+                    data = chess_notations.charge_file(path)
+
+                    text.board_list = data[1]
+                    Data.jugada = int(data[2][2])
+                    Data.pressed = False
+                    Data.white_t = (True if data[2][0] == "True" else False)
+                    Data.reverse = (True if data[2][1] == "True" else False)
+                    Data.check = (True if data[2][3] == "True" else False)
+                    Data.check_mate = (True if data[2][4] == "True" else False)
+                    Data.wk_moved = (True if data[2][5] == "True" else False)
+                    Data.bk_moved = (True if data[2][6] == "True" else False)
+                    Data.castling = []
+                    Data.text_data = data[0]
+                    
+                    peces.position = text.board_list[Data.jugada]
+                    peces.draw(Data.reverse)
+
+            elif Data.catch_button.id == 11:
+                text.board_list = []
+                text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
+                Data.jugada = 0
+                Data.pressed = False
+                Data.white_t = True
+                Data.reverse = False
+                Data.check = False
+                Data.check_mate = False
+                Data.wk_moved = False
+                Data.bk_moved = False
+                Data.castling = []
+                Data.text_data = []
+                
+                peces.position = text.board_list[Data.jugada]
+                peces.draw(Data.reverse)
+            
+            elif Data.catch_button.id == 13:
+                path = os.path.abspath(os.path.dirname(__file__))
+                os.system(f'start {os.path.realpath(path)}')
+
+            elif Data.catch_button.id == 14:
+                webbrowser.open('https://github.com/AlfonsoXIII/chess_manager')
 
             Data.catch_button = None
 
@@ -276,8 +335,8 @@ Funció que implementa els canvis en pantalla per a les peces en accionar
 una d'elles.
 '''
 def Move(x, event, Data, size, peces, text, taulell, sideMenu):
-    target = ([a for a in range(1, 9) if (size*a)+int(120*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
-            [a for a in range(1, 9) if (size*a)+int(30*Data.proportion)+Data.relative_center > event.pos[0]][0]-1)
+    target = ([a for a in range(1, 9) if (size*a)+int(161.828*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
+            [a for a in range(1, 9) if (size*a)+int(40.457*Data.proportion)+Data.relative_center > event.pos[0]][0]-1)
 
     if x.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
         peces.mp = []
@@ -373,7 +432,7 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu):
                                                             (str("{} ").format((str(int(Data.jugada/2)+1)+".") if Data.jugada%2 == 0 else "")),
                                                             check,
                                                             Data.check_mate,
-                                                            local_castling), temp))
+                                                            local_castling), (temp if Data.reverse == False or temp == [] else (7-temp[0], 7-temp[1]))))
 
         Data.jugada += 1                          
         peces.mp = []

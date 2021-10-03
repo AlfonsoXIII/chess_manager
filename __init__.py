@@ -47,14 +47,14 @@ def Main(): #Funció principal del programa
 
     #Informació per a la construcció del taulell & finestra
     Data = variables.Data() #Classe externa amb totes les variables principals
-    Data.proportion = window_behaviour.Proportion((window_width,window_height), (700, 525))
-    Data.text_relative_center = [((window_width)-(700*Data.proportion))/2, (((window_width)-(700*Data.proportion))/2)/2]
-    Data.menu_pos_y = int(-75*Data.proportion)
-    Data.board_pos_y = int(-49*Data.proportion)
+    Data.proportion = window_behaviour.Proportion((window_width,window_height), (1360, 708))
+    Data.text_relative_center = [((window_width)-(943.99*Data.proportion))/2, (((window_width)-(943.99*Data.proportion))/2)/2]
+    Data.menu_pos_y = int(-101.14*Data.proportion)
+    Data.board_pos_y = int(-66.08*Data.proportion)
     Data.static_relative_center = [Data.text_relative_center[0]/2, Data.text_relative_center[0]]
     Data.relative_center = Data.text_relative_center[0]/2
 
-    size = int(40*Data.proportion)
+    size = int(53.94*Data.proportion)
     boardLength = 8
 
     #Creació de l'objecte Taulell per a la finestra i primer dibuixat
@@ -92,7 +92,7 @@ def Main(): #Funció principal del programa
                         Data.proportion)
     peces.draw(Data.reverse)
 
-    menu_lateral= side_Menu.side_Menu(sideMenuDisplay)
+    menu_lateral= side_Menu.side_Menu(sideMenuDisplay, Data.proportion)
     menu_lateral.Build()
     menu_lateral.Draw(Data.side_menu_on)
 
@@ -118,7 +118,7 @@ def Main(): #Funció principal del programa
 
                     elif Data.pressed == True: #S'executa en el cas de que prèviament s'hagi seleccionat una peça
                         #Es revisa si l'usuari ha seleccionat alguna casella del taulell
-                        if (30*Data.proportion) <= event.pos[0]-Data.relative_center <= (350*Data.proportion) and (120*Data.proportion) <= event.pos[1]-Data.board_pos_y <= (440*Data.proportion): 
+                        if (40.457*Data.proportion) <= event.pos[0]-Data.relative_center <= (471.99*Data.proportion) and (161.828*Data.proportion) <= event.pos[1]-Data.board_pos_y <= (593.371*Data.proportion): 
                             window_behaviour.Move(x, event, Data, size, peces, text, taulell, menu_lateral)
 
                         peces.mp = []
@@ -131,7 +131,7 @@ def Main(): #Funció principal del programa
 
         peces.position = text.board_list[Data.jugada]
         taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
-        
+
         window.fill((243,239,239))
         sideMenuDisplay.fill((0,0,0,0))
         BoardDisplay.fill((243,239,239)) #(243,239,239)
