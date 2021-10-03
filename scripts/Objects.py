@@ -365,14 +365,15 @@ class King(pygame.sprite.Sprite):
 
                 if 0 <= temp_vect[0] <= 7 and 0 <= temp_vect[1] <= 7 and (board[temp_vect[0]][temp_vect[1]].isupper() != board[pos[0]][pos[1]].isupper() or board[temp_vect[0]][temp_vect[1]] == ""):                    
                     if board[temp_vect[0]][temp_vect[1]] == ("p" if local_id.isupper() else "P"):
-                        if x == 1 and board[temp_vect[0]+(modificadores_lineales[y])[0]][temp_vect[1]+(modificadores_lineales[y])[1]] == ("n" if local_id.isupper() else "N"):
-                            agressiveKnight += 1
-                            temp_vectorlist_2.remove(modificadores_lineales[y])
-                            break
+                        if x == 1 and 0 <= temp_vect[0]+(modificadores_lineales[y])[0] <= 7 and 0 <= temp_vect[1]+(modificadores_lineales[y])[1] <= 7:
+                            if board[temp_vect[0]+(modificadores_lineales[y])[0]][temp_vect[1]+(modificadores_lineales[y])[1]] == ("n" if local_id.isupper() else "N"):
+                                agressiveKnight += 1
+                                temp_vectorlist_2.remove(modificadores_lineales[y])
+                                break
 
-                        else:
-                            temp_vectorlist_2.remove(modificadores_lineales[y])
-                            break
+                            else:
+                                temp_vectorlist_2.remove(modificadores_lineales[y])
+                                break
                     
                     if (x != 0 and x <= 2) and board[temp_vect[0]][temp_vect[1]] == ("n" if local_id.isupper() else "N"):
                         agressiveKnight += 1
@@ -408,7 +409,7 @@ class King(pygame.sprite.Sprite):
     
     def Castling(self, board, h_moved):
         local_castling = (False, False)
-        k = 1 if self.fliped == 0 else -1
+        k = (1 if self.fliped == False else -1)
 
         if h_moved == False:
             f_board_1 = deepcopy(board)
@@ -420,6 +421,7 @@ class King(pygame.sprite.Sprite):
             f_board_2[self.pos[0]][self.pos[1]] = ""
 
             if (board[self.pos[0]][self.pos[1]+(1*k)] == "" and King.Check(self, f_board_1, (self.pos[0], self.pos[1]+(1*k)))) and (board[self.pos[0]][self.pos[1]+(2*k)] == "" and King.Check(self, f_board_2, (self.pos[0], self.pos[1]+(2*k)))) and board[self.pos[0]][self.pos[1]+(3*k)] == ("R" if board[self.pos[0]][self.pos[1]].isupper() else "r"):
+                print("ww")
                 local_castling = (True, local_castling[1])
         
         if h_moved == False:
@@ -438,6 +440,7 @@ class King(pygame.sprite.Sprite):
             if (board[self.pos[0]][self.pos[1]-1*k] == "" and King.Check(self, f_board, (self.pos[0], self.pos[1]-1*k))) and (board[self.pos[0]][self.pos[1]-2*k] == "" and King.Check(self, f_board_1, (self.pos[0], self.pos[1]-2*k))) and (board[self.pos[0]][self.pos[1]-3*k] == "" and King.Check(self, f_board_2, (self.pos[0], self.pos[1]-3*k))) and board[self.pos[0]][self.pos[1]-4*k] == ("R" if board[self.pos[0]][self.pos[1]].isupper() else "r"):
                 local_castling = (local_castling[0], True)
 
+        print(h_moved)
         return local_castling
 
     def Movement(self, board): #Función que retorna las casillas disponibles para el movimiento de la pieza
@@ -522,9 +525,6 @@ class Render_Image(pygame.sprite.Sprite):
         self.image = self.image1 #Determinem la imatge en funció del seu estatus o posició
         self.id = k #ID del botó
         self.rect = self.image.get_rect() #Posició del collider del botó
-    
-    def Update(self):
-        pass
 
 #Classe per a la construcció d'un botó
 class Button(pygame.sprite.Sprite):

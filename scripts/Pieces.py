@@ -23,47 +23,7 @@ class Pieces():
         
         self.Promotion_Window = False
     
-    def Promotion(self, event):
-        surface = pygame.Surface((180, 120))
-        surface.fill((255, 255, 255))
-
-        temp = pygame.sprite.Group()
-
-        pawn = pieces.Render_Image("images/2DBoardPieces/0/p.bmp", (60, 60), 1)
-        pawn.rect.x = 0
-        pawn.rect.y = 0
-        temp.add(pawn)
-
-        bishop = pieces.Render_Image("images/2DBoardPieces/0/B.bmp", (60, 60), 1)
-        bishop.rect.x = 60
-        bishop.rect.y = 0
-        temp.add(bishop)
-
-        knight = pieces.Render_Image("images/2DBoardPieces/0/N.bmp", (60, 60), 1)
-        knight.rect.x = 120
-        knight.rect.y = 0
-        temp.add(knight)
-
-        pawn = pieces.Render_Image("images/2DBoardPieces/0/p.bmp", (60, 60), 1)
-        pawn.rect.x = 0
-        pawn.rect.y = 60
-        temp.add(pawn)
-
-        queen = pieces.Render_Image("images/2DBoardPieces/0/Q.bmp", (60, 60), 1)
-        queen.rect.x = 60
-        queen.rect.y = 60
-        temp.add(queen)
-
-        rock = pieces.Render_Image("images/2DBoardPieces/0/R.bmp", (60, 60), 1)
-        rock.rect.x = 120
-        rock.rect.y = 60
-        temp.add(rock)
-
-        self.surface.append(surface)
-        self.surface.append(event.pos)
-        self.surface.append(temp)
-    
-    def Update(self, Data):
+    def Update(self):
         #Dibuixat en pantalla de les posibilitats de joc per a la peça seleccionada
         for i in range(0, 8):
             for z in range(0 ,8):
@@ -75,10 +35,6 @@ class Pieces():
                         pygame.draw.rect(self.screen, (97,97,97),[int(30*self.proportion)+self.b_size*(z), int(120*self.proportion)+self.b_size*(i), (40*self.proportion), (40*self.proportion)], 2, border_radius = 10)
 
             self.c_g.draw(self.screen) #Dibuixat en pantalla de totes les peces
-
-            if len(self.surface) != 0:
-                self.surface[2].draw(self.surface[0])
-                self.screen.blit(self.surface[0], (self.surface[1][0]-Data.relative_center, self.surface[1][1]-Data.board_pos_y))
 
     def draw(self, reverse): #Dibuixat en pantalla de les peces
         #Neteja dels sprites prèvis

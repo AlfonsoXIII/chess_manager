@@ -65,18 +65,9 @@ class promotion_menu():
 
         self.catch_piece = None
         self.pos = [0, 0]
+        self.selected = [0, 0, 0, 0]
 
     def Build(self):
-        pawn = pieces.Render_Image("images/2DBoardPieces/0/p.bmp", (60, 60), "P")
-        pawn.rect.x = 30
-        pawn.rect.y = 200
-        self.buttons.add(pawn)
-
-        pawn = pieces.Render_Image("images/2DBoardPieces/0/p.bmp", (60, 60), "P")
-        pawn.rect.x = 90
-        pawn.rect.y = 200
-        self.buttons.add(pawn)
-
         bishop = pieces.Render_Image("images/2DBoardPieces/0/B.bmp", (60, 60), "B")
         bishop.rect.x = 30
         bishop.rect.y = 260
@@ -98,6 +89,11 @@ class promotion_menu():
         self.buttons.add(rock)
     
     def draw(self):
+        arial_big = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(25*self.proportion))
+        self.screen.blit(arial_big.render("PROM.", True, (255, 255, 255)),(10, 180))
+
+        pygame.draw.rect(self.screen, (69, 90, 100), self.selected)
+
         self.buttons.draw(self.screen)
 
 class test_menu():

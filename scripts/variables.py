@@ -25,8 +25,8 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.jugada = 0 #Variable que controla la jugada visualitzada
         self.check = False #Variable per a emmagatzemar si s'està en una posició d'escac
         self.check_mate = False #Variable per a emmagatzemar si s'està en una posició d'escac i mat
-        self.wk_moved = True #Variable per a emmagatzemar si el rei blanc s'ha desplaçat prèviament
-        self.bk_moved = True #Variable per a emmagatzemar si el rei negre s'ha desplaçat prèviament
+        self.wk_moved = False #Variable per a emmagatzemar si el rei blanc s'ha desplaçat prèviament
+        self.bk_moved = False #Variable per a emmagatzemar si el rei negre s'ha desplaçat prèviament
         self.castling = [] #Variable per a emmagatzemar localment les coordenades d'enroc
 
         self.text_data = [] #Informació sobre les jugades a visualitzar en format text

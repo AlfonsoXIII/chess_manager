@@ -125,7 +125,6 @@ def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
     Data.jugada += 1                          
     peces.mp = []
 
-    Data.freeze = False
 '''
 Funció que gestiona el comportament dels botons a pantalla.
 '''
@@ -158,7 +157,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 elif a.id == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
                     text.board_list.remove(text.board_list[-1])
 
-                    if (text.mov_list[-1]).castling[0] == True or (text.mov_list[-1]).castling[1] == True:
+                    if "0-0" in (Data.text_data[-1][0]) or "0-0-0" in (Data.text_data[-1][0]):
                         if (Data.jugada+1)%2 == 0:
                             Data.wk_moved = False
                         else:
@@ -167,7 +166,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                     if Data.check_mate == True:
                         Data.check_mate = False
 
-                    text.mov_list.remove(text.mov_list[-1])
+                    Data.text_data.remove(Data.text_data[-1])
 
                     Data.jugada -= 1
                     Data.white_t = (False if Data.white_t == True else True)
@@ -199,21 +198,31 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                     if Data.side_menu_on == False:
                         Data.side_menu_on = True
                         side_MenuWindow(Data, Data.side_menu_on)
+                
+                elif a.id == 9 or a.id == 10 or a.id == 11 or a.id == 12 or a.id == 13 or a.id == 14:
+                    a.Update()
+                    Data.catch_button = a
         
         for a in sideMenu.buttons:
-            if a.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+            if a.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                 sideMenu.Switch(sideMenu.buttons.index(a))
 
         for a in sideMenu.buttons_1:
-            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+            if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                 a.Update()
                 Data.catch_button = a
-        
+
+        ############################## EVENTS BOTONS EXTERNS del MENÚ LATERAL ##############################
         for a in sideMenu.content:
             for b in a.buttons:
-                if b.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
+                if b.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
+                    ########## EVENTS MENÚ PROMOCIÓ ##########
                     if a.id == "Promotion":
                         a.catch_piece = b
+                        a.selected = [b.rect.x, b.rect.y, 60, 60]
+                    
+                    ########## EVENTS MENÚ CONFIGURACIÓ ##########
+                    if a.id == "Config":
                         b.Update()
 
     elif event.type == pygame.MOUSEBUTTONUP:
@@ -226,7 +235,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 peces.draw(Data.reverse)
 
             if Data.catch_button.id == 7:
-                    if (sideMenu.content[sideMenu.content_shown]).id == "Promotion":
+                    if (sideMenu.content[sideMenu.content_shown]).id == "Promotion" and (sideMenu.content[sideMenu.content_shown]).catch_piece != None:
                         promotion_Move(Data, 
                                         peces, 
                                         text, 
@@ -238,6 +247,8 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                     
                     sideMenu.menus_active[sideMenu.content[sideMenu.content_shown].id] = False
                     sideMenu.content.remove(sideMenu.content[sideMenu.content_shown])
+
+                    Data.freeze = False
 
                     if len(sideMenu.content) == 0:
                         Data.side_menu_on = False
@@ -279,6 +290,7 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu):
         sideMenu.content[-1].pos = target
         sideMenu.content[-1].pos_or = x.pos
         sideMenu.menus_active["Promotion"] = True
+        sideMenu.Switch(len(sideMenu.content)-1)
         Data.freeze = True
         
         if Data.side_menu_on == False:
@@ -287,7 +299,6 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu):
 
 
     elif target in peces.mp:
-        #if x.id != "P" or (target[0] != 7 and target[0] != 0):
         compr = (True if peces.position[target[0]][target[1]] != "" else False)
         Data.white_t = (True if Data.white_t == False else False)
         taulell.selected = ()

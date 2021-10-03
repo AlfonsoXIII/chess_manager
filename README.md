@@ -13,4 +13,4 @@
 
 ![Chess Manager Overview](https://raw.githubusercontent.com/AlfonsoXIII/chess_manager/master/images/README_images/screenshot_1.PNG "Chess Manager")
 
-<h2 style="text-align: right"><em><br>~26/09/2021</em></h2>
+<h2 style="text-align: right"><em><br>~03/10/2021</em></h2>
