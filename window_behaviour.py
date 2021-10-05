@@ -321,12 +321,12 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 peces.position = text.board_list[Data.jugada]
                 peces.draw(Data.reverse)
             
-            #elif Data.catch_button.id == 13:
-            #    path = os.path.abspath(os.path.dirname(__file__))
-            #    os.system(f'start {os.path.realpath(path)}')
+            elif Data.catch_button.id == 13:
+                path = os.path.abspath(os.path.dirname(__file__))
+                os.system(f'start {os.path.realpath(path)}')
 
-            #elif Data.catch_button.id == 14:
-            #    webbrowser.open('https://github.com/AlfonsoXIII/chess_manager')
+            elif Data.catch_button.id == 14:
+                webbrowser.open('https://github.com/AlfonsoXIII/chess_manager')
 
             Data.catch_button = None
 
