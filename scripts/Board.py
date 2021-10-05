@@ -28,7 +28,7 @@ class Board():
         #Creació del botó per a desplaçar cap a la dreta l'historial de jugades
         move_1 = pieces.Button("images/right_pressed_.png", 
                                 (0, 145, 347, 290), 
-                                (0, 0, 347, 188.79), 
+                                (0, 0, 347, 140), 
                                 (int(107.885*self.proportion), int(53.94*self.proportion)), 
                                 1)
 
@@ -38,7 +38,7 @@ class Board():
         #Creació del botó per a desplaçar cap a l'esquerra l'historial de jugades
         move_2 = pieces.Button("images/left_pressed.png", 
                                 (0, 145, 347, 290), 
-                                (0, 0, 347, 188.79), 
+                                (0, 0, 347, 140), 
                                 (int(107.885*self.proportion), int(53.94*self.proportion)), 
                                 -1)
         
