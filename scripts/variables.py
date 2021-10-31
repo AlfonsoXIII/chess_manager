@@ -1,12 +1,14 @@
 '''
 Classe encarregada de l'emmagatzenament i gestió de les dades 
-principals del taulell d'escacs en els seus diferents mòdes.
+principals del taulell d'escacs en els seus diferents modes.
 '''
 
 class Data(): #Funció on s'emmagatzemen diferents variables
     def __init__(self):
         self.proportion = 1 #Variable que controla la proporció dels objectes en relació a la nativa original de desenvolupament pel seu escalat
         self.static_relative_center = [0, 0]
+
+        self.precharged_data = None
 
         self.end = False #Variable per a controlar la fi del programa
         self.menu_open = False #Variable que controla si el menú s'ha activat o no
@@ -17,6 +19,7 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.catch_button = None #Variable que captura el botó que s'ha pres
         self.menu_counter = [0, 4]
         self.side_menu_on = False
+        self.module_on = False
 
         self.freeze = False
         self.pressed = False #Variable encarregada d'emmagatzemar si s'ha pressionat, seleccionat, una peça

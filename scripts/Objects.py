@@ -6,13 +6,13 @@ import numpy as np
 
 #Classe per a la construcció de la peça Peó
 class Pawn(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, fliped, size):
+    def __init__(self, sprite, colour, pos, fliped, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        self.image = Image.open("images/2DBoardPieces/{}/p.bmp".format(colour))
+        self.image = sprite
         self.image = self.image.resize(size, resample=Image.BILINEAR , box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
         self.fliped = fliped
@@ -44,13 +44,13 @@ class Pawn(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Dama
 class Queen(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, size):
+    def __init__(self, sprite, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        self.image = Image.open("images/2DBoardPieces/{}/Q.bmp".format(colour))
+        self.image = sprite
         self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
 
@@ -138,13 +138,13 @@ class Queen(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Cavall
 class Knight(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, size):
+    def __init__(self, sprite, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        self.image = Image.open("images/2DBoardPieces/{}/N.bmp".format(colour))
+        self.image = sprite
         self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
         
@@ -184,13 +184,13 @@ class Knight(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Àlfil
 class Bishop(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, size):
+    def __init__(self, sprite, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        self.image = Image.open("images/2DBoardPieces/{}/B.bmp".format(colour))
+        self.image = sprite
         self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
         
@@ -242,13 +242,13 @@ class Bishop(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Torre
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, size):
+    def __init__(self, sprite, colour, pos, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        self.image = Image.open("images/2DBoardPieces/{}/R.bmp".format(colour))
+        self.image = sprite
         self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
         
@@ -301,14 +301,13 @@ class Rock(pygame.sprite.Sprite):
 
 #Classe per a la construcció de la peça Rei
 class King(pygame.sprite.Sprite):
-    def __init__(self, colour, pos, fliped, size):
+    def __init__(self, sprite, colour, pos, fliped, size):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.colour = colour #Color de peça
 
         #Selecció i escalatge de l'imatge per a composar el seu sprite
-        self.image = Image.open("images/2DBoardPieces/{}/K.bmp".format(colour))
-        self.image = self.image.resize(size, resample=Image.BILINEAR, box=None)
+        self.image = sprite.resize(size, resample=Image.BILINEAR, box=None)
         self.image = pygame.image.fromstring(self.image.tobytes(), self.image.size, self.image.mode)
         
         self.pos = pos #Posició de la peça
@@ -526,13 +525,13 @@ class Render_Image(pygame.sprite.Sprite):
 
 #Classe per a la construcció d'un botó
 class Button(pygame.sprite.Sprite):
-    def __init__(self, image_path, image1_crop, image2_crop, image_size, k):
+    def __init__(self, image_object, image1_crop, image2_crop, image_size, k):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.status = [] #Llista per a recollir les dues imatges del botó (encés/apagat)
         self.im = 0 #Posició (encés/apagat) del botó
 
-        image = Image.open(image_path) #Obrim l'imatge amb el mòdul PIL
+        image = image_object
 
         #Selecció i escalatge de l'imatge 1
         self.image1 = image.crop(image1_crop)
@@ -555,13 +554,13 @@ class Button(pygame.sprite.Sprite):
         self.image = self.status[self.im]
 
 class Arrow_Button(pygame.sprite.Sprite):
-    def __init__(self, image_path, image1_crop, image_size, k, proportion):
+    def __init__(self, sprite, image1_crop, image_size, k, proportion):
         super().__init__() #Herència dels atributs de la classe Sprite de pygame
         #Atributs de classe
         self.status = {} #Llista per a recollir les dues imatges del botó (encés/apagat)
         self.im = 0 #Posició (encés/apagat) del botó
 
-        image = Image.open(image_path) #Obrim l'imatge amb el mòdul PIL
+        image = sprite
 
         temp_list = []
         for a in range(0, 21):

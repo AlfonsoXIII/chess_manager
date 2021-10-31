@@ -1,29 +1,52 @@
 #Llibreries importades
 import pygame
-import math
+
+#Scripts importats
+import scripts.Objects as objects
 
 class Text(): #Classe de l'historial de jugades
     def __init__(self, screen, proportion, center_x):
         #Atributs de classe
         self.screen = screen #Objecte pygame de finestra
         self.board_list = [] #Llistat amb totes les posicions
+        self.buttons = pygame.sprite.Group() #Llista que emmagatzema els objectes dels botons per a aquest apartat
 
         self.proportion = proportion
         self.center = center_x
+    
+    def build(self, sprites, center):
+        right_button = objects.Button(sprites["little_buttons_1"], 
+                                    (0, 146, 149, 292), 
+                                    (0, 0, 149, 146), 
+                                    (int(25*self.proportion), int(25*self.proportion)),
+                                    15)
+        right_button.rect.x = int(885.286*self.proportion)+center
+        right_button.rect.y = int(442*self.proportion)
+
+        left_button = objects.Button(sprites["little_buttons_2"], 
+                                    (0, 146, 149, 292), 
+                                    (0, 0, 149, 146), 
+                                    (int(25*self.proportion), int(25*self.proportion)),
+                                    16)
+        left_button.rect.x = int(855.286*self.proportion)+center
+        left_button.rect.y = int(442*self.proportion)
+
+        self.buttons.add(right_button)
+        self.buttons.add(left_button)
 
     def draw(self, jugada, text_data, fps, center):
         #arial = pygame.font.SysFont('Arial', int(15*self.proportion)) #Font per a renderitzar text
         arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(20.23*self.proportion)) #Font per a renderitzar text
 
         #Dibuixat del fons del bloc historial en finestra
-        pygame.draw.rect(self.screen, (220, 220, 220),[int(512.456*self.proportion)+center,int(155.085*self.proportion),int(397.83*self.proportion), (math.trunc(len(text_data)/6)+1)*int(40.457*self.proportion)])
-        pygame.draw.rect(self.screen,(189,189,189),[int(508.41*self.proportion)+center, int(151.0398*self.proportion),int(405.919*self.proportion),6+((math.trunc(len(text_data)/6)+1)*int(40.457*self.proportion))],int(4.046*self.proportion), border_radius=int(13.485*self.proportion))
+        pygame.draw.rect(self.screen, (220, 220, 220),[int(512.456*self.proportion)+center,int(155.085*self.proportion),int(397.83*self.proportion), 7*int(40.457*self.proportion)])
+        pygame.draw.rect(self.screen,(189,189,189),[int(508.41*self.proportion)+center, int(151.0398*self.proportion),int(405.919*self.proportion),7*int(41.457*self.proportion)],int(4.046*self.proportion), border_radius=int(13.485*self.proportion))
 
         text_pos = 0
         text_period = 1
 
         #Renderitzat de text (moviments) & Indicador de jugada
-        #self.screen.blit(arial.render(str(fps), True, (0, 0, 0)),(800, 250))
+        self.screen.blit(arial.render(str(fps), True, (0, 0, 0)),(800, 250))
 
         for x in text_data:
             k = (0 if text_pos+arial.size(str(x[0]))[0] > int(397.828*self.proportion) else ((self.proportion*26.97) if text_data.index(x)%2 != 0 else (self.proportion*13.485)))
@@ -49,6 +72,8 @@ class Text(): #Classe de l'historial de jugades
             if text_pos+arial.size(str(x[0]))[0] > int(397.828*self.proportion):
                 text_pos = 0
                 text_period += 1
+
+        self.buttons.draw(self.screen)
 
     def Reverse(self): #Funció per a rotar, girar, totes les posicions emmagatzemades de l'historial
         for x in self.board_list:

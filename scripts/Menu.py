@@ -9,14 +9,14 @@ class Menu():
     def __init__(self, screen, proportion):
         #Atributs de classe
         self.screen = screen #Objecte pygame de finestra
-        self.coord_y = int(122.719*proportion) #91
+        self.coord_y = int(122.719*proportion)
         self.proportion = proportion
 
         self.buttons = pygame.sprite.Group() #Llista de pygame amb els objectes dels botons
     
-    def Generate_Buttons(self): #Funció per a crear els botons i afegir-los a la finestra
+    def Generate_Buttons(self, sprites): #Funció per a crear els botons i afegir-los a la finestra
  
-        menu = pieces.Button("images/tirante.png", 
+        menu = pieces.Button(sprites["tirante"], 
                             (0, 0, 141, 347), 
                             (0, 0, 141, 347), 
                             (int(40.457*self.proportion), int(148.34*self.proportion)), 
@@ -24,7 +24,7 @@ class Menu():
         menu.rect.x = int(26.97*self.proportion)
         menu.rect.y = int(-8.09*self.proportion)
 
-        arrow = pieces.Arrow_Button("images/menu_flecha.png", 
+        arrow = pieces.Arrow_Button(sprites["menu_flecha"], 
                                     (0, 0, 105, 96), 
                                     (int(26.97*self.proportion), int(26.97*self.proportion)), 
                                     5, 
@@ -32,7 +32,7 @@ class Menu():
         arrow.rect.x = int(33.71*self.proportion)
         arrow.rect.y = int(110.58*self.proportion)
 
-        config = pieces.Button("images/menu_pressed.bmp", 
+        config = pieces.Button(sprites["menu_pressed"], 
                                 (0, 146.5, 150, 293), 
                                 (0, 0, 150, 143), 
                                 (int(87.66*self.proportion), int(87.66*self.proportion)), 
@@ -40,7 +40,7 @@ class Menu():
         config.rect.x = int(121.37*self.proportion)
         config.rect.y = int(13.485*self.proportion)
 
-        export = pieces.Button("images/export.bmp", 
+        export = pieces.Button(sprites["export"], 
                                 (0, 145, 347, 290), 
                                 (0, 0, 347, 140), 
                                 (int(94.39*self.proportion), int(40.46*self.proportion)), 
@@ -48,7 +48,7 @@ class Menu():
         export.rect.x = int(269.71*self.proportion)
         export.rect.y = int(13.485*self.proportion)
 
-        import_ = pieces.Button("images/import.bmp", 
+        import_ = pieces.Button(sprites["import"], 
                                 (0, 145, 347, 290), 
                                 (0, 0, 347, 140), 
                                 (int(94.39*self.proportion), int(40.46*self.proportion)), 
@@ -56,7 +56,7 @@ class Menu():
         import_.rect.x = int(269.71*self.proportion)
         import_.rect.y = int(13.485*self.proportion)+int(47.19*self.proportion)
 
-        rubish = pieces.Button("images/rubish_pressed.bmp", 
+        rubish = pieces.Button(sprites["rubish_pressed"], 
                                 (0, 146.5, 150, 293), 
                                 (0, 0, 150, 143),
                                 (int(40.457*self.proportion), int(40.457*self.proportion)), 
@@ -64,7 +64,7 @@ class Menu():
         rubish.rect.x = int(418.057*self.proportion)
         rubish.rect.y = int(13.485*self.proportion)
 
-        switch = pieces.Button("images/change_pressed.bmp", 
+        switch = pieces.Button(sprites["change_pressed"], 
                                 (0, 146.5, 150, 293), 
                                 (0, 0, 150, 143),
                                 (int(40.457*self.proportion), int(40.457*self.proportion)), 
@@ -72,7 +72,7 @@ class Menu():
         switch.rect.x = int(418.057*self.proportion)
         switch.rect.y = int(13.485*self.proportion) + int(47.19*self.proportion)
 
-        folder = pieces.Button("images/folder_pressed.bmp", 
+        folder = pieces.Button(sprites["folder_pressed"], 
                                 (0, 146.5, 150, 293), 
                                 (0, 0, 150, 143),
                                 (int(87.657*self.proportion), int(87.657*self.proportion)), 
@@ -80,7 +80,7 @@ class Menu():
         folder.rect.x = int(606.857*self.proportion)
         folder.rect.y = int(13.485*self.proportion)
 
-        github = pieces.Button("images/github_pressed.bmp", 
+        github = pieces.Button(sprites["github_pressed"], 
                                 (0, 146.5, 150, 293), 
                                 (0, 0, 150, 143),
                                 (int(87.657*self.proportion), int(87.657*self.proportion)), 

@@ -24,9 +24,9 @@ class Board():
 
         self.buttons = pygame.sprite.Group() #Llista de pygame amb els objectes dels botons
     
-    def Generate_Buttons(self): #Funció per a crear els botons i afegir-los a la finestra
+    def Generate_Buttons(self, sprites): #Funció per a crear els botons i afegir-los a la finestra
         #Creació del botó per a desplaçar cap a la dreta l'historial de jugades
-        move_1 = pieces.Button("images/right_pressed_.png", 
+        move_1 = pieces.Button(sprites["right_pressed"], 
                                 (0, 145, 347, 290), 
                                 (0, 0, 347, 140), 
                                 (int(107.885*self.proportion), int(53.94*self.proportion)), 
@@ -36,7 +36,7 @@ class Board():
         move_1.rect.y = int(620.34*self.proportion)
 
         #Creació del botó per a desplaçar cap a l'esquerra l'historial de jugades
-        move_2 = pieces.Button("images/left_pressed.png", 
+        move_2 = pieces.Button(sprites["left_pressed"], 
                                 (0, 145, 347, 290), 
                                 (0, 0, 347, 140), 
                                 (int(107.885*self.proportion), int(53.94*self.proportion)), 
@@ -46,7 +46,7 @@ class Board():
         move_2.rect.y = int(620.34*self.proportion)
 
         #Creació del botó per rotar el taulell
-        flip = pieces.Button("images/flip_board.png", 
+        flip = pieces.Button(sprites["flip_board"], 
                             (0, 146, 149, 292), 
                             (0, 0, 149, 146), 
                             (int(26.97*self.proportion), int(26.97*self.proportion)), 
@@ -56,7 +56,7 @@ class Board():
         flip.rect.y = int(620.34*self.proportion)
 
         #Creació del botó per a eliminar la darrera jugada de l'historial
-        rem = pieces.Button("images/rem_pressed.png", 
+        rem = pieces.Button(sprites["rem_pressed"], 
                             (0, 146, 149, 292), 
                             (0, 0, 149, 146), 
                             (int(53.94*self.proportion), int(53.94*self.proportion)), 

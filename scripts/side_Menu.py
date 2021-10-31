@@ -121,15 +121,15 @@ class side_Menu(): #Classe del menú lateral
         self.buttons = []
         self.buttons_1 = pygame.sprite.Group()
     
-    def Build(self):
-        apply = pieces.Button("images/apply_pressed.bmp", 
+    def Build(self, sprites):
+        apply = pieces.Button(sprites["apply_pressed"], 
                                 (0, 145, 347, 290), 
                                 (0, 0, 347, 142),
                                 (int(80*self.proportion), int(40*self.proportion)),
                                 7)
         apply.rect.center = (int(100*self.proportion), int(650*self.proportion))
 
-        close = pieces.Button("images/close_pressed.bmp", 
+        close = pieces.Button(sprites["close_pressed"], 
                                 (0, 146, 149, 292), 
                                 (0, 0, 149, 146),
                                 (int(30*self.proportion), int(30*self.proportion)),
