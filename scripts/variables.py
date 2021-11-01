@@ -9,7 +9,7 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.static_relative_center = [0, 0]
 
         self.precharged_data = None #Conjunt d'objectes multimedia precarregats.
-        self.play_mode = False
+        self.play_mode = True
 
         self.end = False #Variable per a controlar la fi del programa
         self.menu_open = False #Variable que controla si el menú s'ha activat o no
@@ -31,11 +31,12 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.pressed = False #Variable encarregada d'emmagatzemar si s'ha pressionat, seleccionat, una peça
         self.white_t = True #Variable per a controlar quin torn es en funció de les peces blanques
         self.reverse = False #Variable per a controlar si el taulell es troba rotat
-        self.jugada = 0 #Variable que controla la jugada visualitzada
         self.check = False #Variable per a emmagatzemar si s'està en una posició d'escac
         self.check_mate = False #Variable per a emmagatzemar si s'està en una posició d'escac i mat
         self.wk_moved = False #Variable per a emmagatzemar si el rei blanc s'ha desplaçat prèviament
         self.bk_moved = False #Variable per a emmagatzemar si el rei negre s'ha desplaçat prèviament
         self.castling = [] #Variable per a emmagatzemar localment les coordenades d'enroc
 
-        self.text_data = [] #Informació sobre les jugades a visualitzar en format text
+        self.jugada = 0 #Variable que controla la jugada local visualitzada
+        self.page = 0 #Variable que controla la pàgina de la jugada visualitzada
+        self.text_data = [[]] #Llista de les jugades a visualitzar en format text

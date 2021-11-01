@@ -19,7 +19,7 @@ class Text(): #Classe de l'historial de jugades
                                     (0, 146, 149, 292), 
                                     (0, 0, 149, 146), 
                                     (int(25*self.proportion), int(25*self.proportion)),
-                                    15)
+                                    17)
         right_button.rect.x = int(885.286*self.proportion)+center
         right_button.rect.y = int(442*self.proportion)
 
@@ -27,14 +27,14 @@ class Text(): #Classe de l'historial de jugades
                                     (0, 146, 149, 292), 
                                     (0, 0, 149, 146), 
                                     (int(25*self.proportion), int(25*self.proportion)),
-                                    16)
+                                    18)
         left_button.rect.x = int(855.286*self.proportion)+center
         left_button.rect.y = int(442*self.proportion)
 
         self.buttons.add(right_button)
         self.buttons.add(left_button)
 
-    def draw(self, jugada, text_data, fps, center):
+    def draw(self, jugada, text_data, fps, center, data):
         #arial = pygame.font.SysFont('Arial', int(15*self.proportion)) #Font per a renderitzar text
         arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(20.23*self.proportion)) #Font per a renderitzar text
 
@@ -48,10 +48,10 @@ class Text(): #Classe de l'historial de jugades
         #Renderitzat de text (moviments) & Indicador de jugada
         self.screen.blit(arial.render(str(fps), True, (0, 0, 0)),(800, 250))
 
-        for x in text_data:
-            k = (0 if text_pos+arial.size(str(x[0]))[0] > int(397.828*self.proportion) else ((self.proportion*26.97) if text_data.index(x)%2 != 0 else (self.proportion*13.485)))
+        for x in text_data[data.page]:
+            k = (0 if text_pos+arial.size(str(x[0]))[0] > int(397.828*self.proportion) else ((self.proportion*26.97) if text_data[data.page].index(x)%2 != 0 else (self.proportion*13.485)))
 
-            if jugada >= 0 and text_data.index(x)+1 == jugada:
+            if jugada >= 0 and text_data[data.page].index(x)+1 == jugada:
                 #Indicador circular
                 pygame.draw.rect(self.screen, (0, 0, 0), ((525.94*self.proportion)+center+text_pos,
                                 (40.457*self.proportion)*text_period+(126.765*self.proportion),

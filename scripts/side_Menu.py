@@ -95,6 +95,45 @@ class promotion_menu():
 
         self.buttons.draw(self.screen)
 
+class play_mode_menu():
+    def __init__(self, screen, proportion):
+        self.screen = screen
+        self.proportion = proportion
+
+        self.id = "Play"
+        self.buttons = pygame.sprite.Group()
+
+        self.catch_piece = None
+        self.pos = [0, 0]
+        self.selected = [0, 0, 0, 0]
+
+    def Build(self):
+        bishop = pieces.Render_Image("images/2DBoardPieces/0/P.bmp", 
+                                    (int(60*self.proportion), int(60*self.proportion)), 
+                                    True)
+
+
+        bishop.rect.x = int(30*self.proportion)
+        bishop.rect.y = int(300*self.proportion)
+        self.buttons.add(bishop)
+
+        knight = pieces.Render_Image("images/2DBoardPieces/1/p.bmp", 
+                                    (int(60*self.proportion), int(60*self.proportion)), 
+                                    False)
+
+
+        knight.rect.x = int(90*self.proportion)
+        knight.rect.y = int(300*self.proportion)
+        self.buttons.add(knight)
+    
+    def draw(self):
+        arial_big = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(33.71*self.proportion))
+        self.screen.blit(arial_big.render("PLAY", True, (255, 255, 255)),(int(10*self.proportion), int(180*self.proportion)))
+
+        pygame.draw.rect(self.screen, (69, 90, 100), self.selected)
+
+        self.buttons.draw(self.screen)
+
 class import_():
     def __init__(self, screen, proportion):
         self.screen = screen
@@ -116,7 +155,7 @@ class side_Menu(): #Classe del menú lateral
         self.content_shown = 0
         self.proportion = proportion
 
-        self.menus_active = {"Config":False, "Promotion":False, "Import": False, "Export":False}
+        self.menus_active = {"Config":False, "Promotion":False, "Import": False, "Export":False, "Play":False}
         
         self.buttons = []
         self.buttons_1 = pygame.sprite.Group()

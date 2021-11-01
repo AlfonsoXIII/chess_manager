@@ -65,7 +65,7 @@ def Main(precharged_data): #Funció principal del programa
                     Data.text_relative_center)
     text.board_list.append(chess_notations.FEN_decode("8/1k2r3/8/8/8/8/8/2K5")) #("5k2/7P/8/8/8/8/8/1K6")
     text.build(Data.precharged_data, Data.text_relative_center[0])
-    text.draw(Data.jugada, Data.text_data, 1, Data.text_relative_center[0])
+    text.draw(Data.jugada, Data.text_data, 1, Data.text_relative_center[0], Data)
 
     ai_text = AI_Text.Text(BoardDisplay,
                         Data.proportion,

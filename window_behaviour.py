@@ -203,12 +203,31 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                     if Data.side_menu_on == False:
                         Data.side_menu_on = True
                         side_MenuWindow(Data, Data.side_menu_on)
+                
+                elif a.id == 12:
+                    a.Update()
+                    Data.catch_button = a
 
-                elif a.id == 9 or a.id == 10 or a.id == 11 or a.id == 12 or a.id == 13 or a.id == 14:
+                    if Data.play_mode == True:
+                        if sideMenu.menus_active["Play"] == False:
+                            sideMenu.content.append(scripts.side_Menu.play_mode_menu(sideMenu.screen, Data.proportion))
+                            sideMenu.content[-1].Build()
+                            sideMenu.menus_active["Play"] = True
+                        
+                        if Data.side_menu_on == False:
+                            Data.side_menu_on = True
+                            side_MenuWindow(Data, Data.side_menu_on)
+
+                elif a.id == 9 or a.id == 10 or a.id == 11 or a.id == 13 or a.id == 14:
                     a.Update()
                     Data.catch_button = a
         
         for a in ai_text.buttons:
+            if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
+                a.Update()
+                Data.catch_button = a
+        
+        for a in text.buttons:
             if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
                 a.Update()
                 Data.catch_button = a
@@ -228,6 +247,11 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 if b.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
                     ########## EVENTS MENÚ PROMOCIÓ ##########
                     if a.id == "Promotion":
+                        a.catch_piece = b
+                        a.selected = [b.rect.x, b.rect.y, 60, 60]
+                    
+                    ########## EVENTS MENÚ DE JOC ##########
+                    if a.id == "Play":
                         a.catch_piece = b
                         a.selected = [b.rect.x, b.rect.y, 60, 60]
                     
@@ -254,6 +278,31 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                                         ((sideMenu.content[sideMenu.content_shown]).catch_piece).id, 
                                         (sideMenu.content[sideMenu.content_shown]).pos, 
                                         (sideMenu.content[sideMenu.content_shown]).pos_or)
+                    
+                    elif (sideMenu.content[sideMenu.content_shown]).id == "Play" and (sideMenu.content[sideMenu.content_shown]).catch_piece != None:
+                        Data.play_mode = False
+
+                        text.board_list = []
+                        text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
+                        Data.jugada = 0
+                        Data.pressed = False
+                        Data.white_t = True
+                        Data.check = False
+                        Data.check_mate = False
+                        Data.wk_moved = False
+                        Data.bk_moved = False
+                        Data.castling = []
+                        Data.text_data = []
+
+                        if ((sideMenu.content[sideMenu.content_shown]).catch_piece).id == False:
+                            text.Reverse()
+                            Data.reverse = True
+                        
+                        else:
+                            Data.reverse = False
+                        
+                        peces.position = text.board_list[Data.jugada]
+                        peces.draw(Data.reverse)
                     
                     sideMenu.menus_active[sideMenu.content[sideMenu.content_shown].id] = False
                     sideMenu.content.remove(sideMenu.content[sideMenu.content_shown])
@@ -329,6 +378,9 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 peces.position = text.board_list[Data.jugada]
                 peces.draw(Data.reverse)
             
+            elif Data.catch_button.id == 12 and Data.play_mode == False:
+                Data.play_mode = True
+
             elif Data.catch_button.id == 13:
                 path = os.path.abspath(os.path.dirname(__file__))
                 os.system(f'start {os.path.realpath(path)}')
@@ -342,6 +394,21 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
             elif Data.catch_button.id == 16:
                 Data.module_on = False
                 Data.module_value = None
+            
+            elif Data.catch_button.id == 17:
+                if Data.page+1 < len(Data.text_data):
+                    Data.page += 1
+                    Data.jugada = 1
+
+                    peces.position = text.board_list[1+Data.page*6]
+                    peces.draw(Data.reverse) 
+            
+            elif Data.catch_button.id == 18:
+                if Data.page != 0:  
+                    Data.page -= 1
+                    Data.jugada = 6
+
+                    peces.draw(Data.reverse)            
 
             Data.catch_button = None
 
@@ -349,11 +416,11 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
 Funció que implementa els canvis en pantalla per a les peces en accionar 
 una d'elles.
 '''
-def Move(x, event, Data, size, peces, text, taulell, sideMenu):
+def Move(x, event, Data, size, peces, text, taulell, sideMenu, modify):
     target = ([a for a in range(1, 9) if (size*a)+int(161.828*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
-            [a for a in range(1, 9) if (size*a)+int(40.457*Data.proportion)+Data.relative_center > event.pos[0]][0]-1)
+            [a for a in range(1, 9) if (size*a)+int(40.457*Data.proportion)+(Data.relative_center*modify) > event.pos[0]][0]-1)
 
-    if x.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
+    if x.rect.collidepoint(event.pos[0]-(Data.relative_center*modify), event.pos[1]-Data.board_pos_y):
         peces.mp = []
         taulell.selected = ()
         Data.pressed = False
@@ -439,12 +506,17 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu):
                     else:
                         temp = (a.pos[1], a.pos[0])
                         check = True 
-                                                            
-        Data.text_data.append((chess_notations.algebraic_de(peces.position[target[0]][target[1]], 
+
+        if Data.jugada == 6:
+            Data.jugada = 0
+            Data.page += 1
+            Data.text_data.append([])
+
+        (Data.text_data[-1]).append((chess_notations.algebraic_de(peces.position[target[0]][target[1]], 
                                                             (target if Data.reverse == False else (7-target[0], 7-target[1])),
                                                             compr,
                                                             (x.pos if Data.reverse == False else (7-x.pos[0], 7-x.pos[1])),
-                                                            (str("{} ").format((str(int(Data.jugada/2)+1)+".") if Data.jugada%2 == 0 else "")),
+                                                            (str("{} ").format((str((int(Data.jugada/2)+1)+((Data.page)*3))+".") if Data.jugada%2 == 0 else "")),
                                                             check,
                                                             Data.check_mate,
                                                             local_castling), (temp if Data.reverse == False or temp == [] else (7-temp[0], 7-temp[1]))))
@@ -458,11 +530,11 @@ assigna els valors que corresponen a les variables de "Moviments Possibles" per 
 en pantalla i s'encarrega de les comprovacions necessaries en cas de que la posició estigui
 en escacs o semblant.
 '''
-def If_Board_Pressed(event, Data, peces, text, taulell):
+def If_Board_Pressed(event, Data, peces, text, taulell, modify):
     for x in peces.c_g:                               
-        if x.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y) and peces.position[x.pos[0]][x.pos[1]].isupper() == Data.white_t:
+        if x.rect.collidepoint(event.pos[0]-(Data.relative_center*modify), event.pos[1]-Data.board_pos_y) and peces.position[x.pos[0]][x.pos[1]].isupper() == Data.white_t:
             if x.id == "K":
-                Data.castling = [] 
+                Data.castling = []
                 movimientos = x.Movement(peces.position)
                 if_castling = x.Castling(text.board_list[-1], (Data.wk_moved if x.colour == 0 else Data.bk_moved))
                 if if_castling[0]: 
@@ -502,8 +574,6 @@ def Analisis_Behaviour(text, ai, Queue, Data, Board):
         if Data.catch_process != None:
             Data.catch_process.terminate() 
             #Data.catch_process.close()
-        
-        print(Board)
             
         p1 = multiprocessing.Process(target=ai.root, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
         p1.start()
@@ -527,8 +597,6 @@ def Play_Behaviour(text, ai, Queue, Data, Board):
         if Data.catch_process != None:
             Data.catch_process.terminate() 
             #Data.catch_process.close()
-        
-        print(Board)
             
         p1 = multiprocessing.Process(target=ai.root, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
         p1.start()
