@@ -8,7 +8,8 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.proportion = 1 #Variable que controla la proporció dels objectes en relació a la nativa original de desenvolupament pel seu escalat
         self.static_relative_center = [0, 0]
 
-        self.precharged_data = None
+        self.precharged_data = None #Conjunt d'objectes multimedia precarregats.
+        self.play_mode = False
 
         self.end = False #Variable per a controlar la fi del programa
         self.menu_open = False #Variable que controla si el menú s'ha activat o no
@@ -19,8 +20,13 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.catch_button = None #Variable que captura el botó que s'ha pres
         self.menu_counter = [0, 4]
         self.side_menu_on = False
+        
         self.module_on = False
+        self.module_value = None
+        self.catch_process = None
+        self.catch_board = None
 
+        self.catch_piece = None
         self.freeze = False
         self.pressed = False #Variable encarregada d'emmagatzemar si s'ha pressionat, seleccionat, una peça
         self.white_t = True #Variable per a controlar quin torn es en funció de les peces blanques

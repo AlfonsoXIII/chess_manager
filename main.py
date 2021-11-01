@@ -4,10 +4,10 @@ import pygame
 from pygame.locals import *
 from PIL import Image
 import sys
-import concurrent.futures
 
 #Scripts importats
 import chess_notations
+import window_configurations as configs
 import scripts.variables as variables
 import scripts.Text as Text
 import scripts.ai_text as AI_Text
@@ -16,7 +16,6 @@ import scripts.Board as Board
 import scripts.Pieces as Pieces
 import scripts.side_Menu as side_Menu
 import window_behaviour
-import scripts.ai.test as ai
 
 def Main(precharged_data): #Funció principal del programa
     pygame.init()
@@ -92,7 +91,8 @@ def Main(precharged_data): #Funció principal del programa
                         Data.proportion)
     taulell.Generate_Buttons(Data.precharged_data)
     taulell.draw(Data.white_t, 
-                Data.reverse)
+                Data.reverse,
+                Data.play_mode)
 
     #Creació de l'objecte Peces per a la finestra i primer dibuixat
     peces = Pieces.Pieces(BoardDisplay, 
@@ -108,62 +108,42 @@ def Main(precharged_data): #Funció principal del programa
     menu_lateral.Draw(Data.side_menu_on)
 
     clock = pygame.time.Clock()
-    
-    #with concurrent.futures.ProcessPoolExecutor() as executor:
-    #    p1 = executor.submit(ai.test2, 1, 2, 3, False, 1)
+
+    Queue = multiprocessing.Queue()
 
     while Data.end != True: #Bucle principal de la finestra
         clock.tick(60) #Limitació dels FPS a 60
 
-        for event in pygame.event.get():
+        if Data.play_mode == True:
+            configs.Analysis_Environment(window,
+                                        sideMenuDisplay,
+                                        BoardDisplay,
+                                        MenuDisplay,
+                                        Data,
+                                        text,
+                                        peces,
+                                        taulell,
+                                        menu_lateral,
+                                        menu,
+                                        ai_text,
+                                        Queue,
+                                        size,
+                                        clock)
+        
+        else:
+            configs.Play_Environment(window,
+                                    sideMenuDisplay,
+                                    BoardDisplay,
+                                    MenuDisplay,
+                                    Data,
+                                    text,
+                                    peces,
+                                    taulell,
+                                    menu_lateral,
+                                    menu,
+                                    ai_text,
+                                    Queue,
+                                    size,
+                                    clock)
 
-                #Configuración de l'acció de tancar la finestra
-                if event.type == pygame.QUIT:
-                    Data.end = True
-                    pygame.display.quit()
-                    pygame.quit()
-                    sys.exit()
-                
-                #Event principal que captura quan l'usuari prem el mouse
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if Data.pressed == False and Data.jugada == len(text.board_list)-1 and Data.check_mate == False and Data.freeze == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
-                        #Se revisa que la selección corresponda a una pieza y se muestra en pantalla las opciones de movimiento, actualizando las variables de control.
-                        x = window_behaviour.If_Board_Pressed(event, Data, peces, text, taulell)
-
-                    elif Data.pressed == True: #S'executa en el cas de que prèviament s'hagi seleccionat una peça
-                        #Es revisa si l'usuari ha seleccionat alguna casella del taulell
-                        if (40.457*Data.proportion) <= event.pos[0]-Data.relative_center <= (471.99*Data.proportion) and (161.828*Data.proportion) <= event.pos[1]-Data.board_pos_y <= (593.371*Data.proportion): 
-                            window_behaviour.Move(x, event, Data, size, peces, text, taulell, menu_lateral)
-
-                            p1 = multiprocessing.Process(target=ai.test2, args=[1, 2])
-                            p1.start()
-
-                        peces.mp = []
-                        taulell.selected = ()
-                        Data.pressed = False
-                        Data.castling = ()
-                
-                window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces, menu_lateral)
-                window_behaviour.Keys_Behaviour(event, Data, text, menu)
-
-        peces.position = text.board_list[Data.jugada]
-        taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
-
-        window.fill((243,239,239))
-        sideMenuDisplay.fill((0,0,0,0))
-        BoardDisplay.fill((243,239,239)) #(243,239,239)
-        MenuDisplay.fill((0,0,0,0))
-
-        #Redibuixat del contingut de la finestra
-        taulell.draw(Data.white_t, Data.reverse)
-        peces.Update()
-        text.draw(Data.jugada, Data.text_data, clock.get_fps(), (Data.text_relative_center[0] if Data.side_menu_on == False else Data.text_relative_center[1]))
-        ai_text.draw("off", (Data.text_relative_center[0] if Data.side_menu_on == False else Data.text_relative_center[1]))
-        menu.draw()
-        window_behaviour.Animation(Data, menu)
-        menu_lateral.Draw(Data.side_menu_on)
-
-        window.blit(BoardDisplay, (Data.relative_center, Data.board_pos_y))
-        window.blit(sideMenuDisplay, (0, Data.board_pos_y))
-        window.blit(MenuDisplay, (0, Data.menu_pos_y))
         pygame.display.update() #Actualització de la finestra

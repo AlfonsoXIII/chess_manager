@@ -71,7 +71,7 @@ class Board():
         self.buttons.add(flip)
         self.buttons.add(rem)
     
-    def draw(self, white_t, fliped): #Funció per a dibuixar en pantalla el taulell
+    def draw(self, white_t, fliped, render_buttons): #Funció per a dibuixar en pantalla el taulell
         cnt = 0
         self.screen.fill((243,239,239))
 
@@ -101,4 +101,5 @@ class Board():
         pygame.draw.circle(self.screen, (0, 0, 0), (500*self.proportion, 148.343*self.proportion), 10.788*self.proportion)
         pygame.draw.circle(self.screen, ((255, 255, 255) if white_t == True else (0, 0, 0)), (500*self.proportion, 148.343*self.proportion), 8.09*self.proportion)
 
-        self.buttons.draw(self.screen) #Dibuixat dels botons en pantalla
+        if render_buttons == True:
+            self.buttons.draw(self.screen) #Dibuixat dels botons en pantalla

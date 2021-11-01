@@ -4,6 +4,8 @@ from copy import deepcopy
 import webbrowser
 import os
 import easygui
+import multiprocessing
+from math import inf
 
 #Scripts importats
 import scripts.side_Menu
@@ -130,58 +132,59 @@ def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
 '''
 Funció que gestiona el comportament dels botons a pantalla.
 '''
-def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
+def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text):
     if event.type == pygame.MOUSEBUTTONDOWN:
-        for a in taulell.buttons:
-            if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
-                if a.id == 1 and Data.jugada < len(text.board_list)-1:
-                    Data.jugada += 1
-                    Data.white_t = False if Data.white_t == True else True
+        if Data.play_mode == True:
+            for a in taulell.buttons:
+                if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
+                    if a.id == 1 and Data.jugada < len(text.board_list)-1:
+                        Data.jugada += 1
+                        Data.white_t = False if Data.white_t == True else True
 
-                    a.Update()
+                        a.Update()
 
-                    peces.position = text.board_list[Data.jugada]
-                    peces.draw(Data.reverse)
+                        peces.position = text.board_list[Data.jugada]
+                        peces.draw(Data.reverse)
+                        
+                        Data.catch_button = a
                     
-                    Data.catch_button = a
-                
-                elif a.id == -1 and Data.jugada > 0:
-                    Data.jugada -= 1
-                    Data.white_t = False if Data.white_t == True else True
+                    elif a.id == -1 and Data.jugada > 0:
+                        Data.jugada -= 1
+                        Data.white_t = False if Data.white_t == True else True
 
-                    a.Update()
+                        a.Update()
 
-                    peces.position = text.board_list[Data.jugada]
-                    peces.draw(Data.reverse)
+                        peces.position = text.board_list[Data.jugada]
+                        peces.draw(Data.reverse)
 
-                    Data.catch_button = a
-                
-                elif a.id == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
-                    text.board_list.remove(text.board_list[-1])
-
-                    if "0-0" in (Data.text_data[-1][0]) or "0-0-0" in (Data.text_data[-1][0]):
-                        if (Data.jugada+1)%2 == 0:
-                            Data.wk_moved = False
-                        else:
-                            Data.bk_moved = False
+                        Data.catch_button = a
                     
-                    if Data.check_mate == True:
-                        Data.check_mate = False
+                    elif a.id == 0 and Data.jugada == len(text.board_list)-1 and Data.jugada != 0:
+                        text.board_list.remove(text.board_list[-1])
 
-                    Data.text_data.remove(Data.text_data[-1])
+                        if "0-0" in (Data.text_data[-1][0]) or "0-0-0" in (Data.text_data[-1][0]):
+                            if (Data.jugada+1)%2 == 0:
+                                Data.wk_moved = False
+                            else:
+                                Data.bk_moved = False
+                        
+                        if Data.check_mate == True:
+                            Data.check_mate = False
 
-                    Data.jugada -= 1
-                    Data.white_t = (False if Data.white_t == True else True)
+                        Data.text_data.remove(Data.text_data[-1])
 
-                    a.Update()
-                    Data.catch_button = a
+                        Data.jugada -= 1
+                        Data.white_t = (False if Data.white_t == True else True)
 
-                    peces.position = text.board_list[Data.jugada]
-                    peces.draw(Data.reverse)
-                
-                elif a.id == 3:
-                    a.Update()
-                    Data.catch_button = a
+                        a.Update()
+                        Data.catch_button = a
+
+                        peces.position = text.board_list[Data.jugada]
+                        peces.draw(Data.reverse)
+                    
+                    elif a.id == 3:
+                        a.Update()
+                        Data.catch_button = a
 
         for a in menu.buttons:
             if a.rect.collidepoint(event.pos[0], event.pos[1]-Data.menu_pos_y):
@@ -204,6 +207,11 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
                 elif a.id == 9 or a.id == 10 or a.id == 11 or a.id == 12 or a.id == 13 or a.id == 14:
                     a.Update()
                     Data.catch_button = a
+        
+        for a in ai_text.buttons:
+            if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
+                a.Update()
+                Data.catch_button = a
         
         for a in sideMenu.buttons:
             if a.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
@@ -327,6 +335,13 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu):
 
             elif Data.catch_button.id == 14:
                 webbrowser.open('https://github.com/AlfonsoXIII/chess_manager')
+            
+            elif Data.catch_button.id == 15:
+                Data.module_on = True
+            
+            elif Data.catch_button.id == 16:
+                Data.module_on = False
+                Data.module_value = None
 
             Data.catch_button = None
 
@@ -433,7 +448,7 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu):
                                                             check,
                                                             Data.check_mate,
                                                             local_castling), (temp if Data.reverse == False or temp == [] else (7-temp[0], 7-temp[1]))))
-
+        
         Data.jugada += 1                          
         peces.mp = []
 
@@ -476,3 +491,53 @@ def If_Board_Pressed(event, Data, peces, text, taulell):
                             peces.mp.append(b)
                             Data.pressed = True          
                     return x
+
+'''
+Funció encarregada del comportament per al paral·lelisme entre la
+finestra principal i el funcionament de la IA al mateix moment per
+al mode d'anàlisi.
+'''
+def Analisis_Behaviour(text, ai, Queue, Data, Board):
+    if text.board_list[Data.jugada] != Data.catch_board:
+        if Data.catch_process != None:
+            Data.catch_process.terminate() 
+            #Data.catch_process.close()
+        
+        print(Board)
+            
+        p1 = multiprocessing.Process(target=ai.root, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
+        p1.start()
+
+        Data.catch_board = text.board_list[Data.jugada]
+        Data.catch_process = p1
+    
+    if Queue.qsize() == 0 and Data.module_value == None:
+        Data.module_value = "Loading..."
+    
+    elif Queue.qsize() != 0:
+        Data.module_value = str(Queue.get())
+
+'''
+Funció encarregada del comportament per al paral·lelisme entre la
+finestra principal i el funcionament de la IA al mateix moment per al
+mode de joc.
+'''
+def Play_Behaviour(text, ai, Queue, Data, Board):
+    if text.board_list[Data.jugada] != Data.catch_board:
+        if Data.catch_process != None:
+            Data.catch_process.terminate() 
+            #Data.catch_process.close()
+        
+        print(Board)
+            
+        p1 = multiprocessing.Process(target=ai.root, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
+        p1.start()
+
+        Data.catch_board = text.board_list[Data.jugada]
+        Data.catch_process = p1
+    
+    if Queue.qsize() == 0 and Data.module_value == None:
+        Data.module_value = "Loading..."
+    
+    elif Queue.qsize() != 0:
+        Data.module_value = str(Queue.get())

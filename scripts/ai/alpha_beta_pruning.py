@@ -4,7 +4,6 @@ import time
 from math import inf
 from numba import jit
 import multiprocessing as mp
-from functools import partial
 import concurrent.futures
 
 #Scripts importats
@@ -52,7 +51,7 @@ def Evaluate_Position(board):
                                 [-0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1],
                                 [0.0, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.0]],
 
-                            "Q":[[-0.3, -0.2, -0.1, -0.1, -0.1, -0.1, -0.2, -0.3], #TODO: maybe change some of the data
+                            "Q":[[-0.3, -0.2, -0.1, -0.1, -0.1, -0.1, -0.2, -0.3],
                                 [-0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.2, -0.2],
                                 [-0.1, 0.1, 0.3, 0.4, 0.4, 0.3, 0.1, -0.1],
                                 [-0.1, 0.1, 0.4, 0.5, 0.5, 0.4, 0.1, -0.1],
@@ -75,13 +74,13 @@ def Evaluate_Position(board):
             if square != "":
                 board_value += chess_value[square]
 
-                
+            '''
                 if square.isupper() == False:
                     board_value += ((pieces_position_value[square.upper()])[board.index(row)][row.index(square)])*-1
                 
                 else:
                     board_value += (pieces_position_value[square])[board.index(row)][row.index(square)]
-                
+            '''    
 
     return board_value
 
@@ -89,7 +88,7 @@ def add_Depth(board, colour):
     childs = []
     for a in range(0, 8):
         for b in range(0, 8):
-            #temp = []
+            temp = []
 
             if board[b][a].upper() == "P" and board[b][a].isupper() == colour:
                 temp = movements.Pawn(board, (0 if board[b][a].isupper() else 1), (b, a))
@@ -106,7 +105,7 @@ def add_Depth(board, colour):
             elif board[b][a].upper() == "Q" and board[b][a].isupper() == colour:
                 temp = movements.Queen(board, (b, a))
             
-            else:
+            elif  board[b][a].upper() == "K" and board[b][a].isupper() == colour:
                 temp = movements.King(board, (0 if board[b][a].isupper() else 1), (b, a))
 
             for x in temp:
@@ -176,24 +175,12 @@ def max_value(board, alpha, beta, colour, depth):
     
     return v
 
-def ini_max_value(board, alpha, beta, colour, depth):
-    v = -inf
+def root(board, alpha, beta, colour, depth, Queue):
+    if colour == True:
+        Queue.put("Depth: 4 | "+str(max_value(board, alpha, beta, colour, depth)))
 
-    node = add_Depth(board, (True if colour == False else False))
-
-    for child in node:
-        if depth < 3:
-            v = max(v, min_value(child, alpha, beta, (True if colour == False else False), depth+1))
-
-        else:
-            v = Evaluate_Position(child)
-
-        if v >= beta:
-            return v
-        
-        alpha = max(alpha, v)
-    
-    return v
+    else:
+        Queue.put("Depth: 4 | "+str(min_value(board, alpha, beta, colour, depth)))
 
 def main(board, depth, colour):
     '''
@@ -233,16 +220,16 @@ def main(board, depth, colour):
     
     #print(max_value(board, -inf, +inf, colour, 1))
 
-'''
+
 if __name__ == "__main__":
-    main([["r", "n", "b", "q", "k", "b", "n", "r"],
+    main([["", "", "", "", "k", "", "", ""],
         ["", "", "", "", "", "", "", ""],
         ["", "", "", "", "", "", "", ""],
         ["", "", "", "", "", "", "", ""],
         ["", "", "", "", "", "", "", ""],
         ["", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", ""],
-        ["R", "N", "B", "Q", "K", "B", "N", "R"]], 
+        ["", "", "", "", "", "", "", "P"],
+        ["", "", "", "", "K", "", "", ""]], 
         4, 
         False)
-'''
+

@@ -39,10 +39,6 @@ class Text(): #Classe de l'historial de jugades
     
     def ai_call(self, board):
 
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            p1 = executor.submit(ai.test2, board, -inf, +inf, False, 1)
-            print(p1.result())
-
         return "uwu"
 
             

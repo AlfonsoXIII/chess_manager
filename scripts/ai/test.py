@@ -11,8 +11,11 @@ def test2(a, b):
     time.sleep(100)
     print("uwu")
 
-def test3(a):
-    print(a)
+def test3(a, b):
+    time.sleep(3)
+    b.put(str(a))
+
+    return a
 
 def main():
 
@@ -22,6 +25,3 @@ def main():
     p2.start()
 
     print("5")
-
-if __name__ == "__main__":
-    main()
