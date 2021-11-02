@@ -1,12 +1,8 @@
 #Llibreries importades
 import pygame
-import multiprocessing
-from math import inf
-import concurrent.futures
 
 #Scripts importats
 import scripts.Objects as objects
-import scripts.ai.test as ai
 
 class Text(): #Classe de l'historial de jugades
     def __init__(self, screen, proportion, center_x):

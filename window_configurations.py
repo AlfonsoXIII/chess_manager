@@ -40,7 +40,7 @@ def Analysis_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Dat
     if Data.module_on == True:
         window_behaviour.Analisis_Behaviour(text, ai, Queue, Data, text.board_list[Data.jugada])
 
-    peces.position = text.board_list[Data.jugada+Data.page*6]
+    peces.position = text.board_list[Data.jugada+Data.page*26]
     taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.page][Data.jugada-1])[1])
 
     window.fill((243,239,239))
@@ -92,11 +92,20 @@ def Play_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Data, t
         window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces, menu_lateral, ai_text)
         window_behaviour.Keys_Behaviour(event, Data, text, menu)
     
-    if Data.module_on == True:
-        window_behaviour.Analisis_Behaviour(text, ai, Queue, Data, text.board_list[Data.jugada])
+    if Data.white_t != Data.module_turn:
+        window_behaviour.Play_Behaviour(text, ai, Queue, Data, text.board_list[-1])
 
-    peces.position = text.board_list[Data.jugada]
-    taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.jugada-1])[1])
+        if Data.module_value != None:
+            text.board_list.append(Data.module_value)
+
+            peces.position = text.board_list[-1]
+            peces.draw(Data.reverse)
+
+            Data.module_value = None
+            Data.white_t = (True if Data.white_t == False else False)
+
+    peces.position = text.board_list[-1]
+    taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.page][Data.jugada-1])[1])
 
     window.fill((243,239,239))
     sideMenuDisplay.fill((0,0,0,0))

@@ -46,7 +46,7 @@ class Text(): #Classe de l'historial de jugades
         text_period = 1
 
         #Renderitzat de text (moviments) & Indicador de jugada
-        self.screen.blit(arial.render(str(fps), True, (0, 0, 0)),(800, 250))
+        #self.screen.blit(arial.render(str(fps), True, (0, 0, 0)),(800, 250))
 
         for x in text_data[data.page]:
             k = (0 if text_pos+arial.size(str(x[0]))[0] > int(397.828*self.proportion) else ((self.proportion*26.97) if text_data[data.page].index(x)%2 != 0 else (self.proportion*13.485)))

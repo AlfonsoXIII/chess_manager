@@ -128,24 +128,11 @@ class play_mode_menu():
     
     def draw(self):
         arial_big = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(33.71*self.proportion))
-        self.screen.blit(arial_big.render("PLAY", True, (255, 255, 255)),(int(10*self.proportion), int(180*self.proportion)))
+        self.screen.blit(arial_big.render("Jugar", True, (255, 255, 255)),(int(10*self.proportion), int(180*self.proportion)))
 
         pygame.draw.rect(self.screen, (69, 90, 100), self.selected)
 
         self.buttons.draw(self.screen)
-
-class import_():
-    def __init__(self, screen, proportion):
-        self.screen = screen
-        self.proportion = proportion
-
-        self.id = "Import"
-        self.buttons = pygame.sprite.Group()
-    
-    def draw(self):
-        arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(15*self.proportion))
-
-        self.screen.blit(arial.render("wawa", True, (255, 255, 255)),(5, 180))
 
 class side_Menu(): #Classe del menú lateral
     def __init__(self, screen, proportion):

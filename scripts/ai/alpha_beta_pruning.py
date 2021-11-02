@@ -1,9 +1,7 @@
 #Mòduls importats
 from copy import deepcopy
-import time
 from math import inf
 import numpy
-import multiprocessing as mp
 import concurrent.futures
 
 from numpy.core.defchararray import asarray
@@ -76,13 +74,13 @@ def Evaluate_Position(board):
             if board[b, a] != "":
                 board_value += chess_value[board[b, a]]
                 
-                '''
+
                 if board[b, a].isupper():
                     board_value += (pieces_position_value[board[b, a]])[b][a]
                 
                 else:
                     board_value += (pieces_position_value[board[b, a].upper()])[b][a]*-1
-                '''
+
 
     return board_value
 
@@ -133,7 +131,6 @@ def add_Depth(board, colour):
 
                 
                 if movements.King_Check(temp_board, same_king) and (movements.King_Check(board, other_king) or (movements.King_Check(board, other_king) == False and movements.King_Check(temp_board, other_king))):
-
                     childs.append(temp_board)
     
     return childs
@@ -152,7 +149,7 @@ def min_value(board, alpha, beta, colour, depth):
 
 
     for child in node:
-        if depth < 2:
+        if depth < 1:
             v = min(v, max_value(child, alpha, beta, (True if colour == False else False), depth+1))
 
         else:
@@ -178,7 +175,7 @@ def max_value(board, alpha, beta, colour, depth):
             return -900
 
     for child in node:
-        if depth < 2:
+        if depth < 1:
             v = max(v, min_value(child, alpha, beta, (True if colour == False else False), depth+1))
 
         else:
@@ -195,50 +192,65 @@ def inmin_value(board, alpha, beta, colour, depth):
     v = +inf
 
     node = add_Depth(board, (True if colour == False else False))
+    values = {}
 
 
     for child in node:
-        if depth < 2:
-            v = min(v, max_value(child, alpha, beta, (True if colour == False else False), depth+1))
+        temp = max_value(child, alpha, beta, (True if colour == False else False), depth+1)
 
-        else:
-            v = Evaluate_Position(child)
+        if v > temp:
+            values[temp] = child
+
+        v = min(v, temp)
 
         if v <= alpha:  
-            return v
+            return v, values
         
         beta = min(beta, v)
 
-    return v, child
+    return v, values
 
 def inmax_value(board, alpha, beta, colour, depth):
     v = -inf
 
     node = add_Depth(board, (True if colour == False else False))
+    values = {}
 
     for child in node:
-        if depth < 2:
-            v = max(v, min_value(child, alpha, beta, (True if colour == False else False), depth+1))
+        temp = min_value(child, alpha, beta, (True if colour == False else False), depth+1)
+        if v < temp:
+            values[temp] = child
 
-        else:
-            v = Evaluate_Position(child)
+        v = max(v, temp)
+
 
         if v >= beta:
-            return v
+            return v, values
         
         alpha = max(alpha, v)
     
-    return v, child
+    return v, values
 
-def root(board, alpha, beta, colour, depth, Queue):
-
+def root_an(board, alpha, beta, colour, depth, Queue):
     board = numpy.asarray(board)
 
     if colour == True:
-        Queue.put(str(inmax_value(board, alpha, beta, False, depth))+" | ...")
+        temp = inmax_value(board, alpha, beta, False, depth)
+        Queue.put(str(temp[0])+" | ...Nc3")
 
     else:
         Queue.put(str(inmin_value(board, alpha, beta, True, depth))+" | ...")
+
+def root_play(board, alpha, beta, colour, depth, Queue):
+    board = numpy.asarray(board)
+
+    if colour == True:
+        temp = inmax_value(board, alpha, beta, False, depth)
+        Queue.put(temp[1][temp[0]])
+
+    else:
+        temp = inmin_value(board, alpha, beta, True, depth)
+        Queue.put(temp[1][temp[0]])
 
 def main(board, depth, colour):
     '''
@@ -275,10 +287,12 @@ def main(board, depth, colour):
     board = asarray(board)
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        p1 = executor.submit(inmax_value, board, -inf, +inf, colour, 1)
-        print(p1.result())
+        p1 = executor.submit(inmin_value, board, -inf, +inf, colour, 1)
+        temp = p1.result()
 
-'''
+        print(temp[1][temp[0]])
+
+
 if __name__ == "__main__":
     main([["", "", "", "", "", "", "k", ""],
         ["", "", "", "", "", "p", "p", "p"],
@@ -287,7 +301,6 @@ if __name__ == "__main__":
         ["", "", "", "", "", "", "", ""],
         ["", "", "", "", "", "", "", ""],
         ["", "", "", "", "", "P", "P", "P"],
-        ["", "", "", "Q", "", "", "K", ""]], 
+        ["", "", "", "", "", "", "K", ""]], 
         4, 
-        False)
-'''
+        True)

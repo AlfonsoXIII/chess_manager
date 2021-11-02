@@ -25,6 +25,7 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.module_value = None
         self.catch_process = None
         self.catch_board = None
+        self.module_turn = False
 
         self.catch_piece = None
         self.freeze = False

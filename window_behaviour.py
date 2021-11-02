@@ -17,12 +17,12 @@ def side_MenuWindow(Data, enabled):
 
     else:
         Data.relative_center = Data.static_relative_center[0]
-'''
-Funció encarregada de calcular la proporció a la que tots
-els elements de la finestra s'hauran d'escalar mantenint 
-l'aspect ratio original i en funció de la resolució del monitor
-de l'usuari.
-'''
+
+#Funció encarregada de calcular la proporció a la que tots
+#els elements de la finestra s'hauran d'escalar mantenint 
+#l'aspect ratio original i en funció de la resolució del monitor
+#de l'usuari.
+
 def Proportion(display_dimensions, original_dimensions):
     if (display_dimensions[0]-original_dimensions[0]) <= (display_dimensions[1]-original_dimensions[1]):
         return display_dimensions[0]/original_dimensions[0]
@@ -30,10 +30,10 @@ def Proportion(display_dimensions, original_dimensions):
     else:
         return display_dimensions[1]/original_dimensions[1]
 
-'''
-Funció encarregada d'animar les transicions en finestra en
-activar el menú o desactivar-lo.
-'''
+
+#Funció encarregada d'animar les transicions en finestra en
+#activar el menú o desactivar-lo.
+
 def Animation(Data, menu):
     if Data.menu_open == True:
         if Data.menu_counter[0] != 20: 
@@ -61,10 +61,10 @@ def Animation(Data, menu):
             Data.board_pos_y -= int(5.057*Data.proportion)
             Data.menu_counter[1] -= 1
 
-'''
-Funció que gestiona les accions i els events del teclat quan la
-finestra no perd el focus.
-'''
+
+#Funció que gestiona les accions i els events del teclat quan la
+#finestra no perd el focus.
+
 def Keys_Behaviour(event, Data, text, menu):
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_LEFT:
@@ -76,6 +76,9 @@ def Keys_Behaviour(event, Data, text, menu):
             if Data.jugada < len(text.board_list)-1: 
                 Data.jugada += 1
                 Data.white_t = False if Data.white_t == True else True
+
+
+#Funció per a tramitar un moviment de posició en pantalla.
 
 def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
     Data.white_t = (True if Data.white_t == False else False)
@@ -129,9 +132,9 @@ def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
     Data.jugada += 1                          
     peces.mp = []
 
-'''
-Funció que gestiona el comportament dels botons a pantalla.
-'''
+
+#Funció que gestiona el comportament dels botons a pantalla.
+
 def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text):
     if event.type == pygame.MOUSEBUTTONDOWN:
         if Data.play_mode == True:
@@ -241,21 +244,17 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 a.Update()
                 Data.catch_button = a
 
-        ############################## EVENTS BOTONS EXTERNS del MENÚ LATERAL ##############################
         for a in sideMenu.content:
             for b in a.buttons:
                 if b.rect.collidepoint(event.pos[0], event.pos[1]-Data.board_pos_y):
-                    ########## EVENTS MENÚ PROMOCIÓ ##########
                     if a.id == "Promotion":
                         a.catch_piece = b
                         a.selected = [b.rect.x, b.rect.y, 60, 60]
                     
-                    ########## EVENTS MENÚ DE JOC ##########
                     if a.id == "Play":
                         a.catch_piece = b
                         a.selected = [b.rect.x, b.rect.y, 60, 60]
                     
-                    ########## EVENTS MENÚ CONFIGURACIÓ ##########
                     if a.id == "Config":
                         b.Update()
 
@@ -285,6 +284,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                         text.board_list = []
                         text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
                         Data.jugada = 0
+                        Data.page = 0
                         Data.pressed = False
                         Data.white_t = True
                         Data.check = False
@@ -292,7 +292,8 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                         Data.wk_moved = False
                         Data.bk_moved = False
                         Data.castling = []
-                        Data.text_data = []
+                        Data.text_data = [[]]
+                        Data.module_turn = (True if ((sideMenu.content[sideMenu.content_shown]).catch_piece).id == False else True)
 
                         if ((sideMenu.content[sideMenu.content_shown]).catch_piece).id == False:
                             text.Reverse()
@@ -365,6 +366,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 text.board_list = []
                 text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
                 Data.jugada = 0
+                Data.page = 0
                 Data.pressed = False
                 Data.white_t = True
                 Data.reverse = False
@@ -373,7 +375,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 Data.wk_moved = False
                 Data.bk_moved = False
                 Data.castling = []
-                Data.text_data = []
+                Data.text_data = [[]]
                 
                 peces.position = text.board_list[Data.jugada]
                 peces.draw(Data.reverse)
@@ -412,10 +414,10 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
 
             Data.catch_button = None
 
-'''
-Funció que implementa els canvis en pantalla per a les peces en accionar 
-una d'elles.
-'''
+
+#Funció que implementa els canvis en pantalla per a les peces en accionar 
+#una d'elles.
+
 def Move(x, event, Data, size, peces, text, taulell, sideMenu, modify):
     target = ([a for a in range(1, 9) if (size*a)+int(161.828*Data.proportion)+Data.board_pos_y > event.pos[1]][0]-1, 
             [a for a in range(1, 9) if (size*a)+int(40.457*Data.proportion)+(Data.relative_center*modify) > event.pos[0]][0]-1)
@@ -507,7 +509,7 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu, modify):
                         temp = (a.pos[1], a.pos[0])
                         check = True 
 
-        if Data.jugada == 6:
+        if Data.jugada == 26:
             Data.jugada = 0
             Data.page += 1
             Data.text_data.append([])
@@ -524,12 +526,12 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu, modify):
         Data.jugada += 1                          
         peces.mp = []
 
-'''
-Funció que corrobora si l'usuari ha fet click a una casella del taulell, i posteriorment
-assigna els valors que corresponen a les variables de "Moviments Possibles" per a mostrar-los
-en pantalla i s'encarrega de les comprovacions necessaries en cas de que la posició estigui
-en escacs o semblant.
-'''
+
+#Funció que corrobora si l'usuari ha fet click a una casella del taulell, i posteriorment
+#assigna els valors que corresponen a les variables de "Moviments Possibles" per a mostrar-los
+#en pantalla i s'encarrega de les comprovacions necessaries en cas de que la posició estigui
+#en escacs o semblant.
+
 def If_Board_Pressed(event, Data, peces, text, taulell, modify):
     for x in peces.c_g:                               
         if x.rect.collidepoint(event.pos[0]-(Data.relative_center*modify), event.pos[1]-Data.board_pos_y) and peces.position[x.pos[0]][x.pos[1]].isupper() == Data.white_t:
@@ -564,18 +566,17 @@ def If_Board_Pressed(event, Data, peces, text, taulell, modify):
                             Data.pressed = True          
                     return x
 
-'''
-Funció encarregada del comportament per al paral·lelisme entre la
-finestra principal i el funcionament de la IA al mateix moment per
-al mode d'anàlisi.
-'''
+
+#Funció encarregada del comportament per al paral·lelisme entre la
+#finestra principal i el funcionament de la IA al mateix moment per
+#al mode d'anàlisi.
+
 def Analisis_Behaviour(text, ai, Queue, Data, Board):
     if text.board_list[Data.jugada] != Data.catch_board:
         if Data.catch_process != None:
-            Data.catch_process.terminate() 
-            #Data.catch_process.close()
+            Data.catch_process.terminate()
             
-        p1 = multiprocessing.Process(target=ai.root, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
+        p1 = multiprocessing.Process(target=ai.root_an, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
         p1.start()
 
         Data.catch_board = text.board_list[Data.jugada]
@@ -587,25 +588,21 @@ def Analisis_Behaviour(text, ai, Queue, Data, Board):
     elif Queue.qsize() != 0:
         Data.module_value = str(Queue.get())
 
-'''
-Funció encarregada del comportament per al paral·lelisme entre la
-finestra principal i el funcionament de la IA al mateix moment per al
-mode de joc.
-'''
+
+#Funció encarregada del comportament per al paral·lelisme entre la
+#finestra principal i el funcionament de la IA al mateix moment per al
+#mode de joc.
+
 def Play_Behaviour(text, ai, Queue, Data, Board):
     if text.board_list[Data.jugada] != Data.catch_board:
         if Data.catch_process != None:
-            Data.catch_process.terminate() 
-            #Data.catch_process.close()
+            Data.catch_process.terminate()
             
-        p1 = multiprocessing.Process(target=ai.root, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
+        p1 = multiprocessing.Process(target=ai.root_play, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
         p1.start()
 
         Data.catch_board = text.board_list[Data.jugada]
         Data.catch_process = p1
     
-    if Queue.qsize() == 0 and Data.module_value == None:
-        Data.module_value = "Loading..."
-    
     elif Queue.qsize() != 0:
-        Data.module_value = str(Queue.get())
+        Data.module_value = (Queue.get()).tolist()

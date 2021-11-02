@@ -1,7 +1,7 @@
-#Diversas librerias, y parámetros de estas, importadas
+#Llibreries importades
 import pygame
 
-#Importación de otros scripts
+#Scripts importats
 import scripts.Objects as pieces
 
 #Classe del Menú
