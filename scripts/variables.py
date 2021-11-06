@@ -22,6 +22,7 @@ class Data(): #Funció on s'emmagatzemen diferents variables
         self.side_menu_on = False
         
         self.module_on = False
+        self.module_processing = False
         self.module_value = None
         self.catch_process = None
         self.catch_board = None

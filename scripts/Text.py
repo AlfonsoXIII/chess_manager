@@ -13,6 +13,7 @@ class Text(): #Classe de l'historial de jugades
 
         self.proportion = proportion
         self.center = center_x
+        self.btn_dimensions = [int(885.286*self.proportion), 855.286*self.proportion]
     
     def build(self, sprites, center):
         right_button = objects.Button(sprites["little_buttons_1"], 
@@ -20,7 +21,7 @@ class Text(): #Classe de l'historial de jugades
                                     (0, 0, 149, 146), 
                                     (int(25*self.proportion), int(25*self.proportion)),
                                     17)
-        right_button.rect.x = int(885.286*self.proportion)+center
+        right_button.rect.x = self.btn_dimensions[0]+center
         right_button.rect.y = int(442*self.proportion)
 
         left_button = objects.Button(sprites["little_buttons_2"], 
@@ -28,7 +29,7 @@ class Text(): #Classe de l'historial de jugades
                                     (0, 0, 149, 146), 
                                     (int(25*self.proportion), int(25*self.proportion)),
                                     18)
-        left_button.rect.x = int(855.286*self.proportion)+center
+        left_button.rect.x = self.btn_dimensions[1]+center
         left_button.rect.y = int(442*self.proportion)
 
         self.buttons.add(right_button)
@@ -72,6 +73,9 @@ class Text(): #Classe de l'historial de jugades
             if text_pos+arial.size(str(x[0]))[0] > int(397.828*self.proportion):
                 text_pos = 0
                 text_period += 1
+
+        self.buttons.sprites()[0].rect.x = self.btn_dimensions[0]+center
+        self.buttons.sprites()[1].rect.x = self.btn_dimensions[1]+center
 
         self.buttons.draw(self.screen)
 

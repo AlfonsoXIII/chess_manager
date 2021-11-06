@@ -38,8 +38,8 @@ class Pieces():
 
     def draw(self, reverse): #Dibuixat en pantalla de les peces
         #Neteja dels sprites prèvis
-        self.c_g = []
-        self.c_g = pygame.sprite.Group()
+        for x in self.c_g:
+            x.kill()
 
         #Creació de les peces i disposició de les seves coordenades
         for i in range(0, 8):

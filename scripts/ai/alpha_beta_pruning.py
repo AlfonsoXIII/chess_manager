@@ -24,41 +24,41 @@ def Evaluate_Position(board):
                                 [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
                                 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
 
-                            "N":[[-1.0, -0.5, -0.3, -0.3, -0.3, -0.3, -0.5, -1.0],
-                                [-0.5, -0.2, 0.0, 0.2, 0.2, 0.0, -0.2, -0.3],
+                            "N":[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
                                 [-0.3, 0.0, 0.4, 0.3, 0.3, 0.4, 0.0, -0.3],
                                 [-0.3, 0.1, 0.5, 0.6, 0.6, 0.5, 0.1, -0.3],
                                 [-0.3, 0.1, 0.5, 0.6, 0.6, 0.5, 0.1, -0.3],
                                 [-0.3, 0.0, 0.4, 0.3, 0.3, 0.4, 0.0, -0.3],
-                                [-0.5, 0.0, 0.0, 0.2, 0.2, 0.0, -0.2, -0.5],
-                                [-1.0, -0.5, -0.3, -0.3, -0.3, -0.3, -0.5, -1.0]],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+                                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
                                 
-                            "B":[[-0.3, -0.2, -0.1, -0.1, -0.1, -0.1, -0.2, -0.3],
-                                [-0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.2, -0.2],
+                            "B":[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
                                 [-0.1, 0.1, 0.3, 0.4, 0.4, 0.3, 0.1, -0.1],
                                 [-0.1, 0.1, 0.4, 0.5, 0.5, 0.4, 0.1, -0.1],
                                 [-0.1, 0.1, 0.4, 0.5, 0.5, 0.4, 0.1, -0.1],
                                 [-0.1, 0.1, 0.3, 0.4, 0.4, 0.3, 0.1, -0.1],
-                                [-0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.2, -0.2],
-                                [-0.3, -0.2, -0.1, -0.1, -0.1, -0.1, -0.2, -0.3]],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+                                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
                             
-                            "R":[[0.0, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.0],
-                                [-0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1],
+                            "R":[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
                                 [-0.3, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.3],
                                 [-0.3, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, -0.3],
                                 [-0.3, 0.2, 0.2, 0.3, 0.3, 0.2, 0.2, -0.3],
                                 [-0.3, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.3],
-                                [-0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1],
-                                [0.0, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.0]],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+                                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
 
-                            "Q":[[-0.3, -0.2, -0.1, -0.1, -0.1, -0.1, -0.2, -0.3],
-                                [-0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.2, -0.2],
+                            "Q":[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
                                 [-0.1, 0.1, 0.3, 0.4, 0.4, 0.3, 0.1, -0.1],
                                 [-0.1, 0.1, 0.4, 0.5, 0.5, 0.4, 0.1, -0.1],
                                 [-0.1, 0.1, 0.4, 0.5, 0.5, 0.4, 0.1, -0.1],
                                 [-0.1, 0.1, 0.3, 0.4, 0.4, 0.3, 0.1, -0.1],
-                                [-0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.2, -0.2],
-                                [-0.3, -0.2, -0.1, -0.1, -0.1, -0.1, -0.2, -0.3]],
+                                [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+                                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
                             
                             "K":[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                                 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -79,7 +79,7 @@ def Evaluate_Position(board):
                     board_value += (pieces_position_value[board[b, a]])[b][a]
                 
                 else:
-                    board_value += (pieces_position_value[board[b, a].upper()])[b][a]*-1
+                    board_value += ((pieces_position_value[board[b, a].upper()])[b][a])*-1.0
 
 
     return board_value
@@ -90,47 +90,31 @@ def add_Depth(board, colour):
         for b in range(0, 8):
             temp = []
 
-            if board[b, a].upper() == "P" and board[b, a].isupper() == colour:
-                temp = movements.Pawn(board, (0 if board[b, a].isupper() else 1), (b, a))
-            
-            elif board[b, a].upper() == "N" and board[b, a].isupper() == colour:
-                temp = movements.Knight(board, (b, a))
+            if board[b, a].isupper() == colour:
 
-            elif board[b, a].upper() == "R" and board[b, a].isupper() == colour:
-                temp = movements.Rock(board, (b, a))
-            
-            elif board[b, a].upper() == "B" and board[b, a].isupper() == colour:
-                temp = movements.Bishop(board, (b, a))
-            
-            elif board[b, a].upper() == "Q" and board[b, a].isupper() == colour:
-                temp = movements.Queen(board, (b, a))
-            
-            elif  board[b, a].upper() == "K" and board[b, a].isupper() == colour:
-                temp = movements.King(board, (0 if board[b, a].isupper() else 1), (b, a))
-
-            for x in temp:
-                temp_board = deepcopy(board)
-                temp_board[x[0], x[1]] = deepcopy(board[b, a])
-                temp_board[b, a] = ""
-
-
-                same_king = ()
-                other_king = ()
-
-                for c in range(0, 8):
-                    for d in range(0, 8):
-                        if temp_board[x[0], x[1]].upper() != "K":
-                            if temp_board[d, c].upper() == "K" and temp_board[d, c].isupper() == colour:
-                                same_king = (d, c)
-                        
-                        else:
-                            same_king = x
-                        
-                        if temp_board[d, c].upper() == "K" and temp_board[d, c].isupper() != colour:
-                            other_king = (d, c)
-
+                if board[b, a].upper() == "P":
+                    temp = movements.Pawn(board, (0 if board[b, a].isupper() else 1), (b, a))
                 
-                if movements.King_Check(temp_board, same_king) and (movements.King_Check(board, other_king) or (movements.King_Check(board, other_king) == False and movements.King_Check(temp_board, other_king))):
+                elif board[b, a].upper() == "N":
+                    temp = movements.Knight(board, (b, a))
+
+                elif board[b, a].upper() == "R":
+                    temp = movements.Rock(board, (b, a))
+                
+                elif board[b, a].upper() == "B":
+                    temp = movements.Bishop(board, (b, a))
+                
+                elif board[b, a].upper() == "Q":
+                    temp = movements.Queen(board, (b, a))
+                
+                elif board[b, a].upper() == "K":
+                    temp = movements.King(board, (0 if board[b, a].isupper() else 1), (b, a))
+
+                for x in temp:
+                    temp_board = deepcopy(board)
+                    temp_board[x[0], x[1]] = deepcopy(board[b, a])
+                    temp_board[b, a] = ""
+
                     childs.append(temp_board)
     
     return childs
@@ -149,7 +133,7 @@ def min_value(board, alpha, beta, colour, depth):
 
 
     for child in node:
-        if depth < 1:
+        if depth < 3:
             v = min(v, max_value(child, alpha, beta, (True if colour == False else False), depth+1))
 
         else:
@@ -175,7 +159,7 @@ def max_value(board, alpha, beta, colour, depth):
             return -900
 
     for child in node:
-        if depth < 1:
+        if depth < 3:
             v = max(v, min_value(child, alpha, beta, (True if colour == False else False), depth+1))
 
         else:
@@ -253,54 +237,27 @@ def root_play(board, alpha, beta, colour, depth, Queue):
         Queue.put(temp[1][temp[0]])
 
 def main(board, depth, colour):
-    '''
     print("##########  INIT  ##########")
     print("Depth: ", str(depth))
     print("############################")
-
-    pool = mp.Pool(4)
-    image_list = [1]
-
-    #p1 = pool.Process(target=max_value, args=[board, -inf, +inf, colour, 1])
-    temp = partial(max_value, board, -inf, +inf, colour)
-    result = pool.map(func=temp, iterable=image_list)
-    #p1.start()
-    #p1.join()
-    pool.close()
-    pool.join()
-
-    print(result)
-
-    '''
-
-    print("##########  INIT  ##########")
-    print("Depth: ", str(depth))
-    print("############################")
-
-    '''
-    p1 = mp.Process(target=max_value, args=[board, -inf, +inf, colour, 1])
-    p1.start()
-    print(p1.get())
-    p1.join()
-    '''
 
     board = asarray(board)
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        p1 = executor.submit(inmin_value, board, -inf, +inf, colour, 1)
+        p1 = executor.submit(inmin_value, board, -inf, +inf, colour, 0)
         temp = p1.result()
 
-        print(temp[1][temp[0]])
+        print(temp)
 
 
 if __name__ == "__main__":
-    main([["", "", "", "", "", "", "k", ""],
-        ["", "", "", "", "", "p", "p", "p"],
-        ["", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "P", "P", "P"],
-        ["", "", "", "", "", "", "K", ""]], 
+    main([["r", "", "b", "q", "k", "b", "n", "r"],
+        ["p", "p", "p", "p", "", "p", "p", "p"],
+        ["", "", "n", "", "", "", "", ""],
+        ["", "", "", "", "p", "", "", ""],
+        ["", "", "B", "", "P", "", "", ""],
+        ["", "", "", "", "", "N", "", ""],
+        ["P", "P", "P", "P", "", "P", "P", "P"],
+        ["R", "N", "B", "Q", "K", "", "", "R"]], 
         4, 
         True)

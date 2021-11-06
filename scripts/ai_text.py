@@ -12,6 +12,7 @@ class Text(): #Classe de l'historial de jugades
 
         self.proportion = proportion
         self.center = center_x
+        self.btn_dimensions = [int(512.286*self.proportion), int(547.286*self.proportion)]
     
     def build(self, sprites, center):
         on = objects.Button(sprites["suma"], 
@@ -19,7 +20,7 @@ class Text(): #Classe de l'historial de jugades
                                     (0, 0, 149, 146), 
                                     (int(25*self.proportion), int(25*self.proportion)),
                                     15)
-        on.rect.x = int(512.286*self.proportion)+center
+        on.rect.x = self.btn_dimensions[0]+center
         on.rect.y = int(492*self.proportion)
 
         off = objects.Button(sprites["resta"], 
@@ -27,17 +28,11 @@ class Text(): #Classe de l'historial de jugades
                                     (0, 0, 149, 146), 
                                     (int(25*self.proportion), int(25*self.proportion)),
                                     16)
-        off.rect.x = int(547.286*self.proportion)+center
+        off.rect.x = self.btn_dimensions[1]+center
         off.rect.y = int(492*self.proportion)
 
         self.buttons.add(on)
-        self.buttons.add(off)
-    
-    def ai_call(self, board):
-
-        return "uwu"
-
-            
+        self.buttons.add(off)           
 
     def draw(self, text_data, center):
         arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(18.23*self.proportion)) #Font per a renderitzar text
@@ -47,5 +42,8 @@ class Text(): #Classe de l'historial de jugades
         pygame.draw.rect(self.screen,(189,189,189),[int(508.456*self.proportion)+center,int(521*self.proportion),int(405.83*self.proportion), int(48.457*self.proportion)],int(4.046*self.proportion), border_radius=int(13.485*self.proportion))
 
         self.screen.blit(arial.render(text_data, True, (0, 0, 0)), [int(522.456*self.proportion)+center,int(530*self.proportion)])
+
+        self.buttons.sprites()[0].rect.x = self.btn_dimensions[0]+center
+        self.buttons.sprites()[1].rect.x = self.btn_dimensions[1]+center
 
         self.buttons.draw(self.screen)

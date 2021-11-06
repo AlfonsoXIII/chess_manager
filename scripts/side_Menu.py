@@ -13,22 +13,22 @@ class config_menu():
         self.id = "Config"
         self.buttons = pygame.sprite.Group()
     
-    def Build(self):
-        btn_1 = pieces.Button("images/select_button.bmp", 
+    def Build(self, sprites):
+        btn_1 = pieces.Button(sprites["select_button"], 
                             (0, 0, 307, 302), 
                             (0, 302, 307, 604), 
                             (int(25*self.proportion), int(25*self.proportion)), 
                             8)
         btn_1.rect.center = (int(150*self.proportion), int(265*self.proportion))
 
-        btn_2 = pieces.Button("images/select_button.bmp", 
+        btn_2 = pieces.Button(sprites["select_button"], 
                             (0, 0, 307, 302), 
                             (0, 302, 307, 604), 
                             (int(25*self.proportion), int(25*self.proportion)), 
                             8)
         btn_2.rect.center = (int(150*self.proportion), int(295*self.proportion))
 
-        btn_3 = pieces.Button("images/select_button.bmp", 
+        btn_3 = pieces.Button(sprites["select_button"], 
                             (0, 0, 307, 302), 
                             (0, 302, 307, 604), 
                             (int(25*self.proportion), int(25*self.proportion)), 
@@ -66,23 +66,23 @@ class promotion_menu():
         self.pos = [0, 0]
         self.selected = [0, 0, 0, 0]
 
-    def Build(self):
-        bishop = pieces.Render_Image("images/2DBoardPieces/0/B.bmp", (int(60*self.proportion), int(60*self.proportion)), "B")
+    def Build(self, colour):
+        bishop = pieces.Render_Image("images/2DBoardPieces/{}/B.bmp".format(colour), (int(60*self.proportion), int(60*self.proportion)), "B")
         bishop.rect.x = int(30*self.proportion)
         bishop.rect.y = int(260*self.proportion)
         self.buttons.add(bishop)
 
-        knight = pieces.Render_Image("images/2DBoardPieces/0/N.bmp", (int(60*self.proportion), int(60*self.proportion)), "N")
+        knight = pieces.Render_Image("images/2DBoardPieces/{}/N.bmp".format(colour), (int(60*self.proportion), int(60*self.proportion)), "N")
         knight.rect.x = int(90*self.proportion)
         knight.rect.y = int(260*self.proportion)
         self.buttons.add(knight)
 
-        queen = pieces.Render_Image("images/2DBoardPieces/0/Q.bmp", (int(60*self.proportion), int(60*self.proportion)), "Q")
+        queen = pieces.Render_Image("images/2DBoardPieces/{}/Q.bmp".format(colour), (int(60*self.proportion), int(60*self.proportion)), "Q")
         queen.rect.x = int(30*self.proportion)
         queen.rect.y = int(320*self.proportion)
         self.buttons.add(queen)
 
-        rock = pieces.Render_Image("images/2DBoardPieces/0/R.bmp", (int(60*self.proportion), int(60*self.proportion)), "R")
+        rock = pieces.Render_Image("images/2DBoardPieces/{}/R.bmp".format(colour), (int(60*self.proportion), int(60*self.proportion)), "R")
         rock.rect.x = int(90*self.proportion)
         rock.rect.y = int(320*self.proportion)
         self.buttons.add(rock)
@@ -110,7 +110,7 @@ class play_mode_menu():
     def Build(self):
         bishop = pieces.Render_Image("images/2DBoardPieces/0/P.bmp", 
                                     (int(60*self.proportion), int(60*self.proportion)), 
-                                    True)
+                                    False)
 
 
         bishop.rect.x = int(30*self.proportion)
@@ -119,7 +119,7 @@ class play_mode_menu():
 
         knight = pieces.Render_Image("images/2DBoardPieces/1/p.bmp", 
                                     (int(60*self.proportion), int(60*self.proportion)), 
-                                    False)
+                                    True)
 
 
         knight.rect.x = int(90*self.proportion)

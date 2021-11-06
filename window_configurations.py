@@ -1,4 +1,5 @@
 #Llibreries importades
+from copy import deepcopy
 import pygame
 from pygame.locals import *
 import sys
@@ -20,7 +21,7 @@ def Analysis_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Dat
         
         #Event principal que captura quan l'usuari prem el mouse
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if Data.pressed == False and Data.jugada == len(text.board_list)-1 and Data.check_mate == False and Data.freeze == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
+            if Data.pressed == False and Data.jugada+(Data.page*6) == len(text.board_list)-1 and Data.check_mate == False and Data.freeze == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
                 #Se revisa que la selección corresponda a una pieza y se muestra en pantalla las opciones de movimiento, actualizando las variables de control.
                 Data.catch_piece = window_behaviour.If_Board_Pressed(event, Data, peces, text, taulell, 1)
 
@@ -40,7 +41,7 @@ def Analysis_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Dat
     if Data.module_on == True:
         window_behaviour.Analisis_Behaviour(text, ai, Queue, Data, text.board_list[Data.jugada])
 
-    peces.position = text.board_list[Data.jugada+Data.page*26]
+    peces.position = text.board_list[Data.jugada+Data.page*6]
     taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.page][Data.jugada-1])[1])
 
     window.fill((243,239,239))
@@ -48,6 +49,7 @@ def Analysis_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Dat
     BoardDisplay.fill((243,239,239))
     MenuDisplay.fill((0,0,0,0))
 
+    
     #Redibuixat del contingut de la finestra
     taulell.draw(Data.white_t, Data.reverse, Data.play_mode)
     peces.Update()
@@ -92,17 +94,33 @@ def Play_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Data, t
         window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces, menu_lateral, ai_text)
         window_behaviour.Keys_Behaviour(event, Data, text, menu)
     
-    if Data.white_t != Data.module_turn:
-        window_behaviour.Play_Behaviour(text, ai, Queue, Data, text.board_list[-1])
+    if Data.white_t == Data.module_turn:
+
+        temp_board = deepcopy(text.board_list[-1])
+
+        if Data.module_turn == True:
+            for x in temp_board:
+                x.reverse() 
+            
+            temp_board.reverse()
+
+        window_behaviour.Play_Behaviour(text, ai, Queue, Data, temp_board)
 
         if Data.module_value != None:
+            Data.white_t = (True if Data.white_t == False else False)
+
+            if Data.module_turn == True:
+                for x in Data.module_value:
+                    x.reverse() 
+
+                Data.module_value.reverse()
+
             text.board_list.append(Data.module_value)
 
             peces.position = text.board_list[-1]
             peces.draw(Data.reverse)
 
             Data.module_value = None
-            Data.white_t = (True if Data.white_t == False else False)
 
     peces.position = text.board_list[-1]
     taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.page][Data.jugada-1])[1])
