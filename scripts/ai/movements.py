@@ -7,17 +7,17 @@ def Pawn(board, colour, pos):
     k = (-1 if colour == 0 else 1)
     #if self.fliped == True: k = k*(-1)
 
-    if pos[0]+k <= 7:
+    if 0 <= pos[0]+k <= 7:
         if board[pos[0]+k, pos[1]] == "":
             mv.append((pos[0]+k, pos[1]))
         
             if pos[0] == (1 if k == 1 else 6) and board[pos[0]+(k*2), pos[1]] == "":
                 mv.append((pos[0]+(k*2), pos[1]))
 
-        if pos[1]+1 <= 7 and board[pos[0]+k, pos[1]+1] != "" and board[pos[0]+k, pos[1]+1].isupper() != board[pos[0], pos[1]].isupper():
+        if 0 <= pos[1]+1 <= 7 and board[pos[0]+k, pos[1]+1] != "" and board[pos[0]+k, pos[1]+1].isupper() != board[pos[0], pos[1]].isupper():
             mv.append((pos[0]+k, pos[1]+1))
             
-        if pos[1]-1 <= 7 and board[pos[0]+k, pos[1]-1] != "" and board[pos[0]+k, pos[1]-1].isupper() != board[pos[0], pos[1]].isupper():
+        if 0 <= pos[1]-1 <= 7 and board[pos[0]+k, pos[1]-1] != "" and board[pos[0]+k, pos[1]-1].isupper() != board[pos[0], pos[1]].isupper():
             mv.append((pos[0]+k, pos[1]-1))
 
     return mv

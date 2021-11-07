@@ -119,7 +119,7 @@ def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
                     temp = (a.pos[1], a.pos[0])
                     check = True
 
-    if Data.jugada == 6:
+    if Data.jugada == 28:
         Data.jugada = 0
         Data.page += 1
         Data.text_data.append([])   
@@ -128,7 +128,7 @@ def promotion_Move(Data, peces, text, taulell, sideMenu, piece, pos, pos_or):
                                                         (pos if Data.reverse == False else (7-pos[0], 7-pos[1])),
                                                         False,
                                                         (pos_or if Data.reverse == False else (7-pos_or[0], 7-pos_or[1])),
-                                                        (str("{} ").format((str((int(Data.jugada/2)+1)+((Data.page)*3))+".") if Data.jugada%2 == 0 else "")),
+                                                        (str("{} ").format((str((int(Data.jugada/2)+1)+((Data.page)*14))+".") if Data.jugada%2 == 0 else "")),
                                                         check,
                                                         Data.check_mate,
                                                         (False, False)), temp))
@@ -143,8 +143,8 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
         if Data.play_mode == True:
             for a in taulell.buttons:
                 if a.rect.collidepoint(event.pos[0]-Data.relative_center, event.pos[1]-Data.board_pos_y):
-                    if a.id == 1 and Data.jugada+(Data.page*6) < len(text.board_list)-1:
-                        if Data.jugada != 6:
+                    if a.id == 1 and Data.jugada+(Data.page*28) < len(text.board_list)-1:
+                        if Data.jugada != 28:
                             Data.jugada += 1
                         
                         else:
@@ -156,15 +156,15 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
 
                         a.Update()
 
-                        peces.position = text.board_list[Data.jugada+(Data.page*6)]
+                        peces.position = text.board_list[Data.jugada+(Data.page*28)]
                         peces.draw(Data.reverse)
                         
                         Data.catch_button = a
                     
-                    elif a.id == -1 and Data.jugada+(Data.page*6) > 0:
+                    elif a.id == -1 and Data.jugada+(Data.page*28) > 0:
                         
                         if Data.jugada == 1 and Data.page != 0:
-                            Data.jugada = 6
+                            Data.jugada = 28
                             Data.page -= 1
                         
                         elif Data.jugada != 0:
@@ -175,14 +175,14 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
 
                         a.Update()
 
-                        peces.position = text.board_list[Data.jugada+(Data.page*6)]
+                        peces.position = text.board_list[Data.jugada+(Data.page*28)]
                         peces.draw(Data.reverse)
 
                         Data.catch_button = a
                     
-                    elif a.id == 0 and Data.jugada+(Data.page*6) == len(text.board_list)-1 and Data.jugada != 0:
+                    elif a.id == 0 and Data.jugada+(Data.page*28) == len(text.board_list)-1 and Data.jugada != 0:
                         if "0-0" in ((Data.text_data[-1])[-1][0]) or "0-0-0" in ((Data.text_data[-1])[-1][0]):
-                            if (Data.jugada+(Data.page*6)+1)%2 == 0:
+                            if (Data.jugada+(Data.page*28)+1)%2 == 0:
                                 Data.wk_moved = False
                             else:
                                 Data.bk_moved = False
@@ -193,7 +193,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                         text.board_list.remove(text.board_list[-1])
 
                         if Data.jugada == 1 and Data.page != 0:
-                            Data.jugada = 6
+                            Data.jugada = 28
                             Data.page -= 1
                             Data.text_data.remove(Data.text_data[-1])
 
@@ -207,7 +207,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                         a.Update()
                         Data.catch_button = a
 
-                        peces.position = text.board_list[Data.jugada+(Data.page*6)]
+                        peces.position = text.board_list[Data.jugada+(Data.page*28)]
                         peces.draw(Data.reverse)
                     
                     elif a.id == 3:
@@ -356,7 +356,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 else:
                     sideMenu.content_shown = -1
             
-            elif Data.catch_button.id == 9:
+            elif Data.catch_button.id == 9 and Data.play_mode == True:
                 path = easygui.filesavebox(msg = "EMMAGATZEMAR POSICIÓ",
                                             title = "Cercador",
                                             default= "*.json")
@@ -364,7 +364,7 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                 if path != None:
                     chess_notations.generate_file(Data, text.board_list, Data.text_data, path)
             
-            elif Data.catch_button.id == 10:
+            elif Data.catch_button.id == 10 and Data.play_mode == True:
                 path = easygui.fileopenbox(msg = "OBRIR POSICIÓ",
                                             title = "Cercador",
                                             default= "*.json",
@@ -388,10 +388,10 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                     Data.bk_moved = data["Data"][7]
                     Data.castling = []
                     
-                    peces.position = text.board_list[Data.jugada+Data.page*6]
+                    peces.position = text.board_list[Data.jugada+Data.page*28]
                     peces.draw(Data.reverse)
 
-            elif Data.catch_button.id == 11:
+            elif Data.catch_button.id == 11 and Data.play_mode == True:
                 text.board_list = []
                 text.board_list.append(chess_notations.FEN_decode("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
                 Data.jugada = 0
@@ -448,15 +448,15 @@ def Buttons_Behaviour(event, Data, text, taulell, menu, peces, sideMenu, ai_text
                     Data.page += 1
                     Data.jugada = 1
 
-                    peces.position = text.board_list[1+Data.page*6]
+                    peces.position = text.board_list[1+Data.page*28]
                     peces.draw(Data.reverse) 
             
             elif Data.catch_button.id == 18:
                 if Data.page != 0:  
                     Data.page -= 1
-                    Data.jugada = 6
+                    Data.jugada = 28
 
-                    peces.position = text.board_list[6+Data.page*6]
+                    peces.position = text.board_list[28+Data.page*28]
                     peces.draw(Data.reverse)            
 
             Data.catch_button = None
@@ -556,7 +556,7 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu, modify):
                         temp = (a.pos[1], a.pos[0])
                         check = True 
 
-        if Data.jugada == 6:
+        if Data.jugada == 28:
             Data.jugada = 0
             Data.page += 1
             Data.text_data.append([])
@@ -565,7 +565,7 @@ def Move(x, event, Data, size, peces, text, taulell, sideMenu, modify):
                                                             (target if Data.reverse == False else (7-target[0], 7-target[1])),
                                                             compr,
                                                             (x.pos if Data.reverse == False else (7-x.pos[0], 7-x.pos[1])),
-                                                            (str("{} ").format((str((int(Data.jugada/2)+1)+((Data.page)*3))+".") if Data.jugada%2 == 0 else "")),
+                                                            (str("{} ").format((str((int(Data.jugada/2)+1)+((Data.page)*14))+".") if Data.jugada%2 == 0 else "")),
                                                             check,
                                                             Data.check_mate,
                                                             local_castling), (temp if Data.reverse == False or temp == [] else (7-temp[0], 7-temp[1]))))
@@ -618,15 +618,15 @@ def If_Board_Pressed(event, Data, peces, text, taulell, modify):
 #finestra principal i el funcionament de la IA al mateix moment per
 #al mode d'anàlisi.
 
-def Analisis_Behaviour(text, ai, Queue, Data, Board):
-    if text.board_list[Data.jugada] != Data.catch_board:
+def Analisis_Behaviour(peces, ai, Queue, Data, Board):
+    if peces.position != Data.catch_board:
         if Data.catch_process != None:
             Data.catch_process.terminate()
             
         p1 = multiprocessing.Process(target=ai.root_an, args=[Board, -inf, +inf, Data.white_t, 1, Queue])
         p1.start()
 
-        Data.catch_board = text.board_list[Data.jugada]
+        Data.catch_board = deepcopy(peces.position)
         Data.catch_process = p1
     
     if Queue.qsize() == 0 and Data.module_value == None:

@@ -42,16 +42,20 @@ class config_menu():
     def draw(self):
         arial_big = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(33.71*self.proportion))
         arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(20.228*self.proportion))
+        arial_bold = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(20.228*self.proportion))
         arial_small = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(13.485*self.proportion))
 
-        self.screen.blit(arial_big.render("CONFIG.", True, (255, 255, 255)),(int(10*self.proportion), int(180*self.proportion)))
-        self.screen.blit(arial.render("Animacions:", True, (255, 255, 255)),(int(10*self.proportion), int(250*self.proportion)))
-        self.screen.blit(arial.render("Notació:", True, (255, 255, 255)),(int(10*self.proportion), int(280*self.proportion)))
-        self.screen.blit(arial.render("Audio:", True, (255, 255, 255)),(int(10*self.proportion), int(310*self.proportion)))
+        self.screen.blit(arial_big.render("INFORM.", True, (255, 255, 255)),(int(10*self.proportion), int(180*self.proportion)))
+        self.screen.blit(arial_bold.render("Versió:", True, (255, 255, 255)),(int(10*self.proportion), int(250*self.proportion)))
+        self.screen.blit(arial.render("1.0.0", True, (255, 255, 255)),(int(10*self.proportion), int(280*self.proportion)))
+        self.screen.blit(arial_bold.render("Data Versió:", True, (255, 255, 255)),(int(10*self.proportion), int(320*self.proportion)))
+        self.screen.blit(arial.render("03/11/2021", True, (255, 255, 255)),(int(10*self.proportion), int(350*self.proportion)))
+        self.screen.blit(arial_bold.render("Versió mòdul:", True, (255, 255, 255)),(int(10*self.proportion), int(420*self.proportion)))
+        self.screen.blit(arial.render("1.0.0", True, (255, 255, 255)),(int(10*self.proportion), int(450*self.proportion)))
 
         self.screen.blit(arial_small.render("© 2021 AlfonsoXIII", True, (255, 255, 255)),(int(10*self.proportion), int(580*self.proportion)))
 
-        self.buttons.draw(self.screen)
+        #self.buttons.draw(self.screen)
 
 class promotion_menu():
     def __init__(self, screen, proportion):

@@ -21,7 +21,7 @@ def Analysis_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Dat
         
         #Event principal que captura quan l'usuari prem el mouse
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if Data.pressed == False and Data.jugada+(Data.page*6) == len(text.board_list)-1 and Data.check_mate == False and Data.freeze == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
+            if Data.pressed == False and Data.jugada+(Data.page*24) == len(text.board_list)-1 and Data.check_mate == False and Data.freeze == False: #Se ejecuta si aún no se ha seleccionado ninguna pieza
                 #Se revisa que la selección corresponda a una pieza y se muestra en pantalla las opciones de movimiento, actualizando las variables de control.
                 Data.catch_piece = window_behaviour.If_Board_Pressed(event, Data, peces, text, taulell, 1)
 
@@ -37,12 +37,20 @@ def Analysis_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Dat
         
         window_behaviour.Buttons_Behaviour(event, Data, text, taulell, menu, peces, menu_lateral, ai_text)
         window_behaviour.Keys_Behaviour(event, Data, text, menu)
-    
-    if Data.module_on == True:
-        window_behaviour.Analisis_Behaviour(text, ai, Queue, Data, text.board_list[Data.jugada])
 
-    peces.position = text.board_list[Data.jugada+Data.page*6]
+    peces.position = text.board_list[Data.jugada+Data.page*24]
     taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.page][Data.jugada-1])[1])
+
+    if Data.module_on == True:
+        temp_board = deepcopy(peces.position)
+
+        if Data.reverse == True:
+            for x in temp_board:
+                x.reverse() 
+            
+            temp_board.reverse()
+
+        window_behaviour.Analisis_Behaviour(peces, ai, Queue, Data, temp_board)
 
     window.fill((243,239,239))
     sideMenuDisplay.fill((0,0,0,0))
@@ -123,7 +131,6 @@ def Play_Environment(window, sideMenuDisplay, BoardDisplay, MenuDisplay, Data, t
             Data.module_value = None
 
     peces.position = text.board_list[-1]
-    taulell.check_pos = ([] if Data.jugada == 0 else (Data.text_data[Data.page][Data.jugada-1])[1])
 
     window.fill((243,239,239))
     sideMenuDisplay.fill((0,0,0,0))
