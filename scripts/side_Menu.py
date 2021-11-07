@@ -13,32 +13,6 @@ class config_menu():
         self.id = "Config"
         self.buttons = pygame.sprite.Group()
     
-    def Build(self, sprites):
-        btn_1 = pieces.Button(sprites["select_button"], 
-                            (0, 0, 307, 302), 
-                            (0, 302, 307, 604), 
-                            (int(25*self.proportion), int(25*self.proportion)), 
-                            8)
-        btn_1.rect.center = (int(150*self.proportion), int(265*self.proportion))
-
-        btn_2 = pieces.Button(sprites["select_button"], 
-                            (0, 0, 307, 302), 
-                            (0, 302, 307, 604), 
-                            (int(25*self.proportion), int(25*self.proportion)), 
-                            8)
-        btn_2.rect.center = (int(150*self.proportion), int(295*self.proportion))
-
-        btn_3 = pieces.Button(sprites["select_button"], 
-                            (0, 0, 307, 302), 
-                            (0, 302, 307, 604), 
-                            (int(25*self.proportion), int(25*self.proportion)), 
-                            8)
-        btn_3.rect.center = (int(150*self.proportion), int(325*self.proportion))
-
-        self.buttons.add(btn_1)
-        self.buttons.add(btn_2)
-        self.buttons.add(btn_3)
-    
     def draw(self):
         arial_big = pygame.font.Font('fonts/arial_unicode_ms_bold.ttf', int(33.71*self.proportion))
         arial = pygame.font.Font('fonts/arial_unicode_ms.ttf', int(20.228*self.proportion))
@@ -55,14 +29,11 @@ class config_menu():
 
         self.screen.blit(arial_small.render("© 2021 AlfonsoXIII", True, (255, 255, 255)),(int(10*self.proportion), int(580*self.proportion)))
 
-        #self.buttons.draw(self.screen)
-
 class promotion_menu():
     def __init__(self, screen, proportion):
         self.screen = screen
         self.proportion = proportion
 
-        self.ico = "images/icos/conig.png"
         self.id = "Promotion"
         self.buttons = pygame.sprite.Group()
 

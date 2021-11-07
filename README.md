@@ -17,7 +17,7 @@
 
 <p style="text-align: justify"> L'usuari tindrà a la seva dispocició un ampli ventall d'opcions per a conseguir la millor experiència possible. Controlar l'<b>historial de jugades</b>, <b>desplaçar-se sobre ell</b>, i fins i tot poder <b>esborrar i reescriure jugades</b>, d'entre altres.</p>
 
-<img align="left" padding="10px" margin="10px" width="40%" src="https://i.gyazo.com/d17ce713547e7a22d98f0d87153ff3f3.gif">
+<img align="left" padding="10px" margin="10px" width="40%" src="https://i.gyazo.com/f8141d5cd85f6144e24f7c99b9f91a14.gif">
 
 <p style="text-align: justify; margin-left:43%;" > A més, dins de la barra principal d'opcions trobarà un ventall de possibilitats per a <b>emmagatzemar posicions</b>, <b>carregar posicions</b>, <b>canviar de mode</b>...</p>
 
@@ -25,7 +25,8 @@
 
 <p style="text-align: justify; margin-left:43%;"> També, una sèrie de funcionalitats a través de les quals l'usuari podrà <b>importar</b> i <b> exportar</b> qualsevol posició, indpenedent ment del seu estat, en un còmode format JSON que li permetrà poder portar allà on vulgui les seves millors partides.</p>
 
-<p style="text-align: justify"> Així mateix, també es disposarà d'uns botons que dotaran de la plena capaçitat a l'usuari de <b>restablir la posició de treball</b>, o bé <b>canviar de mode</b> de finestra en qualsevol moment (anàlisi/joc).</p>
+<p style="text-align: justify; margin-left:43%;"> Així mateix, també es disposarà d'uns botons que dotaran de la plena capaçitat a l'usuari de <b>restablir la posició de treball</b>, o bé <b>canviar de mode</b> de finestra en qualsevol moment (anàlisi/joc).</p>
+
 
 <p align="center"><img align="center" src="https://i.gyazo.com/c3542eca34eacf32bf2e5632f1f1e403.gif"></p>
 
